@@ -1,10 +1,10 @@
-import { StyleSheet, Text, KeyboardAvoidingView } from "react-native";
+import { StyleSheet, Text, KeyboardAvoidingView, Image } from "react-native";
 import React from "react";
 
 const LoginScreen = () => {
   return (
     <KeyboardAvoidingView>
-      <Text>LoginScreen</Text>
+      <Image source={require("../../../images/SportsHubLogo.png")} />
     </KeyboardAvoidingView>
   );
 };
