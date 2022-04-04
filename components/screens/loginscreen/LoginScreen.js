@@ -15,8 +15,9 @@ const LoginScreen = () => {
         style={styles.image}
         source={require("../../../images/SportsHubLogo.png")}
       />
-      <View>
+      <View style={styles.inputContainer}>
         <TextInput style={styles.textInput} placeholder="Email"/>
+        <TextInput style={styles.textInput} placeholder="Password"/>
       </View>
     </KeyboardAvoidingView>
   );
@@ -37,8 +38,14 @@ const styles = StyleSheet.create({
     backgroundColor: colours.backgroundDark,
     width: "100%",
   },
+  inputContainer:{
+    width: '80%',
+  },
   textInput: {
-    width: 200,
+    marginTop: 10,
+    height: 40,
     backgroundColor: colours.text,
+    borderRadius: 5,
+    paddingLeft: 10,
   }
 });
