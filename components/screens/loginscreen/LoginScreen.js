@@ -9,8 +9,23 @@ import {
 } from "react-native";
 import colours from "../../../theme/colours";
 import React from "react";
+import { useState } from "react";
+import { auth } from "../../../firebase/firebase";
 
 const LoginScreen = () => {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const handleLogin = () => {
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
+        console.log(user.email);
+      })
+      .catch((error) => alert("User does not exist"));
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Image
@@ -19,19 +34,15 @@ const LoginScreen = () => {
       />
       <View style={styles.inputContainer}>
         <TextInput style={styles.textInput} placeholder="Email" />
-        <TextInput style={styles.textInput} placeholder="Password" />
+        <TextInput secureTextEntry style={styles.textInput} placeholder="Password" />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.loginButton}>
-          <Text style={styles.buttonText}>
-            Login
-          </Text>
+        <TouchableOpacity style={styles.loginButton} onPress={handleLogin}>
+          <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.text}>Don't have an account?</Text>
         <TouchableOpacity style={styles.registerButton}>
-          <Text style={styles.buttonText}>
-            Register
-          </Text>
+          <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -97,5 +108,5 @@ const styles = StyleSheet.create({
     color: colours.text,
     margin: 20,
     fontWeight: "bold",
-  }
+  },
 });
