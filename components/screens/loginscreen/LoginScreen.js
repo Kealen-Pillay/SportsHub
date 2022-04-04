@@ -4,6 +4,8 @@ import {
   Image,
   View,
   TextInput,
+  TouchableOpacity,
+  Text,
 } from "react-native";
 import colours from "../../../theme/colours";
 import React from "react";
@@ -19,6 +21,11 @@ const LoginScreen = () => {
         <TextInput style={styles.textInput} placeholder="Email"/>
         <TextInput style={styles.textInput} placeholder="Password"/>
       </View>
+<View style={styles.buttonContainer}>
+<TouchableOpacity>
+  <Text>Login</Text>
+</TouchableOpacity>
+</View>
     </KeyboardAvoidingView>
   );
 };
