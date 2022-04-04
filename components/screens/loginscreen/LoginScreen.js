@@ -28,6 +28,7 @@ const styles = StyleSheet.create({
   image: {
     width: 200,
     height: 200,
+    marginBottom: 10,
   },
   container: {
     flex: 1,
@@ -37,6 +38,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   textInput: {
-    width: "80%",
+    width: 200,
+    backgroundColor: colours.text,
   }
 });
