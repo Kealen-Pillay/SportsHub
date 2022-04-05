@@ -7,7 +7,8 @@
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
-    "eject": "expo eject"
+    "eject": "expo eject",
+    "test": "jest"
   },
   "dependencies": {
     "expo": "~44.0.0",
@@ -20,7 +21,8 @@
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
-    "jest": "^27.5.1"
+    "jest": "^27.5.1",
+    "jest-cli": "^27.5.1"
   },
   "private": true
 }
