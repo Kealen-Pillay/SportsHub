@@ -7,7 +7,7 @@ const RegisterScreen = () => {
         <KeyboardAvoidingView>
             <View>
                 <TextInput
-                    placehold="Username"
+                    placeholder="Username"
                 />
 
                 <TextInput
@@ -19,7 +19,7 @@ const RegisterScreen = () => {
                 />
 
                 <TextInput
-                    palceholder="Confirm Password"
+                    placeholder="Confirm Password"
                 />
 
             </View>
