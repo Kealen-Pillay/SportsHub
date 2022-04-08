@@ -1,27 +1,52 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Image } from 'react-native'
+import { auth } from '../../../firebase';
 
 
 
 const RegisterScreen = () => {
+
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handleSignUp = () => {
+        auth
+            .createUserWithEmailAndPassword(email, password)
+            .then(userCredentials => {
+                const user = userCredentials.user;
+                console.log(user.email);
+            })
+            .catch(error => alert(error.message))
+    }
+
+
     return (
         <KeyboardAvoidingView style={styles.container}>
             <View>
                 <Image style={styles.logo} source={require("../../../assets/SportsHubV4.png")} />
 
-                <TextInput style={styles.text}
+                <TextInput
+                    style={styles.text}
                     placeholder="Username"
                 />
 
-                <TextInput style={styles.text}
+                <TextInput
+                    style={styles.text}
                     placeholder="Email"
+                    value={email}
+                    onChangeText={text => setEmail(text)}
                 />
 
-                <TextInput style={styles.text}
+                <TextInput
+                    style={styles.text}
                     placeholder="Password"
+                    value={password}
+                    onChangeText={text => setPassword(text)}
+                    secureTextEntry
                 />
 
-                <TextInput style={styles.text}
+                <TextInput
+                    style={styles.text}
                     placeholder="Confirm Password"
                 />
 
@@ -51,7 +76,7 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "white",
         borderRadius: 10,
-       
+
         width: 300,
         height: 50,
         paddingHorizontal: 10,
@@ -64,7 +89,7 @@ const styles = StyleSheet.create({
         left: 120,
         width: 100,
         height: 100,
-        
+
     },
     button: {
         backgroundColor: "#3F3D41",
@@ -72,7 +97,7 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "#E82A96",
         borderRadius: 12,
-        
+
         height: 50,
         justifyContent: "center",
         alignContent: "center",
@@ -86,5 +111,5 @@ const styles = StyleSheet.create({
         justifyContent: "center",
     },
 
-    
+
 })
