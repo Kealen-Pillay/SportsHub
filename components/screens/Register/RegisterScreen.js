@@ -43,7 +43,7 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         backgroundColor: "#1E1E1E",
-        justifyContent: "flex-start",
+        justifyContent: "center",
         alignItems: "center",
     },
     text: {
@@ -51,7 +51,8 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "white",
         borderRadius: 10,
-        width: "90%",
+       
+        width: 300,
         height: 50,
         paddingHorizontal: 10,
         margin: 15,
@@ -59,15 +60,19 @@ const styles = StyleSheet.create({
 
     logo: {
 
+        top: -60,
+        left: 120,
         width: 100,
         height: 100,
+        
     },
     button: {
         backgroundColor: "#3F3D41",
         width: "90%",
         borderWidth: 2,
         borderColor: "#E82A96",
-        borderRadius: 10,
+        borderRadius: 12,
+        
         height: 50,
         justifyContent: "center",
         alignContent: "center",
@@ -77,5 +82,9 @@ const styles = StyleSheet.create({
         color: "white",
         fontWeight: "700",
         fontSize: 25,
+        alignContent: "center",
+        justifyContent: "center",
     },
+
+    
 })
