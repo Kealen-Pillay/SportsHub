@@ -1,11 +1,14 @@
 import React, { useState, useEffect } from 'react'
-import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity } from 'react-native'
+import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Image } from 'react-native'
+
 
 
 const RegisterScreen = () => {
     return (
         <KeyboardAvoidingView style={styles.container}>
             <View>
+                <Image style={styles.logo} source={require("../../../assets/SportsHubV4.png")} />
+
                 <TextInput style={styles.text}
                     placeholder="Username"
                 />
@@ -39,9 +42,9 @@ export default RegisterScreen;
 const styles = StyleSheet.create({
     container: {
         flex: 1,
-        backgroundColor: '#1E1E1E',
-        justifyContent: 'flex-start',
-        alignItems: 'center',
+        backgroundColor: "#1E1E1E",
+        justifyContent: "flex-start",
+        alignItems: "center",
     },
     text: {
         backgroundColor: "white",
@@ -58,8 +61,6 @@ const styles = StyleSheet.create({
 
         width: 100,
         height: 100,
-        position: "absolute",
-        top: 70,
     },
     button: {
         backgroundColor: "#3F3D41",
@@ -69,7 +70,7 @@ const styles = StyleSheet.create({
         borderRadius: 10,
         height: 50,
         justifyContent: "center",
-        alignContent: 'center',
+        alignContent: "center",
         margin: 20,
     },
     buttonText: {
