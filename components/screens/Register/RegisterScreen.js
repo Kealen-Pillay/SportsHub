@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpacity, Image } from 'react-native'
 import { auth } from '../../../firebase';
+import { useNavigation } from '../../../node_modules/@react-navigation/core';
 
 
 
@@ -8,6 +9,18 @@ const RegisterScreen = () => {
 
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+
+    const navigation = useNavigation();
+
+    useEffect(() => {
+        const unsubscribe = auth.onAuthStateChanged(user => {
+            if (user) {
+                navigation.replace("Home")
+            }
+        })
+        return unsubscribe;
+    }, [])
+
 
     const handleSignUp = () => {
         auth
@@ -53,7 +66,9 @@ const RegisterScreen = () => {
             </View>
 
             <View>
-                <TouchableOpacity style={styles.button}>
+                <TouchableOpacity
+                    style={styles.button}
+                    onPres={handleSignUp}>
                     <Text style={styles.buttonText}>Create Account</Text>
                 </TouchableOpacity>
             </View>

@@ -1,6 +1,6 @@
-import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
 import RegisterScreen from './components/screens/Register/RegisterScreen';
+import TempHome from './components/screens/Register/TempHome';
 import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -12,6 +12,7 @@ export default function App() {
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name="Register" component={RegisterScreen} />
+        <Stack.Screen options={{ headerShown: false }} name="Home" component={TempHome} />
       </Stack.Navigator>
     </NavigationContainer>
 
