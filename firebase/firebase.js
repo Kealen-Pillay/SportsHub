@@ -8,7 +8,7 @@ const firebaseConfig = {
   projectId: "sportshub-auth-473fe",
   storageBucket: "sportshub-auth-473fe.appspot.com",
   messagingSenderId: "572702718252",
-  appId: "1:572702718252:web:62204738a96a5a84885489"
+  appId: "1:572702718252:web:029bc6f46427f47d885489"
 };
 
 let app;

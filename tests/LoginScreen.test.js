@@ -1,10 +1,13 @@
-import LoginScreen from "../components/screens/loginscreen/LoginScreen"
-import renderer from "react-test-renderer";
+import LoginScreen from "../components/screens/loginscreen/LoginScreen";
+import React from "react";
+import { render } from "@testing-library/react-native";
 
 //Tests that the Login Screen Renders
-test("Given I want to use the app, when I first open the app, then the login screen renders", () => {
-    const {getByPlaceholderText} = renderer.create(<LoginScreen/>);
-    getByPlaceholderText("Email:");
+describe("Render Login screen", () => {
+    it("should render", () => {
+        const loginPage = render(<LoginScreen/>);
+        const loginButton = loginPage.getByTestId("loginButton");
+    })
 });
 
 
