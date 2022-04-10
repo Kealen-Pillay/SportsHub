@@ -68,7 +68,7 @@ const RegisterScreen = () => {
             <View>
                 <TouchableOpacity
                     style={styles.button}
-                    onPres={handleSignUp}>
+                    onPress={handleSignUp}>
                     <Text style={styles.buttonText}>Create Account</Text>
                 </TouchableOpacity>
             </View>
