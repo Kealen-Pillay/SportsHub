@@ -1,8 +1,9 @@
 import LoginScreen from "../components/screens/loginscreen/LoginScreen"
+import renderer from "react-test-renderer";
 
 //Tests that the Login Screen Renders
 test("Given I want to use the app, when I first open the app, then the login screen renders", () => {
-    const {getByPlaceholderText} = render(<LoginScreen/>);
+    const {getByPlaceholderText} = renderer.create(<LoginScreen/>);
     getByPlaceholderText("Email:");
 });
 
