@@ -61,6 +61,7 @@ const RegisterScreen = () => {
                 <TextInput
                     style={styles.text}
                     placeholder="Confirm Password"
+                    secureTextEntry
                 />
 
             </View>
