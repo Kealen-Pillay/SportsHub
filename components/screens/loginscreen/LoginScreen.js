@@ -33,11 +33,30 @@ const LoginScreen = () => {
         source={require("../../../images/SportsHubLogo.png")}
       />
       <View style={styles.inputContainer}>
-        <TextInput style={styles.textInput} placeholder="Email" value={email} onChangeText={(text) => {setEmail(text)}}/>
-        <TextInput secureTextEntry style={styles.textInput} placeholder="Password" value={password} onChangeText={(text) => {setPassword(text)}}/>
+        <TextInput
+          style={styles.textInput}
+          placeholder="Email"
+          value={email}
+          onChangeText={(text) => {
+            setEmail(text);
+          }}
+        />
+        <TextInput
+          secureTextEntry
+          style={styles.textInput}
+          placeholder="Password"
+          value={password}
+          onChangeText={(text) => {
+            setPassword(text);
+          }}
+        />
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.loginButton} onPress={handleLogin} testID="loginButton">
+        <TouchableOpacity
+          style={styles.loginButton}
+          onPress={handleLogin}
+          testID="loginButton"
+        >
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.text}>Don't have an account?</Text>
