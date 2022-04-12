@@ -8,14 +8,12 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-
     <NavigationContainer>
       <Stack.Navigator>
         <Stack.Screen options={{ headerShown: false }} name="Register" component={RegisterScreen} />
         <Stack.Screen options={{ headerShown: false }} name="Home" component={TempHome} />
       </Stack.Navigator>
     </NavigationContainer>
-
   );
 }
 

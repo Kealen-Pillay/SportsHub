@@ -30,7 +30,7 @@ const TempHome = () => {
 export default TempHome
 
 const styles = StyleSheet.create({
-    top:{
+    top: {
         paddingTop: 30,
         justifyContent: 'center',
         alignItems: 'center',

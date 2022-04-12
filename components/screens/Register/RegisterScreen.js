@@ -3,8 +3,6 @@ import { StyleSheet, Text, View, KeyboardAvoidingView, TextInput, TouchableOpaci
 import { auth } from '../../../firebase';
 import { useNavigation } from '../../../node_modules/@react-navigation/core';
 
-
-
 const RegisterScreen = () => {
 
     const [username, setUsername] = useState('')
@@ -23,57 +21,47 @@ const RegisterScreen = () => {
         return unsubscribe;
     }, [])
 
-
     const handleSignUp = () => {
-        //username
-        if(username.length < 3)
-        {
+        //username checks
+        if (username.length < 3) {
             alert("Username must be at least 3 characters")
         }
-        // email
-        else if(email.length==0)
-        {
-            
+        // email checks
+        else if (email.length == 0) {
             alert("Please enter an email")
         }
-        else if(!(email.match(/\w+@[A-Za-z_]+\.[A-Za-z]{2,6}/)))
-        {
+        else if (!(email.match(/\w+@[A-Za-z_]+\.[A-Za-z]{2,6}/))) {
             alert("email is bad ");
         }
         //password checks
-        else if(password.length < 6)
-        {
+        else if (password.length < 6) {
             alert("Password must be at least 6 characters");
         }
-        else if(password != confpassword)
-        {
-            
+        else if (password != confpassword) {
             alert("Passwords do not match! Please try again.");
         }
-        else{
-        auth
-            .createUserWithEmailAndPassword(email, password)
-            .then(userCredentials => {
-                const user = userCredentials.user;
-                console.log(user.email);
-            })
-            .catch(error => alert(error.message))
+        //all fields are fine, create the account
+        else {
+            auth
+                .createUserWithEmailAndPassword(email, password)
+                .then(userCredentials => {
+                    const user = userCredentials.user;
+                    console.log(user.email);
+                })
+                .catch(error => alert(error.message))
         }
     }
-
 
     return (
         <KeyboardAvoidingView style={styles.container}>
             <View>
                 <Image style={styles.logo} source={require("../../../assets/SportsHubV4.png")} />
-
                 <TextInput
                     style={styles.text}
                     placeholder="Username"
                     value={username}
                     onChangeText={text => setUsername(text)}
                 />
-
                 <TextInput
                     style={styles.text}
                     placeholder="Email"
@@ -81,7 +69,6 @@ const RegisterScreen = () => {
                     onChangeText={text => setEmail(text)}
                     keyboardType='email-address'
                 />
-
                 <TextInput
                     style={styles.text}
                     placeholder="Password"
@@ -89,7 +76,6 @@ const RegisterScreen = () => {
                     onChangeText={text => setPassword(text)}
                     secureTextEntry
                 />
-
                 <TextInput
                     style={styles.text}
                     placeholder="Confirm Password"
@@ -97,9 +83,7 @@ const RegisterScreen = () => {
                     onChangeText={text => setConfpassword(text)}
                     secureTextEntry
                 />
-
             </View>
-
             <View>
                 <TouchableOpacity
                     testID='registerButton'
@@ -108,7 +92,6 @@ const RegisterScreen = () => {
                     <Text style={styles.buttonText}>Create Account</Text>
                 </TouchableOpacity>
             </View>
-
         </KeyboardAvoidingView>
     );
 }
@@ -127,16 +110,13 @@ const styles = StyleSheet.create({
         borderWidth: 1,
         borderColor: "white",
         borderRadius: 10,
-
         width: 300,
         height: 50,
         paddingHorizontal: 10,
         margin: 15,
     },
-
     logo: {
-
-        top: -60,
+        bottom: 60,
         left: 120,
         width: 100,
         height: 100,
@@ -148,7 +128,6 @@ const styles = StyleSheet.create({
         borderWidth: 2,
         borderColor: "#E82A96",
         borderRadius: 12,
-
         height: 50,
         justifyContent: "center",
         alignContent: "center",
@@ -161,6 +140,4 @@ const styles = StyleSheet.create({
         alignContent: "center",
         justifyContent: "center",
     },
-
-
 })
