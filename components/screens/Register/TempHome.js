@@ -16,7 +16,7 @@ const TempHome = () => {
     }
 
     return (
-        <View>
+        <View style={styles.top}>
             <Text>Email: {auth.currentUser.email}</Text>
             <TouchableOpacity
                 onPress={handleSignOut}
@@ -29,4 +29,10 @@ const TempHome = () => {
 
 export default TempHome
 
-const styles = StyleSheet.create({})
+const styles = StyleSheet.create({
+    top:{
+        paddingTop: 30,
+        justifyContent: 'center',
+        alignItems: 'center',
+    },
+})

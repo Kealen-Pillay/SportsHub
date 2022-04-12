@@ -7,8 +7,10 @@ import { useNavigation } from '../../../node_modules/@react-navigation/core';
 
 const RegisterScreen = () => {
 
+    const [username, setUsername] = useState('')
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
+    const [confpassword, setConfpassword] = useState('')
 
     const navigation = useNavigation();
 
@@ -23,6 +25,32 @@ const RegisterScreen = () => {
 
 
     const handleSignUp = () => {
+        //username
+        if(username.length < 3)
+        {
+            alert("Username must be at least 3 characters")
+        }
+        // email
+        else if(email.length==0)
+        {
+            
+            alert("Please enter an email")
+        }
+        else if(!(email.match(/\w+@[A-Za-z_]+\.[A-Za-z]{2,6}/)))
+        {
+            alert("email is bad ");
+        }
+        //password checks
+        else if(password.length < 6)
+        {
+            alert("Password must be at least 6 characters");
+        }
+        else if(password != confpassword)
+        {
+            
+            alert("Passwords do not match! Please try again.");
+        }
+        else{
         auth
             .createUserWithEmailAndPassword(email, password)
             .then(userCredentials => {
@@ -30,6 +58,7 @@ const RegisterScreen = () => {
                 console.log(user.email);
             })
             .catch(error => alert(error.message))
+        }
     }
 
 
@@ -41,6 +70,8 @@ const RegisterScreen = () => {
                 <TextInput
                     style={styles.text}
                     placeholder="Username"
+                    value={username}
+                    onChangeText={text => setUsername(text)}
                 />
 
                 <TextInput
@@ -48,6 +79,7 @@ const RegisterScreen = () => {
                     placeholder="Email"
                     value={email}
                     onChangeText={text => setEmail(text)}
+                    keyboardType='email-address'
                 />
 
                 <TextInput
@@ -61,6 +93,8 @@ const RegisterScreen = () => {
                 <TextInput
                     style={styles.text}
                     placeholder="Confirm Password"
+                    value={confpassword}
+                    onChangeText={text => setConfpassword(text)}
                     secureTextEntry
                 />
 
@@ -68,6 +102,7 @@ const RegisterScreen = () => {
 
             <View>
                 <TouchableOpacity
+                    testID='registerButton'
                     style={styles.button}
                     onPress={handleSignUp}>
                     <Text style={styles.buttonText}>Create Account</Text>
