@@ -8,6 +8,7 @@ import {
 import React from "react";
 import colours from "../../../theme/colours";
 import { Card, Switch, Chip } from "react-native-paper";
+import SelectableChips from "react-native-chip/SelectableChips";
 import { useState } from "react";
 
 const ProfileScreen = () => {
@@ -22,7 +23,7 @@ const ProfileScreen = () => {
         <Card style={styles.usernameCard}>
           <Text style={styles.usernameText}>USERNAME</Text>
           <View style={styles.chipContainer}>
-            <Chip
+            {/* <Chip
               mode="outlined"
               selected={basketballChipSelected}
               style={styles.chip}
@@ -51,7 +52,22 @@ const ProfileScreen = () => {
               }}
             >
               <Text style={styles.chipText}>Volleyball</Text>
-            </Chip>
+            </Chip> */}
+
+            <SelectableChips
+              initialChips={["BASKETBALL", "FOOTBALL", "VOLLEYBALL"]}
+              chipStyle={{
+                backgroundColor: colours.lightGrey,
+                borderColor: "black",
+                borderWidth: 1,
+                width: 290,
+                height: 30,
+              }}
+              valueStyle={{ color: "white", fontSize: 15, fontWeight: 'bold' }}
+              chipStyleSelected={{
+                backgroundColor: colours.pink,
+              }}
+            />
           </View>
         </Card>
       </View>
@@ -134,27 +150,10 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   chipContainer: {
-    flexDirection: "row",
-    flex: 1,
-    width: "90%",
-  },
-  chip: {
-    borderWidth: 2,
-    borderColor: "black",
-    backgroundColor: colours.lightGrey,
-    width: "80%",
-    height: 50,
-    marginTop: 40,
-    marginRight: 5,
-    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-  },
-  chipText: {
-    textAlign: "center",
-    color: "white",
-    fontWeight: "bold",
-    fontSize: 12,
+    flex: 1,
+    width: "90%",
   },
   ratingCard: {
     backgroundColor: colours.lightGrey,
