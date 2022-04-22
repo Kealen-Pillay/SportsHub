@@ -15,10 +15,9 @@ const ProfileScreen = () => {
   const [footballChipSelected, setFootballChipSelected] = useState(false);
   const [volleyballChipSelected, setVolleyballChipSelected] = useState(false);
 
-
   return (
     <KeyboardAvoidingView style={styles.container}>
-      <View style={styles.cardContainer}>
+      <View style={styles.usernameCardContainer}>
         <Card style={styles.usernameCard}>
           <Card.Content>
             <Title style={styles.usernameText}>USERNAME</Title>
@@ -60,12 +59,17 @@ const ProfileScreen = () => {
           </Card.Content>
         </Card>
       </View>
-      <View style={styles.cardContainer}>
-          <Card style={styles.ratingCard}>
-              <Card.Content>
-
-              </Card.Content>
-          </Card>
+      <View style={styles.ratingCardContainer}>
+        <Card style={styles.ratingCard}>
+          <Card.Content></Card.Content>
+        </Card>
+      </View>
+      <View style={styles.darkModeCardContainer}>
+        <Card style={styles.darkModeCard}>
+          <Card.Content>
+              <Text style={styles.darkModeText}>Dark Mode:</Text>
+          </Card.Content>
+        </Card>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.signOutButton}>
@@ -81,7 +85,7 @@ export default ProfileScreen;
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
     backgroundColor: colours.backgroundDark,
     width: "100%",
@@ -101,13 +105,14 @@ const styles = StyleSheet.create({
   },
   signOutButtonText: {
     color: "white",
-    fontSize: 16,
+    fontSize: 20,
     fontWeight: "bold",
   },
-  cardContainer: {
+  usernameCardContainer: {
     height: 200,
     width: "90%",
     marginBottom: 20,
+    marginTop: 80,
   },
   usernameCard: {
     backgroundColor: colours.lightGrey,
@@ -137,10 +142,10 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
   },
   chipContainer: {
-      flexDirection: "column",
-      flexWrap: "wrap",
-      flex: 1,
-      marginRight: 60,
+    flexDirection: "column",
+    flexWrap: "wrap",
+    flex: 1,
+    marginRight: 60,
   },
   ratingCard: {
     backgroundColor: colours.lightGrey,
@@ -150,5 +155,30 @@ const styles = StyleSheet.create({
     height: 80,
     alignItems: "center",
     justifyContent: "center",
+  },
+  ratingCardContainer: {
+    height: 80,
+    width: "90%",
+    marginBottom: 20,
+  },
+  darkModeCardContainer: {
+    height: 80,
+    width: "90%",
+    marginBottom: 20,
+  },
+  darkModeCard: {
+    backgroundColor: colours.lightGrey,
+    borderColor: colours.pink,
+    borderWidth: 2,
+    borderRadius: 15,
+    height: 80,
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  darkModeText: {
+      color: "white",
+      fontWeight: "bold",
+      fontSize: 30,
+      marginTop: 5,
   }
 });
