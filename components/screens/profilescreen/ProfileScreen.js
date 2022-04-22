@@ -33,7 +33,7 @@ const ProfileScreen = () => {
               <Text style={styles.chipText}>Basketball</Text>
             </Chip>
             <Chip
-              mode="flat"
+              mode="outlined"
               selected={footballChipSelected}
               style={styles.chip}
               onPress={() => {
@@ -127,29 +127,34 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   usernameText: {
+    textAlign: "center",
     color: "white",
     fontWeight: "bold",
     fontSize: 40,
     marginTop: 20,
   },
+  chipContainer: {
+    flexDirection: "row",
+    flex: 1,
+    width: "90%",
+  },
   chip: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: "black",
     backgroundColor: colours.lightGrey,
     width: "80%",
     height: 50,
-    marginTop: 20,
+    marginTop: 40,
     marginRight: 5,
     flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
   },
   chipText: {
+    textAlign: "center",
     color: "white",
     fontWeight: "bold",
-  },
-  chipContainer: {
-    flexDirection: "row",
-    flex: 1,
-    alignItems: "center",
+    fontSize: 12,
   },
   ratingCard: {
     backgroundColor: colours.lightGrey,
