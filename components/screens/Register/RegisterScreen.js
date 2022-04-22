@@ -37,7 +37,7 @@ const RegisterScreen = () => {
     else if (email.length == 0) {
       alert("Please enter an email");
     } else if (!email.match(/\w+@[A-Za-z_]+\.[A-Za-z]{2,6}/)) {
-      alert("email is bad ");
+      alert("Please enter an email of the format: example@gmail.com");
     }
     //password checks
     else if (password.length < 6) {
