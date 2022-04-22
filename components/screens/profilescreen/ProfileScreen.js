@@ -7,67 +7,70 @@ import {
 } from "react-native";
 import React from "react";
 import colours from "../../../theme/colours";
-import { Card, Title, Chip } from "react-native-paper";
+import { Card, Switch, Chip } from "react-native-paper";
 import { useState } from "react";
 
 const ProfileScreen = () => {
   const [basketballChipSelected, setBasketballChipSelected] = useState(false);
   const [footballChipSelected, setFootballChipSelected] = useState(false);
   const [volleyballChipSelected, setVolleyballChipSelected] = useState(false);
+  const [isSwitchOn, setIsSwitchOn] = useState(false);
 
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.usernameCardContainer}>
         <Card style={styles.usernameCard}>
-          <Card.Content>
-            <Title style={styles.usernameText}>USERNAME</Title>
-            <View style={styles.chipContainer}>
-              <Chip
-                mode="outlined"
-                selectedColor={colours.pink}
-                selected={basketballChipSelected}
-                style={styles.chip}
-                onPress={() => {
-                  setBasketballChipSelected(!basketballChipSelected);
-                }}
-              >
-                <Text style={styles.chipText}>Basketball</Text>
-              </Chip>
-              <Chip
-                mode="outlined"
-                selectedColor={colours.pink}
-                selected={footballChipSelected}
-                style={styles.chip}
-                onPress={() => {
-                  setFootballChipSelected(!footballChipSelected);
-                }}
-              >
-                <Text style={styles.chipText}>Football</Text>
-              </Chip>
-              <Chip
-                mode="outlined"
-                selectedColor={colours.pink}
-                selected={volleyballChipSelected}
-                style={styles.chip}
-                onPress={() => {
-                  setVolleyballChipSelected(!volleyballChipSelected);
-                }}
-              >
-                <Text style={styles.chipText}>Volleyball</Text>
-              </Chip>
-            </View>
-          </Card.Content>
+          <Text style={styles.usernameText}>USERNAME</Text>
+          <View style={styles.chipContainer}>
+            <Chip
+              mode="outlined"
+              selected={basketballChipSelected}
+              style={styles.chip}
+              onPress={() => {
+                setBasketballChipSelected(!basketballChipSelected);
+              }}
+            >
+              <Text style={styles.chipText}>Basketball</Text>
+            </Chip>
+            <Chip
+              mode="flat"
+              selected={footballChipSelected}
+              style={styles.chip}
+              onPress={() => {
+                setFootballChipSelected(!footballChipSelected);
+              }}
+            >
+              <Text style={styles.chipText}>Football</Text>
+            </Chip>
+            <Chip
+              mode="outlined"
+              selected={volleyballChipSelected}
+              style={styles.chip}
+              onPress={() => {
+                setVolleyballChipSelected(!volleyballChipSelected);
+              }}
+            >
+              <Text style={styles.chipText}>Volleyball</Text>
+            </Chip>
+          </View>
         </Card>
       </View>
       <View style={styles.ratingCardContainer}>
         <Card style={styles.ratingCard}>
-          <Card.Content></Card.Content>
+          <Card.Content>
+            <Text style={styles.ratingText}>Rating:</Text>
+          </Card.Content>
         </Card>
       </View>
       <View style={styles.darkModeCardContainer}>
         <Card style={styles.darkModeCard}>
           <Card.Content>
-              <Text style={styles.darkModeText}>Dark Mode:</Text>
+            <Text style={styles.darkModeText}>Dark Mode:</Text>
+            <Switch
+              value={isSwitchOn}
+              onValueChange={() => setIsSwitchOn(!isSwitchOn)}
+              style={styles.switch}
+            />
           </Card.Content>
         </Card>
       </View>
@@ -126,26 +129,27 @@ const styles = StyleSheet.create({
   usernameText: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 40,
+    marginTop: 20,
   },
   chip: {
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "black",
     backgroundColor: colours.lightGrey,
-    width: "40%",
-    justifyContent: "center",
+    width: "80%",
+    height: 50,
     marginTop: 20,
     marginRight: 5,
+    flex: 1,
   },
   chipText: {
     color: "white",
     fontWeight: "bold",
   },
   chipContainer: {
-    flexDirection: "column",
-    flexWrap: "wrap",
+    flexDirection: "row",
     flex: 1,
-    marginRight: 60,
+    alignItems: "center",
   },
   ratingCard: {
     backgroundColor: colours.lightGrey,
@@ -153,7 +157,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     height: 80,
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "center",
   },
   ratingCardContainer: {
@@ -165,6 +169,7 @@ const styles = StyleSheet.create({
     height: 80,
     width: "90%",
     marginBottom: 20,
+    justifyContent: "space-between",
   },
   darkModeCard: {
     backgroundColor: colours.lightGrey,
@@ -176,9 +181,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   darkModeText: {
-      color: "white",
-      fontWeight: "bold",
-      fontSize: 30,
-      marginTop: 5,
-  }
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 30,
+    marginTop: 5,
+  },
+  ratingText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 30,
+    marginTop: 5,
+  },
 });
