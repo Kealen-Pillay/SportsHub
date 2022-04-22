@@ -59,11 +59,11 @@ const RegisterScreen = () => {
 
   return (
     <KeyboardAvoidingView style={styles.container}>
+      <Image
+        style={styles.logo}
+        source={require("../../../assets/SportsHubLogo.png")}
+      />
       <View>
-        <Image
-          style={styles.logo}
-          source={require("../../../assets/SportsHubV4.png")}
-        />
         <TextInput
           style={styles.text}
           placeholder="Username"
@@ -92,7 +92,7 @@ const RegisterScreen = () => {
           secureTextEntry
         />
       </View>
-      <View>
+      <View style={styles.buttonContainer}>
         <TouchableOpacity
           testID="registerButton"
           style={styles.button}
@@ -113,6 +113,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#1E1E1E",
     justifyContent: "center",
     alignItems: "center",
+    width: "100%",
   },
   text: {
     backgroundColor: "white",
@@ -121,31 +122,31 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     width: 300,
     height: 50,
-    paddingHorizontal: 10,
+    paddingLeft: 10,
     margin: 15,
   },
   logo: {
-    bottom: 60,
-    left: 120,
-    width: 100,
-    height: 100,
+    marginBottom: 30,
+    width: 200,
+    height: 200,
   },
   button: {
-    backgroundColor: "#3F3D41",
-    width: "90%",
-    borderWidth: 2,
-    borderColor: "#E82A96",
-    borderRadius: 12,
+    backgroundColor: "#E82A96",
+    width: "50%",
+    borderRadius: 5,
     height: 50,
     justifyContent: "center",
-    alignContent: "center",
+    alignItems: "center",
     margin: 20,
   },
   buttonText: {
     color: "white",
-    fontWeight: "700",
-    fontSize: 25,
-    alignContent: "center",
+    fontSize: 16,
+    fontWeight: "bold",
+  },
+  buttonContainer: {
+    width: "100%",
     justifyContent: "center",
+    alignItems: "center",
   },
 });
