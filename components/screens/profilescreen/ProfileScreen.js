@@ -12,9 +12,6 @@ import SelectableChips from "react-native-chip/SelectableChips";
 import { useState } from "react";
 
 const ProfileScreen = () => {
-  const [basketballChipSelected, setBasketballChipSelected] = useState(false);
-  const [footballChipSelected, setFootballChipSelected] = useState(false);
-  const [volleyballChipSelected, setVolleyballChipSelected] = useState(false);
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
   return (
@@ -23,37 +20,6 @@ const ProfileScreen = () => {
         <Card style={styles.usernameCard}>
           <Text style={styles.usernameText}>USERNAME</Text>
           <View style={styles.chipContainer}>
-            {/* <Chip
-              mode="outlined"
-              selected={basketballChipSelected}
-              style={styles.chip}
-              onPress={() => {
-                setBasketballChipSelected(!basketballChipSelected);
-              }}
-            >
-              <Text style={styles.chipText}>Basketball</Text>
-            </Chip>
-            <Chip
-              mode="outlined"
-              selected={footballChipSelected}
-              style={styles.chip}
-              onPress={() => {
-                setFootballChipSelected(!footballChipSelected);
-              }}
-            >
-              <Text style={styles.chipText}>Football</Text>
-            </Chip>
-            <Chip
-              mode="outlined"
-              selected={volleyballChipSelected}
-              style={styles.chip}
-              onPress={() => {
-                setVolleyballChipSelected(!volleyballChipSelected);
-              }}
-            >
-              <Text style={styles.chipText}>Volleyball</Text>
-            </Chip> */}
-
             <SelectableChips
               initialChips={["BASKETBALL", "FOOTBALL", "VOLLEYBALL"]}
               chipStyle={{
