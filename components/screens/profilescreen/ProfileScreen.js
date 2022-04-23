@@ -85,21 +85,22 @@ const styles = StyleSheet.create({
   },
   signOutButton: {
     backgroundColor: colours.pink,
-    height: 50,
-    width: "80%",
+    height: 60,
+    width: "90%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
+    marginTop: 30,
   },
   signOutButtonText: {
     color: "white",
-    fontSize: 20,
+    fontSize: 30,
     fontWeight: "bold",
   },
   usernameCardContainer: {
     height: 200,
     width: "90%",
-    marginBottom: 20,
+    marginBottom: 30,
     marginTop: 80,
   },
   usernameCard: {
@@ -136,7 +137,7 @@ const styles = StyleSheet.create({
   ratingCardContainer: {
     height: 80,
     width: "90%",
-    marginBottom: 20,
+    marginBottom: 30,
   },
   darkModeCardContainer: {
     height: 80,
