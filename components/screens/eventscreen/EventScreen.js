@@ -14,7 +14,7 @@ export default EventScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colours.lightGrey,
+    backgroundColor: colours.backgroundDark,
     flex:1,
     justifyContent: "center",
     alignItems: "center",

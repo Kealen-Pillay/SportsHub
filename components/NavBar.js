@@ -86,7 +86,7 @@ const styles = StyleSheet.create({
     bottom: 0,
     left: 0,
     right: 0,
-    //borderRadius: 15,
+    borderRadius: 15,
     backgroundColor: "transparent",
     height: 90,
     borderTopWidth: 0,
