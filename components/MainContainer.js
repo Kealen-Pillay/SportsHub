@@ -37,13 +37,11 @@ const MainContainer = () => {
             );
           },
         })}
+        tabBarOptions={{
+          showLabel: false,
+        }}
 
-       tabBarOptions={{
-           showLabel:false,
-           style: {
-               backgroundColor: colours.purple,
-           }
-       }}
+        
       >
         <Tab.Screen
           name={eventScreen}
