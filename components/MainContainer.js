@@ -16,7 +16,7 @@ const Tab = createBottomTabNavigator();
 
 const MainContainer = () => {
   return (
-    <NavigationContainer>
+    <NavigationContainer style={styles.footer}>
       <Tab.Navigator
         initialRouteName={feedScreen}
         screenOptions={({ route }) => ({
@@ -24,23 +24,42 @@ const MainContainer = () => {
             let iconName;
             let routeName = route.name;
 
-            if (routeName === feedScreen) {
-              iconName = focused ? "home" : "home-outline";
-            } else if (routeName === eventScreen) {
+            if (routeName === eventScreen) {
               iconName = focused ? "list" : "list-outline";
+            } else if (routeName === feedScreen) {
+              iconName = focused ? "map" : "map-outline";
             } else if (routeName === profileScreen) {
-              iconName = focused ? "settings" : "settings-outline";
+              iconName = focused ? "person-circle" : "person-circle-outline";
             }
 
             return (
-              <Ionicons name={iconName} size={size} color={colours.purple} />
+              <Ionicons name={iconName} size={40} color={colours.purple} />
             );
           },
         })}
+
+       tabBarOptions={{
+           showLabel:false,
+           style: {
+               backgroundColor: colours.purple,
+           }
+       }}
       >
-        <Tab.Screen name={feedScreen} component={FeedScreen} options={{ headerShown: false }}/>
-        <Tab.Screen name={eventScreen} component={EventScreen} options={{ headerShown: false }}/>
-        <Tab.Screen name={profileScreen} component={ProfileScreen} options={{ headerShown: false }}/>
+        <Tab.Screen
+          name={eventScreen}
+          component={EventScreen}
+          options={{ headerShown: false }}
+        />
+        <Tab.Screen
+          name={feedScreen}
+          component={FeedScreen}
+          options={{ headerShown: false }}
+        />
+        <Tab.Screen
+          name={profileScreen}
+          component={ProfileScreen}
+          options={{ headerShown: false }}
+        />
       </Tab.Navigator>
     </NavigationContainer>
   );
