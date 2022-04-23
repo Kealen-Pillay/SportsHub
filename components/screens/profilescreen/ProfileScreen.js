@@ -12,7 +12,7 @@ import { useState } from "react";
 import { Rating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
-import UploadImage from './UploadImage';
+import UploadImage from "./UploadImage";
 import NavGradient from "../../NavGradient";
 
 const ProfileScreen = () => {
@@ -37,8 +37,10 @@ const ProfileScreen = () => {
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.usernameCardContainer}>
         <Card style={styles.usernameCard}>
-          <UploadImage/>
-          <Text style={styles.usernameText}>{auth.currentUser?.email.split('@')[0]}</Text>
+          <UploadImage />
+          <Text style={styles.usernameText}>
+            {auth.currentUser?.email.split("@")[0]}
+          </Text>
         </Card>
       </View>
       <View style={styles.ratingCardContainer}>
@@ -72,7 +74,7 @@ const ProfileScreen = () => {
           <Text style={styles.signOutButtonText}>Sign Out</Text>
         </TouchableOpacity>
       </View>
-      <NavGradient/>
+      <NavGradient />
     </KeyboardAvoidingView>
   );
 };
