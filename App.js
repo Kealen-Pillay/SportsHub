@@ -1,5 +1,5 @@
 import { StyleSheet, View } from 'react-native';
-import MainContainer from './components/MainContainer';
+import MainContainer from './components/NavBar';
 import LoginScreen from './components/screens/loginscreen/LoginScreen';
 import ProfileScreen from './components/screens/profilescreen/ProfileScreen';
 

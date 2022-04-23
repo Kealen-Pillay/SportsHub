@@ -1,4 +1,4 @@
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -8,6 +8,7 @@ import EventScreen from "./screens/eventscreen/EventScreen";
 import ProfileScreen from "./screens/profilescreen/ProfileScreen";
 import colours from "../theme/colours";
 import { LinearGradient } from "expo-linear-gradient";
+import { DefaultTheme } from "react-native-paper";
 
 const feedScreen = "Feed";
 const eventScreen = "Events";
@@ -15,9 +16,13 @@ const profileScreen = "Profile";
 
 const Tab = createBottomTabNavigator();
 
-const MainContainer = () => {
+const NavBar = () => {
   return (
     <NavigationContainer style={styles.container}>
+      <LinearGradient
+        colors={[colours.purple, colours.pink]}
+        style={styles.linerGradient}
+      />
       <Tab.Navigator
         initialRouteName={feedScreen}
         screenOptions={({ route }) => ({
@@ -37,25 +42,26 @@ const MainContainer = () => {
               <Ionicons
                 name={iconName}
                 size={40}
-                color={"white"}
+                color={color}
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
                   marginTop: 50,
-                  height:"100%"
+                  height: "130%",
                 }}
               />
             );
           },
+          tabBarActiveTintColor: "white",
+          tabBarInactiveTintColor: "black",
           tabBarShowLabel: false,
           headerShown: false,
           tabBarStyle: {
-            position: "absolute",
-            bottom: 30,
-            left: 10,
-            right: 10,
+            bottom: 0,
+            left: 0,
+            right: 0,
             borderRadius: 15,
-            backgroundColor: colours.purple,
+            backgroundColor: "transparent",
             height: 90,
             borderTopWidth: 0,
           },
@@ -69,10 +75,20 @@ const MainContainer = () => {
   );
 };
 
-export default MainContainer;
+export default NavBar;
 
 const styles = StyleSheet.create({
-    container: {
-        borderTopWidth: 0,
-    }
+  container: {
+    borderTopWidth: 0,
+  },
+  linerGradient: {
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    //borderRadius: 15,
+    backgroundColor: "transparent",
+    height: 90,
+    borderTopWidth: 0,
+  }
 });
