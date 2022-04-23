@@ -16,9 +16,12 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: colours.lightGrey,
     flex:1,
+    justifyContent: "center",
+    alignItems: "center",
 
   },
   text: {
     color: "white",
+    fontSize: 50,
   },
 });

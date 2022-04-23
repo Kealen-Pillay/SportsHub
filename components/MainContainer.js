@@ -7,6 +7,7 @@ import FeedScreen from "./screens/feedscreen/FeedScreen";
 import EventScreen from "./screens/eventscreen/EventScreen";
 import ProfileScreen from "./screens/profilescreen/ProfileScreen";
 import colours from "../theme/colours";
+import { LinearGradient } from "expo-linear-gradient";
 
 const feedScreen = "Feed";
 const eventScreen = "Events";
@@ -33,31 +34,35 @@ const MainContainer = () => {
             }
 
             return (
-              <Ionicons name={iconName} size={40} color={colours.purple} />
+              <Ionicons
+                name={iconName}
+                size={40}
+                color={colours.purple}
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                  marginTop: 20,
+                }}
+              />
             );
           },
+          tabBarShowLabel: false,
+          headerShown: false,
+          tabBarStyle: {
+            position: "absolute",
+            bottom: 25,
+            left: 10,
+            right: 10,
+            elevation: 0,
+            borderRadius: 15,
+            backgroundColor: "black",
+            height: 90,
+          },
         })}
-        tabBarOptions={{
-          showLabel: false,
-        }}
-
-        
       >
-        <Tab.Screen
-          name={eventScreen}
-          component={EventScreen}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen
-          name={feedScreen}
-          component={FeedScreen}
-          options={{ headerShown: false }}
-        />
-        <Tab.Screen
-          name={profileScreen}
-          component={ProfileScreen}
-          options={{ headerShown: false }}
-        />
+        <Tab.Screen name={eventScreen} component={EventScreen} />
+        <Tab.Screen name={feedScreen} component={FeedScreen} />
+        <Tab.Screen name={profileScreen} component={ProfileScreen} />
       </Tab.Navigator>
     </NavigationContainer>
   );
