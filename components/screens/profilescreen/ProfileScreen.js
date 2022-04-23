@@ -11,9 +11,14 @@ import { Card, Switch } from "react-native-paper";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { useState } from "react";
 import { Slider } from "native-base";
+import { Rating, AirbnbRating } from "react-native-ratings";
 
 const ProfileScreen = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
+
+  const ratingCompleted = (rating) => {
+    console.log("Rating is: " + rating);
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container}>
@@ -40,14 +45,21 @@ const ProfileScreen = () => {
       </View>
       <View style={styles.ratingCardContainer}>
         <Card style={styles.ratingCard}>
-          <Card.Content>
+          <View style={styles.ratingsInnerContainer}>
             <Text style={styles.ratingText}>Rating:</Text>
-          </Card.Content>
+            <Rating
+            type="custom"
+              onFinishRating={ratingCompleted}
+              ratingBackgroundColor={"black"}
+              // readonly={true}
+              tintColor={colours.lightGrey}
+            />
+          </View>
         </Card>
       </View>
       <View style={styles.darkModeCardContainer}>
         <Card style={styles.darkModeCard}>
-          <View style={styles.innerContainer}>
+          <View style={styles.darkModeInnerContainer}>
             <Text style={styles.darkModeText}>Dark Mode:</Text>
             <Switch
               value={isSwitchOn}
@@ -162,8 +174,15 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     marginTop: 5,
+    marginLeft: 10,
+    marginRight: 35,
   },
-  innerContainer: {
+  darkModeInnerContainer: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  ratingsInnerContainer: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
