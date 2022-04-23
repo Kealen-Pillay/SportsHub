@@ -7,9 +7,10 @@ import {
 } from "react-native";
 import React from "react";
 import colours from "../../../theme/colours";
-import { Card, Switch, Chip } from "react-native-paper";
+import { Card, Switch, } from "react-native-paper";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { useState } from "react";
+import { Slider } from "native-base";
 
 const ProfileScreen = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
@@ -41,19 +42,21 @@ const ProfileScreen = () => {
         <Card style={styles.ratingCard}>
           <Card.Content>
             <Text style={styles.ratingText}>Rating:</Text>
+            
           </Card.Content>
         </Card>
       </View>
       <View style={styles.darkModeCardContainer}>
         <Card style={styles.darkModeCard}>
-          <Card.Content>
+          <View style={styles.innerContainer}>
+
             <Text style={styles.darkModeText}>Dark Mode:</Text>
             <Switch
               value={isSwitchOn}
               onValueChange={() => setIsSwitchOn(!isSwitchOn)}
               style={styles.switch}
             />
-          </Card.Content>
+          </View>
         </Card>
       </View>
       <View style={styles.buttonContainer}>
@@ -139,7 +142,6 @@ const styles = StyleSheet.create({
     height: 80,
     width: "90%",
     marginBottom: 50,
-    justifyContent: "space-between",
   },
   darkModeCard: {
     backgroundColor: colours.lightGrey,
@@ -148,13 +150,13 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     height: 80,
     alignItems: "flex-start",
-    justifyContent: "center",
   },
   darkModeText: {
     color: "white",
     fontWeight: "bold",
     fontSize: 30,
-    marginTop: 5,
+    marginLeft: 10,
+    marginRight: 130,
   },
   ratingText: {
     color: "white",
@@ -162,4 +164,9 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginTop: 5,
   },
+  innerContainer: {
+    flex:1,
+    flexDirection: "row",
+    alignItems: "center",
+  }
 });
