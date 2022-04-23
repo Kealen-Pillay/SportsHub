@@ -9,7 +9,7 @@ import {
   Image,
 } from "react-native";
 import { auth } from "../../../firebase";
-import { useNavigation } from "../../../node_modules/@react-navigation/core";
+import { useNavigation } from "@react-navigation/core";
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState("");
