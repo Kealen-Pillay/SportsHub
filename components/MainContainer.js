@@ -41,7 +41,8 @@ const MainContainer = () => {
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: 20,
+                  marginTop: 50,
+                  height:"100%"
                 }}
               />
             );
