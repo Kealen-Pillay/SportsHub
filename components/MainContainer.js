@@ -17,7 +17,7 @@ const Tab = createBottomTabNavigator();
 
 const MainContainer = () => {
   return (
-    <NavigationContainer style={styles.footer}>
+    <NavigationContainer style={styles.container}>
       <Tab.Navigator
         initialRouteName={feedScreen}
         screenOptions={({ route }) => ({
@@ -37,7 +37,7 @@ const MainContainer = () => {
               <Ionicons
                 name={iconName}
                 size={40}
-                color={colours.purple}
+                color={"white"}
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
@@ -50,13 +50,13 @@ const MainContainer = () => {
           headerShown: false,
           tabBarStyle: {
             position: "absolute",
-            bottom: 25,
+            bottom: 30,
             left: 10,
             right: 10,
-            elevation: 0,
             borderRadius: 15,
-            backgroundColor: "black",
+            backgroundColor: colours.purple,
             height: 90,
+            borderTopWidth: 0,
           },
         })}
       >
@@ -70,4 +70,8 @@ const MainContainer = () => {
 
 export default MainContainer;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        borderTopWidth: 0,
+    }
+});
