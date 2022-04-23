@@ -12,9 +12,10 @@ import SelectableChips from "react-native-chip/SelectableChips";
 import { useState } from "react";
 import { Rating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
+import { auth } from "../../../firebase/firebase";
 
 const ProfileScreen = () => {
-  const [isSwitchOn, setIsSwitchOn] = useState(false);
+  const [isSwitchOn, setIsSwitchOn] = useState(true);
 
   const ratingCompleted = (rating) => {
     console.log("Rating is: " + rating);
@@ -23,7 +24,12 @@ const ProfileScreen = () => {
   const navigation = useNavigation();
 
   const handleSignOut = () => {
-    navigation.navigate("Login");
+    auth
+      .signOut()
+      .then(() => {
+        navigation.navigate("Login");
+      })
+      .catch((error) => alert(error.message));
   };
 
   return (
