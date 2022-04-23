@@ -10,14 +10,20 @@ import colours from "../../../theme/colours";
 import { Card, Switch } from "react-native-paper";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { useState } from "react";
-import { Slider } from "native-base";
-import { Rating, AirbnbRating } from "react-native-ratings";
+import { Rating } from "react-native-ratings";
+import { useNavigation } from "@react-navigation/native";
 
 const ProfileScreen = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(false);
 
   const ratingCompleted = (rating) => {
     console.log("Rating is: " + rating);
+  };
+
+  const navigation = useNavigation();
+
+  const handleSignOut = () => {
+    navigation.navigate("Login");
   };
 
   return (
@@ -48,7 +54,7 @@ const ProfileScreen = () => {
           <View style={styles.ratingsInnerContainer}>
             <Text style={styles.ratingText}>Rating:</Text>
             <Rating
-            type="custom"
+              type="custom"
               onFinishRating={ratingCompleted}
               ratingBackgroundColor={"black"}
               // readonly={true}
@@ -70,7 +76,7 @@ const ProfileScreen = () => {
         </Card>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.signOutButton}>
+        <TouchableOpacity style={styles.signOutButton} onPress={handleSignOut}>
           <Text style={styles.signOutButtonText}>Sign Out</Text>
         </TouchableOpacity>
       </View>

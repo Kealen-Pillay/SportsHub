@@ -1,16 +1,28 @@
-import { StyleSheet, View } from 'react-native';
-import MainContainer from './components/NavBar';
-import LoginScreen from './components/screens/loginscreen/LoginScreen';
-import ProfileScreen from './components/screens/profilescreen/ProfileScreen';
-import colours from './theme/colours';
+import { StyleSheet } from "react-native";
+import LoginScreen from "./components/screens/loginscreen/LoginScreen";
+import colours from "./theme/colours";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import NavBar from "./components/NavBar";
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      {/* <LoginScreen/> */}
-      {/* <ProfileScreen/> */}
-      <MainContainer/>
-    </View>
+    <NavigationContainer independent={true}>
+      <Stack.Navigator>
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Login"
+          component={LoginScreen}
+        />
+        <Stack.Screen
+          options={{ headerShown: false }}
+          name="Dashboard"
+          component={NavBar}
+        />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 

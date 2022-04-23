@@ -18,11 +18,11 @@ const Tab = createBottomTabNavigator();
 
 const NavBar = () => {
   return (
-    <NavigationContainer style={styles.container}>
-      <LinearGradient
-        colors={[colours.purple, colours.pink]}
-        style={styles.linerGradient}
-      />
+    // <NavigationContainer independent={true}>
+      // <LinearGradient
+      //   colors={[colours.purple, colours.pink]}
+      //   style={styles.linerGradient}
+      // />
       <Tab.Navigator
         initialRouteName={feedScreen}
         screenOptions={({ route }) => ({
@@ -71,16 +71,13 @@ const NavBar = () => {
         <Tab.Screen name={feedScreen} component={FeedScreen} />
         <Tab.Screen name={profileScreen} component={ProfileScreen} />
       </Tab.Navigator>
-    </NavigationContainer>
+    // </NavigationContainer>
   );
 };
 
 export default NavBar;
 
 const styles = StyleSheet.create({
-  container: {
-    borderTopWidth: 0,
-  },
   linerGradient: {
     position: "absolute",
     bottom: 0,
