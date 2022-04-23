@@ -51,7 +51,7 @@ const ProfileScreen = () => {
               type="custom"
               onFinishRating={ratingCompleted}
               ratingBackgroundColor={"black"}
-              // readonly={true}
+              readonly={true}
               tintColor={colours.lightGrey}
             />
           </View>
