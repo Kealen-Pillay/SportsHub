@@ -1,13 +1,13 @@
 import { LinearGradient } from "expo-linear-gradient";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet } from "react-native";
 import colours from "../theme/colours";
 
 const NavGradient = () => {
   return (
-      <LinearGradient
-        colors={[colours.purple, colours.pink]}
-        style={styles.linearGradient}
-      />
+    <LinearGradient
+      colors={[colours.purple, colours.pink]}
+      style={styles.linearGradient}
+    />
   );
 };
 
