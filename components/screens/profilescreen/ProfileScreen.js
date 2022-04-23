@@ -29,7 +29,7 @@ const ProfileScreen = () => {
                 width: 290,
                 height: 30,
               }}
-              valueStyle={{ color: "white", fontSize: 15, fontWeight: 'bold' }}
+              valueStyle={{ color: "white", fontSize: 15, fontWeight: "bold" }}
               chipStyleSelected={{
                 backgroundColor: colours.pink,
               }}
@@ -83,7 +83,7 @@ const styles = StyleSheet.create({
   signOutButton: {
     backgroundColor: colours.pink,
     height: 50,
-    width: "50%",
+    width: "80%",
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 5,
@@ -138,7 +138,7 @@ const styles = StyleSheet.create({
   darkModeCardContainer: {
     height: 80,
     width: "90%",
-    marginBottom: 20,
+    marginBottom: 50,
     justifyContent: "space-between",
   },
   darkModeCard: {
