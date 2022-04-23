@@ -9,15 +9,29 @@ import {
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import colours from "../../../theme/colours";
+import * as ImagePicker from "expo-image-picker";
 
 export default function UploadImage() {
   const [image, setImage] = useState(null);
-  const addImage = () => {};
+  const addImage = async () => {
+    let _image = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
+    });
+
+    console.log(JSON.stringify(_image));
+
+    if (!_image.cancelled) {
+      setImage(_image.uri);
+    }
+  };
 
   return (
     <View style={styles.container}>
       {image && (
-        <Image source={{ uri: image }} style={{ width: 200, height: 200 }} />
+        <Image source={{ uri: image }} style={{ width: 130, height: 130 }} />
       )}
 
       <View style={styles.uploadButtonContainer}>

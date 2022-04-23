@@ -8,11 +8,12 @@ import {
 import React from "react";
 import colours from "../../../theme/colours";
 import { Card, Switch } from "react-native-paper";
-import SelectableChips from "react-native-chip/SelectableChips";
 import { useState } from "react";
 import { Rating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
+import UploadImage from './UploadImage';
+import NavGradient from "../../NavGradient";
 
 const ProfileScreen = () => {
   const [isSwitchOn, setIsSwitchOn] = useState(true);
@@ -36,23 +37,8 @@ const ProfileScreen = () => {
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.usernameCardContainer}>
         <Card style={styles.usernameCard}>
-          <Text style={styles.usernameText}>USERNAME</Text>
-          <View style={styles.chipContainer}>
-            <SelectableChips
-              initialChips={["BASKETBALL", "FOOTBALL", "VOLLEYBALL"]}
-              chipStyle={{
-                backgroundColor: colours.lightGrey,
-                borderColor: "black",
-                borderWidth: 1,
-                width: 290,
-                height: 30,
-              }}
-              valueStyle={{ color: "white", fontSize: 15, fontWeight: "bold" }}
-              chipStyleSelected={{
-                backgroundColor: colours.pink,
-              }}
-            />
-          </View>
+          <UploadImage/>
+          <Text style={styles.usernameText}>{auth.currentUser?.email.split('@')[0]}</Text>
         </Card>
       </View>
       <View style={styles.ratingCardContainer}>
@@ -86,6 +72,7 @@ const ProfileScreen = () => {
           <Text style={styles.signOutButtonText}>Sign Out</Text>
         </TouchableOpacity>
       </View>
+      <NavGradient/>
     </KeyboardAvoidingView>
   );
 };
@@ -135,17 +122,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   usernameText: {
+    textTransform: "uppercase",
     textAlign: "center",
     color: "white",
     fontWeight: "bold",
     fontSize: 40,
-    marginTop: 20,
-  },
-  chipContainer: {
-    alignItems: "center",
-    justifyContent: "center",
-    flex: 1,
-    width: "90%",
+    marginTop: 10,
   },
   ratingCard: {
     backgroundColor: colours.lightGrey,

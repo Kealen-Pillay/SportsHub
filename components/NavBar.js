@@ -57,7 +57,7 @@ const NavBar = () => {
             left: 10,
             right: 10,
             borderRadius: 15,
-            backgroundColor: colours.purple,
+            backgroundColor: "transparent",
             height: 90,
             borderTopWidth: 0,
           },
@@ -71,16 +71,3 @@ const NavBar = () => {
 };
 
 export default NavBar;
-
-const styles = StyleSheet.create({
-  linerGradient: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    borderRadius: 15,
-    backgroundColor: "transparent",
-    height: 90,
-    borderTopWidth: 0,
-  }
-});
