@@ -18,11 +18,6 @@ const Tab = createBottomTabNavigator();
 
 const NavBar = () => {
   return (
-    // <NavigationContainer independent={true}>
-      // <LinearGradient
-      //   colors={[colours.purple, colours.pink]}
-      //   style={styles.linerGradient}
-      // />
       <Tab.Navigator
         initialRouteName={feedScreen}
         screenOptions={({ route }) => ({
@@ -41,12 +36,12 @@ const NavBar = () => {
             return (
               <Ionicons
                 name={iconName}
-                size={40}
+                size={45}
                 color={color}
                 style={{
                   justifyContent: "center",
                   alignItems: "center",
-                  marginTop: 50,
+                  marginTop: 60,
                   height: "130%",
                 }}
               />
@@ -57,11 +52,12 @@ const NavBar = () => {
           tabBarShowLabel: false,
           headerShown: false,
           tabBarStyle: {
-            bottom: 0,
-            left: 0,
-            right: 0,
+            position: "absolute",
+            bottom: 30,
+            left: 10,
+            right: 10,
             borderRadius: 15,
-            backgroundColor: "transparent",
+            backgroundColor: colours.purple,
             height: 90,
             borderTopWidth: 0,
           },
@@ -71,7 +67,6 @@ const NavBar = () => {
         <Tab.Screen name={feedScreen} component={FeedScreen} />
         <Tab.Screen name={profileScreen} component={ProfileScreen} />
       </Tab.Navigator>
-    // </NavigationContainer>
   );
 };
 
