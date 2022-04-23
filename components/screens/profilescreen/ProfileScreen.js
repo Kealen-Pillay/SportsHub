@@ -7,7 +7,7 @@ import {
 } from "react-native";
 import React from "react";
 import colours from "../../../theme/colours";
-import { Card, Switch, } from "react-native-paper";
+import { Card, Switch } from "react-native-paper";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { useState } from "react";
 import { Slider } from "native-base";
@@ -42,14 +42,12 @@ const ProfileScreen = () => {
         <Card style={styles.ratingCard}>
           <Card.Content>
             <Text style={styles.ratingText}>Rating:</Text>
-            
           </Card.Content>
         </Card>
       </View>
       <View style={styles.darkModeCardContainer}>
         <Card style={styles.darkModeCard}>
           <View style={styles.innerContainer}>
-
             <Text style={styles.darkModeText}>Dark Mode:</Text>
             <Switch
               value={isSwitchOn}
@@ -166,8 +164,8 @@ const styles = StyleSheet.create({
     marginTop: 5,
   },
   innerContainer: {
-    flex:1,
+    flex: 1,
     flexDirection: "row",
     alignItems: "center",
-  }
+  },
 });
