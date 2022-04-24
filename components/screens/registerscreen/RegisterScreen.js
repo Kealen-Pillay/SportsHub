@@ -13,12 +13,29 @@ import { firestore } from "../../../firestore";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import { Rating } from "react-native-ratings";
 
+const RatingBox = () => {
+  const [rating, setRating] = useState("");
+
+  return (
+    <View style={styles.ratingsContainer}>
+      <Text style={styles.abilityText}>Ability:</Text>
+      <Rating
+        type="custom"
+        onFinishRating={(rating) => setRating(rating)}
+        ratingBackgroundColor={"black"}
+        readonly={false}
+        tintColor={"#1E1E1E"}
+        style={styles.rating}
+      />
+    </View>
+  );
+};
+
 const RegisterScreen = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setConfpassword] = useState("");
-  const [rating, setRating] = useState("");
 
   const navigation = useNavigation();
 
@@ -33,20 +50,17 @@ const RegisterScreen = () => {
 
   const handleSignUp = () => {
     if (username.length < 3) {
-      // alert("Username must be at least 3 characters");
-    }
-    else if (email.length == 0) {
+      alert("Username must be at least 3 characters");
+    } else if (email.length == 0) {
       alert("Please enter an email");
     } else if (!email.match(/\w+@[A-Za-z_]+\.[A-Za-z]{2,6}/)) {
       alert("Please enter an email of the format: example@gmail.com");
-    }
-    else if (password.length < 6) {
+    } else if (password.length < 6) {
       alert("Password must be at least 6 characters");
     } else if (password != confpassword) {
       alert("Passwords do not match! Please try again.");
-    }
-    else {
-      addUser()
+    } else {
+      addUser();
       auth
         .createUserWithEmailAndPassword(email, password)
         .then((userCredentials) => {
@@ -56,7 +70,6 @@ const RegisterScreen = () => {
         .catch((error) => alert(error.message));
     }
   };
-
 
   const addUser = () => {
     firestore
@@ -69,28 +82,10 @@ const RegisterScreen = () => {
       })
       .then(function (docRef) {
         console.log("Document written with ID: ", docRef.id);
-        // showMessage({
-        //   message: "User added!",
-        //   type: "success",
-        //   hideStatusBar: true,
-        // });
       })
-      // .then(() => {
-      //   navigation.navigate("TempEvent");
-      // })
       .catch(function (error) {
         console.error("Error adding document: ", error);
-        // showMessage({
-        //   message: "ERROR adding user",
-        //   type: "danger",
-        //   hideStatusBar: true,
-        // });
       });
-  };
-
-
-  const ratingCompleted = (rating) => {
-    console.log("Rating is: " + rating);
   };
 
   return (
@@ -105,14 +100,6 @@ const RegisterScreen = () => {
           placeholder="Username"
           value={username}
           onChangeText={(text) => setUsername(text)}
-        />
-
-        <Rating
-          type="custom"
-          onFinishRating={(rating) => setRating(rating)}
-          ratingBackgroundColor={"black"}
-          readonly={false}
-          tintColor={"grey"}
         />
 
         <TextInput
@@ -137,13 +124,15 @@ const RegisterScreen = () => {
           secureTextEntry
         />
       </View>
+      <RatingBox />
       <View style={styles.buttonContainer}>
-        <TouchableOpacity
-          testID="registerButton"
-          style={styles.button}
-          onPress={handleSignUp}
-        >
+        <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Create Account</Text>
+        </TouchableOpacity>
+      </View>
+      <View style={styles.returnContainer}>
+        <TouchableOpacity style={styles.returnButton}>
+          <Text style={styles.buttonText}>Return to Login Screen</Text>
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
@@ -165,19 +154,19 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "white",
     borderRadius: 10,
-    width: 300,
+    width: 320,
     height: 50,
     paddingLeft: 10,
     margin: 15,
   },
   logo: {
-    marginBottom: 30,
+    marginBottom: 10,
     width: 150,
     height: 150,
   },
   button: {
     backgroundColor: "#E82A96",
-    width: "50%",
+    width: "80%",
     borderRadius: 5,
     height: 50,
     justifyContent: "center",
@@ -191,6 +180,35 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  abilityText: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 35,
+    alignItems: "flex-start",
+    marginRight: 10,
+    marginTop: 2,
+    marginLeft: 3,
+  },
+  ratingsContainer: {
+    flexDirection: "row",
+    backgroundColor: "#1e1e1e",
+    width: "80%",
+    marginTop: 20,
+    marginBottom: 10,
+  },
+  returnContainer: {
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  returnButton: {
+    backgroundColor: "#7C2AE8",
+    width: "80%",
+    borderRadius: 5,
+    height: 50,
     justifyContent: "center",
     alignItems: "center",
   },
