@@ -9,6 +9,7 @@ import {
   Image,
 } from "react-native";
 import { auth } from "../../../firebase";
+import { firestore } from "../../../firestore";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
 
 const RegisterScreen = () => {
@@ -16,6 +17,8 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setConfpassword] = useState("");
+  const [rating, setRating] = useState("");
+  const [profileimg, setProfileimg] = useState("");
 
   const navigation = useNavigation();
 
@@ -47,6 +50,7 @@ const RegisterScreen = () => {
     }
     //all fields are fine, create the account
     else {
+      addUser()
       auth
         .createUserWithEmailAndPassword(email, password)
         .then((userCredentials) => {
@@ -55,6 +59,37 @@ const RegisterScreen = () => {
         })
         .catch((error) => alert(error.message));
     }
+  };
+
+
+  const addUser = () => {
+    firestore
+      .collection("users")
+      .add({
+        username: username,
+        email: email,
+        rating: 3,
+        profileimg: "test",
+      })
+      .then(function (docRef) {
+        console.log("Document written with ID: ", docRef.id);
+        // showMessage({
+        //   message: "User added!",
+        //   type: "success",
+        //   hideStatusBar: true,
+        // });
+      })
+      // .then(() => {
+      //   navigation.navigate("TempEvent");
+      // })
+      .catch(function (error) {
+        console.error("Error adding document: ", error);
+        // showMessage({
+        //   message: "ERROR adding user",
+        //   type: "danger",
+        //   hideStatusBar: true,
+        // });
+      });
   };
 
   return (
