@@ -8,20 +8,34 @@ import {
   Text,
 } from "react-native";
 import colours from "../../../theme/colours";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import { auth } from "../../../firebase/firebase";
+import { useNavigation } from "@react-navigation/native";
 
 const LoginScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate("Dashboard");
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   const handleLogin = () => {
     auth
       .signInWithEmailAndPassword(email, password)
       .then((userCredentials) => {
         const user = userCredentials.user;
-        console.log(user.email);
+        navigation.navigate("Dashboard");
+        setEmail("");
+        setPassword("");
       })
       .catch((error) => alert("User does not exist"));
   };
