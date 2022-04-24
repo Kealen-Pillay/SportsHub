@@ -24,7 +24,7 @@ const RatingBox = () => {
         onFinishRating={(rating) => setRating(rating)}
         ratingBackgroundColor={"black"}
         readonly={false}
-        tintColor={"#1E1E1E"}
+        tintColor={"white"}
         style={styles.rating}
       />
     </View>
@@ -184,20 +184,23 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   abilityText: {
-    color: "white",
+    color: "black",
     fontWeight: "bold",
-    fontSize: 35,
+    fontSize: 30,
     alignItems: "flex-start",
     marginRight: 10,
-    marginTop: 2,
+    marginTop: 10,
     marginLeft: 3,
   },
   ratingsContainer: {
     flexDirection: "row",
-    backgroundColor: "#1e1e1e",
+    backgroundColor: "white",
     width: "80%",
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: 10,
+    marginBottom: 5,
+    borderRadius: 5,
+    height: 50,
+    justifyContent: "center",
   },
   returnContainer: {
     width: "100%",
@@ -212,4 +215,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
+  rating: {
+    marginTop: 5,
+  }
 });
