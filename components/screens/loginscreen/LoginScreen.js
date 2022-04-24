@@ -29,15 +29,16 @@ const LoginScreen = () => {
   }, []);
 
   const handleLogin = () => {
-    auth
-      .signInWithEmailAndPassword(email, password)
-      .then((userCredentials) => {
-        const user = userCredentials.user;
-        navigation.navigate("Dashboard");
-        setEmail("");
-        setPassword("");
-      })
-      .catch((error) => alert("User does not exist"));
+    navigation.navigate("Dashboard");
+    // auth
+    //   .signInWithEmailAndPassword(email, password)
+    //   .then((userCredentials) => {
+    //     const user = userCredentials.user;
+    //     navigation.navigate("Dashboard");
+    //     setEmail("");
+    //     setPassword("");
+    //   })
+    //   .catch((error) => alert("User does not exist"));
   };
 
   const handleRegister = () => {
