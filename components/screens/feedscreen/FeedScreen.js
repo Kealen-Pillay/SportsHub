@@ -1,13 +1,13 @@
-import { StyleSheet, Text, SafeAreaView } from "react-native";
+import { StyleSheet, View, SafeAreaView } from "react-native";
 import React from "react";
 import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
 import { Searchbar } from "react-native-paper";
 import { useState } from "react";
+import SelectableChips from "react-native-chip/SelectableChips";
 
 const FeedScreen = () => {
   const [search, setSearch] = useState("");
-
 
   return (
     <SafeAreaView style={styles.container}>
@@ -15,8 +15,29 @@ const FeedScreen = () => {
         placeholder="Search"
         onChangeText={(text) => setSearch(text)}
         value={search}
-        style = {styles.searchBar}
+        style={styles.searchBar}
       />
+      <View styles={styles.chipContainer}>
+        <SelectableChips
+          initialChips={["Football", "Basketball", "Volleyball"]}
+          alertRequired={false}
+          valueStyle={{
+            color: "white"
+          }}
+          chipStyle={{
+            borderColor: "black",
+            backgroundColor: colours.lightGrey,
+            borderWidth:2,
+            width: 110,
+            marginTop: 20,
+          }}
+          chipStyleSelected={{
+            backgroundColor: colours.pink,
+            borderColor: "black",
+            borderWidth:2,
+          }}
+        />
+      </View>
       <NavGradient />
     </SafeAreaView>
   );
@@ -37,6 +58,9 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     width: "90%",
+    marginTop: 30,
+  },
+  chipContainer: {
     marginTop: 30,
   }
 });

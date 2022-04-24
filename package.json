@@ -37,6 +37,7 @@
     "@react-navigation/stack": "^6.2.1",
     "@types/react-native": "^0.67.5",
     "expo": "~44.0.0",
+    "expo-image-picker": "~12.0.1",
     "expo-linear-gradient": "~11.0.3",
     "expo-status-bar": "~1.2.0",
     "firebase": "^9.6.10",
@@ -51,8 +52,7 @@
     "react-native-reanimated": "~2.3.1",
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
-    "react-native-web": "0.17.1",
-    "expo-image-picker": "~12.0.1"
+    "react-native-web": "0.17.1"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
