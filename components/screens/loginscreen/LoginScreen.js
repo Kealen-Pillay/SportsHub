@@ -40,6 +40,10 @@ const LoginScreen = () => {
       .catch((error) => alert("User does not exist"));
   };
 
+  const handleRegister = () => {
+    navigation.navigate("Register");
+  }
+
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
       <Image
@@ -74,7 +78,7 @@ const LoginScreen = () => {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.text}>Don't have an account?</Text>
-        <TouchableOpacity style={styles.registerButton}>
+        <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
