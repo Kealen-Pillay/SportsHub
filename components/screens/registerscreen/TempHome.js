@@ -1,7 +1,7 @@
 import React from 'react'
 import { StyleSheet, Text, View, TouchableOpacity } from 'react-native'
 import { auth } from '../../../firebase';
-import { useNavigation } from '../../../node_modules/@react-navigation/core';
+import { useNavigation } from '@react-navigation/core';
 
 const TempHome = () => {
     const navigation = useNavigation();

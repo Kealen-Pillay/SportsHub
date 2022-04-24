@@ -32,23 +32,19 @@ const RegisterScreen = () => {
   }, []);
 
   const handleSignUp = () => {
-    //username checks
     if (username.length < 3) {
-      alert("Username must be at least 3 characters");
+      // alert("Username must be at least 3 characters");
     }
-    // email checks
     else if (email.length == 0) {
       alert("Please enter an email");
     } else if (!email.match(/\w+@[A-Za-z_]+\.[A-Za-z]{2,6}/)) {
       alert("Please enter an email of the format: example@gmail.com");
     }
-    //password checks
     else if (password.length < 6) {
       alert("Password must be at least 6 characters");
     } else if (password != confpassword) {
       alert("Passwords do not match! Please try again.");
     }
-    //all fields are fine, create the account
     else {
       addUser()
       auth
