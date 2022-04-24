@@ -11,6 +11,7 @@ import {
 import { auth } from "../../../firebase";
 import { firestore } from "../../../firestore";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
+import { Rating } from "react-native-ratings";
 
 const RegisterScreen = () => {
   const [username, setUsername] = useState("");
@@ -18,7 +19,6 @@ const RegisterScreen = () => {
   const [password, setPassword] = useState("");
   const [confpassword, setConfpassword] = useState("");
   const [rating, setRating] = useState("");
-  const [profileimg, setProfileimg] = useState("");
 
   const navigation = useNavigation();
 
@@ -64,7 +64,7 @@ const RegisterScreen = () => {
       .add({
         username: username,
         email: email,
-        rating: 3,
+        rating: rating,
         profileimg: "test",
       })
       .then(function (docRef) {
@@ -88,6 +88,11 @@ const RegisterScreen = () => {
       });
   };
 
+
+  const ratingCompleted = (rating) => {
+    console.log("Rating is: " + rating);
+  };
+
   return (
     <KeyboardAvoidingView style={styles.container}>
       <Image
@@ -101,6 +106,15 @@ const RegisterScreen = () => {
           value={username}
           onChangeText={(text) => setUsername(text)}
         />
+
+        <Rating
+          type="custom"
+          onFinishRating={(rating) => setRating(rating)}
+          ratingBackgroundColor={"black"}
+          readonly={false}
+          tintColor={"grey"}
+        />
+
         <TextInput
           style={styles.text}
           placeholder="Email"
@@ -158,8 +172,8 @@ const styles = StyleSheet.create({
   },
   logo: {
     marginBottom: 30,
-    width: 200,
-    height: 200,
+    width: 150,
+    height: 150,
   },
   button: {
     backgroundColor: "#E82A96",
