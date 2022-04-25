@@ -5,10 +5,10 @@ import {
   SafeAreaView,
   ScrollView,
   LogBox,
-  Alert,
   Modal,
   TouchableOpacity,
   Pressable,
+  Image,
 } from "react-native";
 import React from "react";
 import colours from "../../../theme/colours";
@@ -93,10 +93,7 @@ const FeedScreen = () => {
                   Location: {currentEvent.location}
                 </Text>
               </View>
-              <Pressable
-                style={[styles.button, styles.maps]}
-                
-              >
+              <Pressable style={[styles.button, styles.maps]}>
                 <Text style={styles.textStyle}>Open Maps</Text>
               </Pressable>
               <Pressable
@@ -119,7 +116,14 @@ const FeedScreen = () => {
               }}
             >
               <View style={styles.eventContainer}>
-                <Text style={styles.eventName}>{event.eventName}</Text>
+                <Image
+                  style={styles.ball}
+                  source={require("../../../images/Basketball.png")}
+                />
+                <View style={styles.infoContainer}>
+                  <Text style={styles.eventName}>{event.eventName}</Text>
+                  <Text style={styles.eventDate}>{event.date}</Text>
+                </View>
               </View>
             </TouchableOpacity>
           );
@@ -159,11 +163,13 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 90,
     width: "90%",
+    flexDirection: "row",
+    alignItems: "center",
   },
   eventName: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 20,
+    fontSize: 30,
     paddingLeft: 10,
     paddingTop: 10,
   },
@@ -179,7 +185,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "95%",
-    height: "60%",
+    height: "64%",
     marginTop: 40,
     backgroundColor: colours.lightGrey,
     borderRadius: 20,
@@ -237,5 +243,21 @@ const styles = StyleSheet.create({
     backgroundColor: colours.purple,
     width: "70%",
     marginTop: 30,
-  }
+    marginBottom: 10,
+  },
+  eventDate: {
+    fontWeight: "bold",
+    color: "white",
+    paddingLeft: 10,
+    paddingTop: 10,
+  },
+  ball: {
+    height: 50,
+    width: 50,
+    marginLeft: 15,
+    marginRight: 10,
+  },
+  infoContainer: {
+    marginBottom: 10,
+  },
 });
