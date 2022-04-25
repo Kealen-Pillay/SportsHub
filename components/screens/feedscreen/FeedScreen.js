@@ -94,6 +94,12 @@ const FeedScreen = () => {
                 </Text>
               </View>
               <Pressable
+                style={[styles.button, styles.maps]}
+                
+              >
+                <Text style={styles.textStyle}>Open Maps</Text>
+              </Pressable>
+              <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
@@ -172,9 +178,9 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
-    width: "90%",
+    width: "95%",
     height: "60%",
-    margin: 20,
+    marginTop: 40,
     backgroundColor: colours.lightGrey,
     borderRadius: 20,
     borderColor: colours.pink,
@@ -200,8 +206,8 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: colours.backgroundDark,
-    marginTop: 50,
-    width: "40%",
+    marginTop: 10,
+    width: "70%",
   },
   textStyle: {
     color: "white",
@@ -213,10 +219,10 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontWeight: "bold",
-    fontSize: 40,
+    fontSize: 50,
   },
   modalBody: {
-    color: "white",
+    color: colours.pink,
     fontWeight: "bold",
     margin: 20,
     fontSize: 20,
@@ -224,5 +230,12 @@ const styles = StyleSheet.create({
   modalBodyContainer: {
     width: "100%",
     alignItems: "center",
+    backgroundColor: colours.backgroundDark,
+    borderRadius: 15,
+  },
+  maps: {
+    backgroundColor: colours.purple,
+    width: "70%",
+    marginTop: 20,
   }
 });
