@@ -25,18 +25,10 @@ const FeedScreen = () => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
-  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   useEffect(() => {
     getEvents();
   }, []);
-
-  const convert = (date) => {
-    const dateParts = date.split("/");
-    switch (dateParts[0]) {
-      
-    }
-  }
 
   const getEvents = () => {
     firestore
@@ -153,7 +145,9 @@ const FeedScreen = () => {
                 {renderBall(event.sport)}
                 <View style={styles.infoContainer}>
                   <Text style={styles.eventName}>{event.eventName}</Text>
-                  <Text style={styles.eventDate}>{event.date} - {event.time}</Text>
+                  <Text style={styles.eventDate}>
+                    {event.date} - {event.time}
+                  </Text>
                 </View>
               </View>
             </TouchableOpacity>
