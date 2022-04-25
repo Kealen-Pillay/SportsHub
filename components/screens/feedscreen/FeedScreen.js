@@ -82,6 +82,7 @@ const FeedScreen = () => {
         alertRequired={false}
         valueStyle={{
           color: "white",
+          fontSize: 19,
         }}
         chipStyle={{
           borderColor: "black",
@@ -90,6 +91,7 @@ const FeedScreen = () => {
           width: 110,
           marginTop: 20,
           marginBottom: 10,
+          height:45,
         }}
         chipStyleSelected={{
           backgroundColor: colours.pink,
