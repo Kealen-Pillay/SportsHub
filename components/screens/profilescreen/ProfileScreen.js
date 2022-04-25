@@ -8,16 +8,25 @@ import {
 import React from "react";
 import colours from "../../../theme/colours";
 import { Card, Switch } from "react-native-paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Rating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
 import UploadImage from "./UploadImage";
 import NavGradient from "../../NavGradient";
 
+var darkMode = true;
 const ProfileScreen = () => {
-  const [isSwitchOn, setIsSwitchOn] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(true);
+  useEffect(() => {
+    if (isEnabled) {
+      darkMode = true;
+    } else {
+      darkMode = false;
+    }
+    console.log(darkMode);
 
+  }, [isEnabled]);
   const ratingCompleted = (rating) => {
     console.log("Rating is: " + rating);
   };
@@ -62,8 +71,8 @@ const ProfileScreen = () => {
           <View style={styles.darkModeInnerContainer}>
             <Text style={styles.darkModeText}>Dark Mode:</Text>
             <Switch
-              value={isSwitchOn}
-              onValueChange={() => setIsSwitchOn(!isSwitchOn)}
+              value={isEnabled}
+              onValueChange={() => setIsEnabled(!isEnabled)}
               style={styles.switch}
             />
           </View>
@@ -86,7 +95,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: colours.backgroundDark,
+    backgroundColor: darkMode? colours.backgroundDark : "#ffffff",
     width: "100%",
   },
   buttonContainer: {
