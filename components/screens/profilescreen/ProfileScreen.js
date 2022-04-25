@@ -15,18 +15,19 @@ import { auth } from "../../../firebase/firebase";
 import UploadImage from "./UploadImage";
 import NavGradient from "../../NavGradient";
 
-var darkMode = true;
+export var darkMode = true;
+
 const ProfileScreen = () => {
   const [isEnabled, setIsEnabled] = useState(true);
+
   useEffect(() => {
     if (isEnabled) {
       darkMode = true;
     } else {
       darkMode = false;
     }
-    console.log(darkMode);
-
   }, [isEnabled]);
+
   const ratingCompleted = (rating) => {
     console.log("Rating is: " + rating);
   };
@@ -43,7 +44,12 @@ const ProfileScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView
+      style={[
+        styles.container,
+        { backgroundColor: darkMode ? colours.backgroundDark : "#ffffff" },
+      ]}
+    >
       <View style={styles.usernameCardContainer}>
         <Card style={styles.usernameCard}>
           <UploadImage />
@@ -95,7 +101,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: darkMode? colours.backgroundDark : "#ffffff",
     width: "100%",
   },
   buttonContainer: {
