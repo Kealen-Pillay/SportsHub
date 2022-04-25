@@ -246,7 +246,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "95%",
-    height: "64%",
+    height: "60%",
     marginTop: 40,
     backgroundColor: colours.lightGrey,
     borderRadius: 20,
@@ -273,7 +273,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: colours.backgroundDark,
-    marginTop: 10,
+    marginTop: 0,
     width: "70%",
   },
   textStyle: {
@@ -282,7 +282,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 30,
+    marginBottom: 20,
     textAlign: "center",
     color: "white",
     fontWeight: "bold",
@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   maps: {
     backgroundColor: colours.purple,
     width: "70%",
-    marginTop: 30,
+    marginTop: 20,
     marginBottom: 10,
   },
   eventDate: {
