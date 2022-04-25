@@ -86,7 +86,7 @@ const FeedScreen = () => {
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
-                <Text style={styles.textStyle}>Hide Modal</Text>
+                <Text style={styles.textStyle}>Close</Text>
               </Pressable>
             </View>
           </View>
@@ -161,8 +161,10 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "white",
+    backgroundColor: colours.lightGrey,
     borderRadius: 20,
+    borderColor: colours.pink,
+    borderWidth: 2,
     padding: 35,
     alignItems: "center",
     shadowColor: "#000",
@@ -193,5 +195,6 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+    color: "white",
   },
 });
