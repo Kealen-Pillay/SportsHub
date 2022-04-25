@@ -1,4 +1,4 @@
-import { StyleSheet, View, SafeAreaView } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView } from "react-native";
 import React from "react";
 import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
@@ -8,6 +8,12 @@ import SelectableChips from "react-native-chip/SelectableChips";
 
 const FeedScreen = () => {
   const [search, setSearch] = useState("");
+  const [events, setEvents] = useState([
+    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "1" },
+    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "2" },
+    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "3" },
+    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "4" },
+  ]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -17,27 +23,33 @@ const FeedScreen = () => {
         value={search}
         style={styles.searchBar}
       />
-      <View styles={styles.chipContainer}>
-        <SelectableChips
-          initialChips={["Football", "Basketball", "Volleyball"]}
-          alertRequired={false}
-          valueStyle={{
-            color: "white"
-          }}
-          chipStyle={{
-            borderColor: "black",
-            backgroundColor: colours.lightGrey,
-            borderWidth:2,
-            width: 110,
-            marginTop: 20,
-          }}
-          chipStyleSelected={{
-            backgroundColor: colours.pink,
-            borderColor: "black",
-            borderWidth:2,
-          }}
-        />
-      </View>
+      <SelectableChips
+        initialChips={["Football", "Basketball", "Volleyball"]}
+        alertRequired={false}
+        valueStyle={{
+          color: "white",
+        }}
+        chipStyle={{
+          borderColor: "black",
+          backgroundColor: colours.lightGrey,
+          borderWidth: 2,
+          width: 110,
+          marginTop: 20,
+          marginBottom: 20,
+        }}
+        chipStyleSelected={{
+          backgroundColor: colours.pink,
+          borderColor: "black",
+          borderWidth: 2,
+        }}
+      />
+      {events.map((event) => {
+        return (
+          <View style={styles.eventContainer} key={event.key}>
+            <Text style={styles.eventName}>{event.date}</Text>
+          </View>
+        );
+      })}
       <NavGradient />
     </SafeAreaView>
   );
@@ -60,7 +72,24 @@ const styles = StyleSheet.create({
     width: "90%",
     marginTop: 30,
   },
-  chipContainer: {
-    marginTop: 30,
-  }
+  event: {
+    width: "80%",
+    backgroundColor: "white",
+  },
+  eventContainer: {
+    backgroundColor: colours.lightGrey,
+    borderColor: colours.pink,
+    borderWidth: 2,
+    margin: 20,
+    borderRadius:5,
+    height: "10%",
+    width: "90%"
+  },
+  eventName: {
+    color: "white",
+    fontWeight: "bold",
+    fontSize: 20,
+    paddingLeft: 10,
+    paddingTop: 10,
+  },
 });
