@@ -1,4 +1,15 @@
-import { StyleSheet, View, Text, SafeAreaView, ScrollView, LogBox } from "react-native";
+import {
+  StyleSheet,
+  View,
+  Text,
+  SafeAreaView,
+  ScrollView,
+  LogBox,
+  Alert,
+  Modal,
+  TouchableOpacity,
+  Pressable,
+} from "react-native";
 import React from "react";
 import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
@@ -6,19 +17,21 @@ import { Searchbar } from "react-native-paper";
 import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
-
+import Dialog from "react-native-dialog";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
 const FeedScreen = () => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
+  const [modalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {
     getEvents();
   }, []);
 
   const getEvents = () => {
-      firestore
+    firestore
       .collection("events")
       .get()
       .then((querySnapShot) => {
@@ -57,12 +70,40 @@ const FeedScreen = () => {
           borderWidth: 2,
         }}
       />
+      {setModalVisible && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>Hello World!</Text>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Hide Modal</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+      )}
       <ScrollView style={styles.scrollView}>
         {events.map((event) => {
           return (
-            <View style={styles.eventContainer}>
-              <Text style={styles.eventName}>{event.eventName}</Text>
-            </View>
+            <TouchableOpacity
+              onPress={() => {
+                setModalVisible(true);
+              }}
+            >
+              <View style={styles.eventContainer}>
+                <Text style={styles.eventName}>{event.eventName}</Text>
+              </View>
+            </TouchableOpacity>
           );
         })}
       </ScrollView>
@@ -111,5 +152,46 @@ const styles = StyleSheet.create({
   scrollView: {
     width: "100%",
     marginBottom: 100,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
 });
