@@ -3,20 +3,18 @@ import React from "react";
 import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
 import { Searchbar } from "react-native-paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
+import {firestore} from "../../../firebase/firestore";
 
 const FeedScreen = () => {
   const [search, setSearch] = useState("");
-  const [events, setEvents] = useState([
-    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "1" },
-    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "2" },
-    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "3" },
-    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "4" },
-    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "5" },
-    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "6" },
-    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "7" },
-  ]);
+  const [events, setEvents] = useState([]);
+  useEffect(() => {getEvents()}, []);
+
+  const getEvents = () => {
+
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,7 +48,7 @@ const FeedScreen = () => {
         {events.map((event) => {
           return (
             <View style={styles.eventContainer} key={event.key}>
-              <Text style={styles.eventName}>{event.date}</Text>
+              <Text style={styles.eventName}>{event.eventName}</Text>
             </View>
           );
         })}
@@ -59,6 +57,9 @@ const FeedScreen = () => {
     </SafeAreaView>
   );
 };
+
+
+
 
 export default FeedScreen;
 
