@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import {darkTheme, lightTheme} from "../../../theme/colours";
+import {darkTheme, lightTheme} from "../../../theme/themes";
 import { Card, Switch } from "react-native-paper";
 import { useState, useEffect } from "react";
 import { Rating } from "react-native-ratings";
@@ -23,7 +23,7 @@ const ProfileScreen = () => {
   useEffect(() => {
     if (isEnabled) {
       darkMode = true;
-    } else if (!isEnabled) {
+    } else{
       darkMode = false;
     }
   }, [isEnabled]);
@@ -59,21 +59,21 @@ const ProfileScreen = () => {
         </Card>
       </View>
       <View style={styles.ratingCardContainer}>
-        <Card style={styles.ratingCard}>
+        <Card style={[styles.ratingCard, {backgroundColor: isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground, borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline}]}>
           <View style={styles.ratingsInnerContainer}>
-            <Text style={[styles.ratingText, {color: isEnabled ? darkTheme.text : lightTheme.text, backgroundColor: isEnabled ? darkTheme.background : lightTheme.background}]}>Rating:</Text>
+            <Text style={[styles.ratingText, {color: isEnabled ? darkTheme.text : lightTheme.text}]}>Rating:</Text>
             <Rating
               type="custom"
               onFinishRating={ratingCompleted}
               ratingBackgroundColor={"black"}
               readonly={true}
-              tintColor={isEnabled ? darkTheme.background : lightTheme.background}
+              tintColor={isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground}
             />
           </View>
         </Card>
       </View>
       <View style={styles.darkModeCardContainer}>
-        <Card style={styles.darkModeCard}>
+        <Card style={[styles.darkModeCard, {backgroundColor: isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground, borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline}]}>
           <View style={styles.darkModeInnerContainer}>
             <Text style={[styles.darkModeText, {color: isEnabled ? darkTheme.text : lightTheme.text}]}>Dark Mode:</Text>
             <Switch
@@ -129,8 +129,6 @@ const styles = StyleSheet.create({
     marginTop: 80,
   },
   usernameCard: {
-    backgroundColor: darkTheme.cardBackground,
-    borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 15,
     height: 200,
@@ -140,14 +138,11 @@ const styles = StyleSheet.create({
   usernameText: {
     textTransform: "uppercase",
     textAlign: "center",
-    color: "white",
     fontWeight: "bold",
     fontSize: 40,
     marginTop: 10,
   },
   ratingCard: {
-    backgroundColor: darkTheme.cardBackground,
-    borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 15,
     height: 80,
@@ -165,22 +160,18 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   darkModeCard: {
-    backgroundColor: darkTheme.cardBackground,
-    borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 15,
     height: 80,
     alignItems: "flex-start",
   },
   darkModeText: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 30,
     marginLeft: 10,
     marginRight: 130,
   },
   ratingText: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 30,
     marginTop: 5,
