@@ -73,21 +73,21 @@ const FeedScreen = () => {
         return (
           <Image
             style={styles.ball}
-            source={require("../../../images/Basketball.png")}
+            source={require("../../../images/basketball.png")}
           />
         );
       case "Volleyball":
         return (
           <Image
             style={styles.ball}
-            source={require("../../../images/Volleyball.png")}
+            source={require("../../../images/volleyball.png")}
           />
         );
       case "Football":
         return (
           <Image
             style={styles.ball}
-            source={require("../../../images/Football.png")}
+            source={require("../../../images/football.png")}
           />
         );
       default:
