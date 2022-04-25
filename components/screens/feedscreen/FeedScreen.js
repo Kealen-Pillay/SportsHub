@@ -73,21 +73,21 @@ const FeedScreen = () => {
         return (
           <Image
             style={styles.ball}
-            source={require("../../../images/basketball.png")}
+            source={require("../../../images/Basketball.png")}
           />
         );
       case "Volleyball":
         return (
           <Image
             style={styles.ball}
-            source={require("../../../images/volleyball.png")}
+            source={require("../../../images/Volleyball.png")}
           />
         );
       case "Football":
         return (
           <Image
             style={styles.ball}
-            source={require("../../../images/football.png")}
+            source={require("../../../images/Football.png")}
           />
         );
       default:
@@ -97,8 +97,8 @@ const FeedScreen = () => {
   const setLatLong = (lat, lng) => {
     setLat(lat);
     setLong(lng);
-  }
- 
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Searchbar
@@ -174,7 +174,9 @@ const FeedScreen = () => {
               onPress={() => {
                 setModalVisible(true);
                 setCurrentEvent(event);
-                {setLatLong(event.lat,event.long)}
+                {
+                  setLatLong(event.lat, event.long);
+                }
               }}
             >
               <View style={styles.eventContainer}>
