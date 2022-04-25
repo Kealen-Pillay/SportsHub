@@ -222,7 +222,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   modalBody: {
-    color: colours.pink,
+    color: "white",
     fontWeight: "bold",
     margin: 20,
     fontSize: 20,
@@ -236,6 +236,6 @@ const styles = StyleSheet.create({
   maps: {
     backgroundColor: colours.purple,
     width: "70%",
-    marginTop: 20,
+    marginTop: 30,
   }
 });
