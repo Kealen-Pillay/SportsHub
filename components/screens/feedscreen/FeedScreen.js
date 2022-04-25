@@ -26,6 +26,8 @@ const FeedScreen = () => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
+  const [long, setLong] = useState("");
+  const [lat, setLat] = useState("");
 
   useEffect(() => {
     getEvents();
@@ -34,7 +36,10 @@ const FeedScreen = () => {
   const handleDirections = () => {
     const data = {
       source: {},
-      destination: {},
+      destination: {
+        latitude: lat,
+        longitude: long,
+      },
       params: [
         {
           key: "travelmode",
@@ -88,6 +93,11 @@ const FeedScreen = () => {
       default:
     }
   };
+
+  const setLatLong = (lat, lng) => {
+    setLat(lat);
+    setLong(lng);
+  }
  
   return (
     <SafeAreaView style={styles.container}>
@@ -164,6 +174,7 @@ const FeedScreen = () => {
               onPress={() => {
                 setModalVisible(true);
                 setCurrentEvent(event);
+                {setLatLong(event.lat,event.long)}
               }}
             >
               <View style={styles.eventContainer}>
