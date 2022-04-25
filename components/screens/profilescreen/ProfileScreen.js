@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import colours from "../../../theme/colours";
+import {darkTheme, lightTheme} from "../../../theme/colours";
 import { Card, Switch } from "react-native-paper";
 import { useState, useEffect } from "react";
 import { Rating } from "react-native-ratings";
@@ -23,7 +23,7 @@ const ProfileScreen = () => {
   useEffect(() => {
     if (isEnabled) {
       darkMode = true;
-    } else {
+    } else if (!isEnabled) {
       darkMode = false;
     }
   }, [isEnabled]);
@@ -47,7 +47,7 @@ const ProfileScreen = () => {
     <KeyboardAvoidingView
       style={[
         styles.container,
-        { backgroundColor: darkMode ? colours.backgroundDark : "#ffffff" },
+        { backgroundColor: isEnabled ? darkTheme.background : "#ffffff" },
       ]}
     >
       <View style={styles.usernameCardContainer}>
@@ -61,13 +61,13 @@ const ProfileScreen = () => {
       <View style={styles.ratingCardContainer}>
         <Card style={styles.ratingCard}>
           <View style={styles.ratingsInnerContainer}>
-            <Text style={styles.ratingText}>Rating:</Text>
+            <Text style={[styles.ratingText, {color: isEnabled ? darkTheme.text : lightTheme.text}]}>Rating:</Text>
             <Rating
               type="custom"
               onFinishRating={ratingCompleted}
               ratingBackgroundColor={"black"}
               readonly={true}
-              tintColor={colours.lightGrey}
+              tintColor={darkTheme.background}
             />
           </View>
         </Card>
@@ -75,7 +75,7 @@ const ProfileScreen = () => {
       <View style={styles.darkModeCardContainer}>
         <Card style={styles.darkModeCard}>
           <View style={styles.darkModeInnerContainer}>
-            <Text style={styles.darkModeText}>Dark Mode:</Text>
+            <Text style={[styles.darkModeText, {color: isEnabled ? darkTheme.text : lightTheme.text}]}>Dark Mode:</Text>
             <Switch
               value={isEnabled}
               onValueChange={() => setIsEnabled(!isEnabled)}
@@ -109,7 +109,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   signOutButton: {
-    backgroundColor: colours.pink,
+    backgroundColor: darkTheme.pink,
     height: 60,
     width: "90%",
     justifyContent: "center",
@@ -129,8 +129,8 @@ const styles = StyleSheet.create({
     marginTop: 80,
   },
   usernameCard: {
-    backgroundColor: colours.lightGrey,
-    borderColor: colours.pink,
+    backgroundColor: darkTheme.lightGrey,
+    borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 15,
     height: 200,
@@ -146,8 +146,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   ratingCard: {
-    backgroundColor: colours.lightGrey,
-    borderColor: colours.pink,
+    backgroundColor: darkTheme.lightGrey,
+    borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 15,
     height: 80,
@@ -165,8 +165,8 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   darkModeCard: {
-    backgroundColor: colours.lightGrey,
-    borderColor: colours.pink,
+    backgroundColor: darkTheme.lightGrey,
+    borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 15,
     height: 80,
