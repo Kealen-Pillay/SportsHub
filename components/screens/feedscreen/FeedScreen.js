@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, SafeAreaView } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView, ScrollView } from "react-native";
 import React from "react";
 import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
@@ -13,6 +13,9 @@ const FeedScreen = () => {
     { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "2" },
     { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "3" },
     { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "4" },
+    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "5" },
+    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "6" },
+    { date: "Friday 8th July - 4:30pm", location: "Craigavon Park", key: "7" },
   ]);
 
   return (
@@ -35,7 +38,7 @@ const FeedScreen = () => {
           borderWidth: 2,
           width: 110,
           marginTop: 20,
-          marginBottom: 20,
+          marginBottom: 10,
         }}
         chipStyleSelected={{
           backgroundColor: colours.pink,
@@ -43,13 +46,15 @@ const FeedScreen = () => {
           borderWidth: 2,
         }}
       />
-      {events.map((event) => {
-        return (
-          <View style={styles.eventContainer} key={event.key}>
-            <Text style={styles.eventName}>{event.date}</Text>
-          </View>
-        );
-      })}
+      <ScrollView style={styles.scrollView}>
+        {events.map((event) => {
+          return (
+            <View style={styles.eventContainer} key={event.key}>
+              <Text style={styles.eventName}>{event.date}</Text>
+            </View>
+          );
+        })}
+      </ScrollView>
       <NavGradient />
     </SafeAreaView>
   );
@@ -81,9 +86,9 @@ const styles = StyleSheet.create({
     borderColor: colours.pink,
     borderWidth: 2,
     margin: 20,
-    borderRadius:5,
-    height: "10%",
-    width: "90%"
+    borderRadius: 5,
+    height: 90,
+    width: "90%",
   },
   eventName: {
     color: "white",
@@ -91,5 +96,8 @@ const styles = StyleSheet.create({
     fontSize: 20,
     paddingLeft: 10,
     paddingTop: 10,
+  },
+  scrollView: {
+    width: "100%",
   },
 });
