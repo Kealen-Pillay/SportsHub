@@ -1,4 +1,4 @@
-import { StyleSheet, View, Text, SafeAreaView, ScrollView } from "react-native";
+import { StyleSheet, View, Text, SafeAreaView, ScrollView, LogBox } from "react-native";
 import React from "react";
 import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
@@ -6,6 +6,9 @@ import { Searchbar } from "react-native-paper";
 import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
+
+
+LogBox.ignoreLogs(["Setting a timer"]);
 
 const FeedScreen = () => {
   const [search, setSearch] = useState("");
@@ -15,13 +18,12 @@ const FeedScreen = () => {
   }, []);
 
   const getEvents = () => {
-    firebase
-      .firestore()
+      firestore
       .collection("events")
       .get()
       .then((querySnapShot) => {
         querySnapShot.forEach((snapshot) => {
-          let data = snapshot.data();
+          let data = snapshot.data().eventName;
           console.log(data);
         });
       });
