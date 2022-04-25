@@ -23,12 +23,15 @@ const FeedScreen = () => {
       .get()
       .then((querySnapShot) => {
         querySnapShot.forEach((snapshot) => {
-          let data = snapshot.data().eventName;
-          console.log(data);
+          let data = snapshot.data();
+          setEvents((prev) => [...prev, data]);
         });
       });
   };
-
+console.log(events);
+events.map((event) => {
+  console.log(event.name);
+});
   return (
     <SafeAreaView style={styles.container}>
       <Searchbar
@@ -60,7 +63,7 @@ const FeedScreen = () => {
       <ScrollView style={styles.scrollView}>
         {events.map((event) => {
           return (
-            <View style={styles.eventContainer} key={event.key}>
+            <View style={styles.eventContainer}>
               <Text style={styles.eventName}>{event.eventName}</Text>
             </View>
           );
