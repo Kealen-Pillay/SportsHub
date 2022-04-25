@@ -6,8 +6,7 @@ import * as ImagePicker from "expo-image-picker";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import { darkMode } from "./ProfileScreen";
 
-export default function UploadImage() {
-  const [isDarkMode, setIsDarkMode] = useState(darkMode);
+export default function UploadImage({ isDarkMode }) {
   const [image, setImage] = useState(null);
 
   const addImage = async () => {

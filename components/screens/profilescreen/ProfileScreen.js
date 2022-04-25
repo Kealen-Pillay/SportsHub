@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import {darkTheme, lightTheme} from "../../../theme/themes";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 import { Card, Switch } from "react-native-paper";
 import { useState, useEffect } from "react";
 import { Rating } from "react-native-ratings";
@@ -23,11 +23,11 @@ const ProfileScreen = () => {
   useEffect(() => {
     if (isEnabled) {
       darkMode = true;
-    } else{
+    } else {
       darkMode = false;
     }
   }, [isEnabled]);
-  
+
   const ratingCompleted = (rating) => {
     console.log("Rating is: " + rating);
   };
@@ -51,31 +51,77 @@ const ProfileScreen = () => {
       ]}
     >
       <View style={styles.usernameCardContainer}>
-        <Card style={[styles.usernameCard, {backgroundColor: isEnabled ? darkTheme.background : lightTheme.background, borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline}]}>
-          <UploadImage />
+        <Card
+          style={[
+            styles.usernameCard,
+            {
+              backgroundColor: isEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+              borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline,
+            },
+          ]}
+        >
+          <UploadImage darkModeEnabled={isEnabled} />
           <Text style={styles.usernameText}>
             {auth.currentUser?.email.split("@")[0]}
           </Text>
         </Card>
       </View>
       <View style={styles.ratingCardContainer}>
-        <Card style={[styles.ratingCard, {backgroundColor: isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground, borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline}]}>
+        <Card
+          style={[
+            styles.ratingCard,
+            {
+              backgroundColor: isEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+              borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline,
+            },
+          ]}
+        >
           <View style={styles.ratingsInnerContainer}>
-            <Text style={[styles.ratingText, {color: isEnabled ? darkTheme.text : lightTheme.text}]}>Rating:</Text>
+            <Text
+              style={[
+                styles.ratingText,
+                { color: isEnabled ? darkTheme.text : lightTheme.text },
+              ]}
+            >
+              Rating:
+            </Text>
             <Rating
               type="custom"
               onFinishRating={ratingCompleted}
               ratingBackgroundColor={"black"}
               readonly={true}
-              tintColor={isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground}
+              tintColor={
+                isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground
+              }
             />
           </View>
         </Card>
       </View>
       <View style={styles.darkModeCardContainer}>
-        <Card style={[styles.darkModeCard, {backgroundColor: isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground, borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline}]}>
+        <Card
+          style={[
+            styles.darkModeCard,
+            {
+              backgroundColor: isEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+              borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline,
+            },
+          ]}
+        >
           <View style={styles.darkModeInnerContainer}>
-            <Text style={[styles.darkModeText, {color: isEnabled ? darkTheme.text : lightTheme.text}]}>Dark Mode:</Text>
+            <Text
+              style={[
+                styles.darkModeText,
+                { color: isEnabled ? darkTheme.text : lightTheme.text },
+              ]}
+            >
+              Dark Mode:
+            </Text>
             <Switch
               value={isEnabled}
               onValueChange={() => setIsEnabled(!isEnabled)}
