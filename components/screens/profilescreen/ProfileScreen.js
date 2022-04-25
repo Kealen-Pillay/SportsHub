@@ -18,7 +18,7 @@ import NavGradient from "../../NavGradient";
 export var darkMode = true;
 
 const ProfileScreen = () => {
-  const [isEnabled, setIsEnabled] = useState(true);
+  const [isEnabled, setIsEnabled] = useState(false);
 
   useEffect(() => {
     if (isEnabled) {
@@ -27,7 +27,7 @@ const ProfileScreen = () => {
       darkMode = false;
     }
   }, [isEnabled]);
-
+  
   const ratingCompleted = (rating) => {
     console.log("Rating is: " + rating);
   };
@@ -75,7 +75,7 @@ const ProfileScreen = () => {
       <View style={styles.darkModeCardContainer}>
         <Card style={styles.darkModeCard}>
           <View style={styles.darkModeInnerContainer}>
-            <Text style={styles.darkModeText}>Dark Mode:</Text>
+            <Text style={styles.darkModeText}>Light Mode:</Text>
             <Switch
               value={isEnabled}
               onValueChange={() => setIsEnabled(!isEnabled)}
