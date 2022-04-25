@@ -25,6 +25,7 @@ const FeedScreen = () => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
+  const [currentEvent, setCurrentEvent] = useState({});
 
   useEffect(() => {
     getEvents();
@@ -81,7 +82,7 @@ const FeedScreen = () => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>Hello World!</Text>
+              <Text style={styles.modalText}>{currentEvent.eventName}</Text>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -98,6 +99,7 @@ const FeedScreen = () => {
             <TouchableOpacity
               onPress={() => {
                 setModalVisible(true);
+                setCurrentEvent(event);
               }}
             >
               <View style={styles.eventContainer}>
@@ -160,6 +162,8 @@ const styles = StyleSheet.create({
     marginTop: 22,
   },
   modalView: {
+    width: "90%",
+    height: "60%",
     margin: 20,
     backgroundColor: colours.lightGrey,
     borderRadius: 20,
@@ -185,7 +189,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F194FF",
   },
   buttonClose: {
-    backgroundColor: "#2196F3",
+    backgroundColor: colours.backgroundDark,
   },
   textStyle: {
     color: "white",
@@ -196,5 +200,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
     color: "white",
+    fontWeight: "bold",
   },
 });
