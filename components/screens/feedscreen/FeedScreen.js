@@ -83,6 +83,16 @@ const FeedScreen = () => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalText}>{currentEvent.eventName}</Text>
+              <View style={styles.modalBodyContainer}>
+                <Text style={styles.modalBody}>
+                  Sport: {currentEvent.sport}
+                </Text>
+                <Text style={styles.modalBody}>Time: {currentEvent.time}</Text>
+                <Text style={styles.modalBody}>Date: {currentEvent.date}</Text>
+                <Text style={styles.modalBody}>
+                  Location: {currentEvent.location}
+                </Text>
+              </View>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -190,6 +200,8 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: colours.backgroundDark,
+    marginTop: 50,
+    width: "40%",
   },
   textStyle: {
     color: "white",
@@ -197,9 +209,20 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 15,
+    marginBottom: 30,
     textAlign: "center",
     color: "white",
     fontWeight: "bold",
+    fontSize: 40,
   },
+  modalBody: {
+    color: "white",
+    fontWeight: "bold",
+    margin: 20,
+    fontSize: 20,
+  },
+  modalBodyContainer: {
+    width: "100%",
+    alignItems: "center",
+  }
 });
