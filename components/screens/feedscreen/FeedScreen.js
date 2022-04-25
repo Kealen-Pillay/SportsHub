@@ -17,7 +17,6 @@ import { Searchbar } from "react-native-paper";
 import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
-import Dialog from "react-native-dialog";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -26,10 +25,18 @@ const FeedScreen = () => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
+  const months = ["January","February","March","April","May","June","July","August","September","October","November","December"];
 
   useEffect(() => {
     getEvents();
   }, []);
+
+  const convert = (date) => {
+    const dateParts = date.split("/");
+    switch (dateParts[0]) {
+      
+    }
+  }
 
   const getEvents = () => {
     firestore
@@ -46,20 +53,26 @@ const FeedScreen = () => {
   const renderBall = (sport) => {
     switch (sport) {
       case "Basketball":
-        return <Image
-          style={styles.ball}
-          source={require("../../../images/Basketball.png")}
-        />;
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Basketball.png")}
+          />
+        );
       case "Volleyball":
-        return <Image
-          style={styles.ball}
-          source={require("../../../images/Volleyball.png")}
-        />;
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Volleyball.png")}
+          />
+        );
       case "Football":
-        return <Image
-          style={styles.ball}
-          source={require("../../../images/Football.png")}
-        />;
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Football.png")}
+          />
+        );
       default:
     }
   };
@@ -140,7 +153,7 @@ const FeedScreen = () => {
                 {renderBall(event.sport)}
                 <View style={styles.infoContainer}>
                   <Text style={styles.eventName}>{event.eventName}</Text>
-                  <Text style={styles.eventDate}>{event.date}</Text>
+                  <Text style={styles.eventDate}>{event.date} - {event.time}</Text>
                 </View>
               </View>
             </TouchableOpacity>
