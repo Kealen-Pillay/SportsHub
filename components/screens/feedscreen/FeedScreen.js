@@ -5,16 +5,27 @@ import NavGradient from "../../NavGradient";
 import { Searchbar } from "react-native-paper";
 import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
-import {firestore} from "../../../firebase/firestore";
+import { firestore } from "../../../firebase/firestore";
 
 const FeedScreen = () => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
-  useEffect(() => {getEvents()}, []);
+  useEffect(() => {
+    getEvents();
+  }, []);
 
   const getEvents = () => {
-
-  }
+    firebase
+      .firestore()
+      .collection("events")
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((snapshot) => {
+          let data = snapshot.data();
+          console.log(data);
+        });
+      });
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -57,9 +68,6 @@ const FeedScreen = () => {
     </SafeAreaView>
   );
 };
-
-
-
 
 export default FeedScreen;
 
