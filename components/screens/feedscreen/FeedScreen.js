@@ -43,6 +43,27 @@ const FeedScreen = () => {
       });
   };
 
+  const renderBall = (sport) => {
+    switch (sport) {
+      case "Basketball":
+        return <Image
+          style={styles.ball}
+          source={require("../../../images/Basketball.png")}
+        />;
+      case "Volleyball":
+        return <Image
+          style={styles.ball}
+          source={require("../../../images/Volleyball.png")}
+        />;
+      case "Football":
+        return <Image
+          style={styles.ball}
+          source={require("../../../images/Football.png")}
+        />;
+      default:
+    }
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Searchbar
@@ -116,10 +137,7 @@ const FeedScreen = () => {
               }}
             >
               <View style={styles.eventContainer}>
-                <Image
-                  style={styles.ball}
-                  source={require("../../../images/Basketball.png")}
-                />
+                {renderBall(event.sport)}
                 <View style={styles.infoContainer}>
                   <Text style={styles.eventName}>{event.eventName}</Text>
                   <Text style={styles.eventDate}>{event.date}</Text>
