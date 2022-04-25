@@ -18,7 +18,7 @@ import NavGradient from "../../NavGradient";
 export var darkMode = true;
 
 const ProfileScreen = () => {
-  const [isEnabled, setIsEnabled] = useState(false);
+  const [isEnabled, setIsEnabled] = useState(true);
 
   useEffect(() => {
     if (isEnabled) {
@@ -51,7 +51,7 @@ const ProfileScreen = () => {
       ]}
     >
       <View style={styles.usernameCardContainer}>
-        <Card style={styles.usernameCard}>
+        <Card style={[styles.usernameCard, {backgroundColor: isEnabled ? darkTheme.background : lightTheme.background, borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline}]}>
           <UploadImage />
           <Text style={styles.usernameText}>
             {auth.currentUser?.email.split("@")[0]}
@@ -61,13 +61,13 @@ const ProfileScreen = () => {
       <View style={styles.ratingCardContainer}>
         <Card style={styles.ratingCard}>
           <View style={styles.ratingsInnerContainer}>
-            <Text style={[styles.ratingText, {color: isEnabled ? darkTheme.text : lightTheme.text}]}>Rating:</Text>
+            <Text style={[styles.ratingText, {color: isEnabled ? darkTheme.text : lightTheme.text, backgroundColor: isEnabled ? darkTheme.background : lightTheme.background}]}>Rating:</Text>
             <Rating
               type="custom"
               onFinishRating={ratingCompleted}
               ratingBackgroundColor={"black"}
               readonly={true}
-              tintColor={darkTheme.background}
+              tintColor={isEnabled ? darkTheme.background : lightTheme.background}
             />
           </View>
         </Card>
@@ -129,7 +129,7 @@ const styles = StyleSheet.create({
     marginTop: 80,
   },
   usernameCard: {
-    backgroundColor: darkTheme.lightGrey,
+    backgroundColor: darkTheme.cardBackground,
     borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 15,
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   ratingCard: {
-    backgroundColor: darkTheme.lightGrey,
+    backgroundColor: darkTheme.cardBackground,
     borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 15,
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   darkModeCard: {
-    backgroundColor: darkTheme.lightGrey,
+    backgroundColor: darkTheme.cardBackground,
     borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 15,
