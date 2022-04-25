@@ -17,6 +17,7 @@ import { Searchbar } from "react-native-paper";
 import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
+import getDirections from "react-native-google-maps-directions";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -29,6 +30,25 @@ const FeedScreen = () => {
   useEffect(() => {
     getEvents();
   }, []);
+
+  const handleDirections = () => {
+    const data = {
+      source: {},
+      destination: {},
+      params: [
+        {
+          key: "travelmode",
+          value: "driving",
+        },
+        {
+          key: "dir_action",
+          value: "navigate",
+        },
+      ],
+    };
+
+    getDirections(data);
+  };
 
   const getEvents = () => {
     firestore
@@ -68,7 +88,7 @@ const FeedScreen = () => {
       default:
     }
   };
-
+ 
   return (
     <SafeAreaView style={styles.container}>
       <Searchbar
@@ -91,7 +111,7 @@ const FeedScreen = () => {
           width: 110,
           marginTop: 20,
           marginBottom: 10,
-          height:45,
+          height: 45,
         }}
         chipStyleSelected={{
           backgroundColor: colours.pink,
@@ -121,7 +141,10 @@ const FeedScreen = () => {
                   Location: {currentEvent.location}
                 </Text>
               </View>
-              <Pressable style={[styles.button, styles.maps]}>
+              <Pressable
+                style={[styles.button, styles.maps]}
+                onPress={handleDirections}
+              >
                 <Text style={styles.textStyle}>Open Maps</Text>
               </Pressable>
               <Pressable
