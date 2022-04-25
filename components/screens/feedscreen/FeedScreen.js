@@ -28,10 +28,7 @@ const FeedScreen = () => {
         });
       });
   };
-console.log(events);
-events.map((event) => {
-  console.log(event.name);
-});
+
   return (
     <SafeAreaView style={styles.container}>
       <Searchbar
