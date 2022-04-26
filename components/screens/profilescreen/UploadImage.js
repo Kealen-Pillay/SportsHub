@@ -1,12 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { Image, View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-//import colours from "../../../theme/colours";
 import * as ImagePicker from "expo-image-picker";
 import { darkTheme, lightTheme } from "../../../theme/themes";
-import { darkMode } from "./ProfileScreen";
 
-export default function UploadImage({ isDarkMode }) {
+export default function UploadImage({ darkModeEnabled }) {
   const [image, setImage] = useState(null);
 
   const addImage = async () => {
@@ -17,22 +15,21 @@ export default function UploadImage({ isDarkMode }) {
       quality: 1,
     });
 
-    console.log(JSON.stringify(_image));
-
     if (!_image.cancelled) {
       setImage(_image.uri);
     }
   };
 
+  console.log(darkModeEnabled);
   return (
     <View
       style={[
         styles.container,
         {
-          backgroundColor: isDarkMode
+          backgroundColor: darkModeEnabled
             ? darkTheme.background
             : lightTheme.background,
-          borderColor: isDarkMode ? darkTheme.pink : lightTheme.cardOutline,
+          borderColor: darkModeEnabled ? darkTheme.pink : lightTheme.cardOutline,
         },
       ]}
     >
@@ -44,7 +41,7 @@ export default function UploadImage({ isDarkMode }) {
         style={[
           styles.uploadButtonContainer,
           {
-            backgroundColor: isDarkMode
+            backgroundColor: darkModeEnabled
               ? darkTheme.cardBackground
               : lightTheme.cardBackground,
           },
@@ -52,12 +49,12 @@ export default function UploadImage({ isDarkMode }) {
       >
         <TouchableOpacity onPress={addImage} style={styles.uploadButton}>
           <Text
-            style={{ color: isDarkMode ? darkTheme.text : lightTheme.text }}
+            style={{ color: darkModeEnabled ? darkTheme.text : lightTheme.text }}
           >
             {image ? "Edit" : "Upload"} Image
           </Text>
           <AntDesign
-            style={{ color: isDarkMode ? darkTheme.text : lightTheme.text }}
+            style={{ color: darkModeEnabled ? darkTheme.text : lightTheme.text }}
             name="camera"
             size={20}
             color="black"
