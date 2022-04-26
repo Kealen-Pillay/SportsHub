@@ -275,7 +275,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: colours.backgroundDark,
-    marginTop: 0,
+    marginTop: "0%",
     width: "70%",
   },
   textStyle: {
@@ -305,8 +305,8 @@ const styles = StyleSheet.create({
   maps: {
     backgroundColor: colours.purple,
     width: "70%",
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: "5%",
+    marginBottom: "5%",
   },
   eventDate: {
     fontWeight: "bold",
