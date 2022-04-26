@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Image, View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
@@ -20,7 +20,6 @@ export default function UploadImage({ darkModeEnabled }) {
     }
   };
 
-  console.log(darkModeEnabled);
   return (
     <View
       style={[
@@ -29,7 +28,9 @@ export default function UploadImage({ darkModeEnabled }) {
           backgroundColor: darkModeEnabled
             ? darkTheme.background
             : lightTheme.background,
-          borderColor: darkModeEnabled ? darkTheme.pink : lightTheme.cardOutline,
+          borderColor: darkModeEnabled
+            ? darkTheme.pink
+            : lightTheme.cardOutline,
         },
       ]}
     >
@@ -49,12 +50,16 @@ export default function UploadImage({ darkModeEnabled }) {
       >
         <TouchableOpacity onPress={addImage} style={styles.uploadButton}>
           <Text
-            style={{ color: darkModeEnabled ? darkTheme.text : lightTheme.text }}
+            style={{
+              color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+            }}
           >
             {image ? "Edit" : "Upload"} Image
           </Text>
           <AntDesign
-            style={{ color: darkModeEnabled ? darkTheme.text : lightTheme.text }}
+            style={{
+              color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+            }}
             name="camera"
             size={20}
             color="black"
