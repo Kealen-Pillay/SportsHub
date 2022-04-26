@@ -203,14 +203,14 @@ const styles = StyleSheet.create({
   darkModeText: {
     fontWeight: "bold",
     fontSize: 30,
-    marginLeft: 10,
-    marginRight: 130,
+    marginLeft: "5%",
+    marginRight: "35%",
   },
   ratingText: {
     fontWeight: "bold",
     fontSize: 30,
     marginTop: 5,
-    marginLeft: 10,
+    marginLeft: "5%",
     marginRight: 35,
   },
   darkModeInnerContainer: {
