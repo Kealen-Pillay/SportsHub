@@ -37,7 +37,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
     <KeyboardAvoidingView
       style={[
         styles.container,
-        { backgroundColor: isEnabled ? darkTheme.background : "#ffffff" },
+        { backgroundColor: isEnabled ? darkTheme.background : lightTheme.background },
       ]}
     >
       <View style={styles.usernameCardContainer}>
@@ -81,7 +81,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
             </Text>
             <Rating
               type="custom"
-              ratingBackgroundColor={"black"}
+              ratingBackgroundColor={isEnabled ? "black" : "gray"}
               readonly={true}
               tintColor={
                 isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground
