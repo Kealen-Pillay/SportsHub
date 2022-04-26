@@ -86,7 +86,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
               tintColor={
                 isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground
               }
-              style={{ width: 175 }}
+              style={{ width: 160 }}
             />
           </View>
         </Card>
@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     marginLeft: "5%",
-    marginRight: "35%",
+    marginRight: "30%",
   },
   ratingText: {
     fontWeight: "bold",
