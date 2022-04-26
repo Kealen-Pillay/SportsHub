@@ -29,12 +29,11 @@ const LoginScreen = () => {
   }, []);
 
   const handleLogin = () => {
-    navigation.navigate("Dashboard");
     // auth
     //   .signInWithEmailAndPassword(email, password)
     //   .then((userCredentials) => {
     //     const user = userCredentials.user;
-    //     navigation.navigate("Dashboard");
+        navigation.navigate("Dashboard");
     //     setEmail("");
     //     setPassword("");
     //   })
