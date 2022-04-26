@@ -58,7 +58,7 @@ const ProfileScreen = () => {
               backgroundColor: isEnabled
                 ? darkTheme.cardBackground
                 : lightTheme.cardBackground,
-              borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline,
+              borderColor: isEnabled ? darkTheme.pink : lightTheme.pink,
             },
           ]}
         >
@@ -76,7 +76,7 @@ const ProfileScreen = () => {
               backgroundColor: isEnabled
                 ? darkTheme.cardBackground
                 : lightTheme.cardBackground,
-              borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline,
+              borderColor: isEnabled ? darkTheme.pink : lightTheme.pink,
             },
           ]}
         >
@@ -109,7 +109,7 @@ const ProfileScreen = () => {
               backgroundColor: isEnabled
                 ? darkTheme.cardBackground
                 : lightTheme.cardBackground,
-              borderColor: isEnabled ? darkTheme.pink : lightTheme.cardOutline,
+              borderColor: isEnabled ? darkTheme.pink : lightTheme.pink,
             },
           ]}
         >

@@ -30,7 +30,7 @@ export default function UploadImage({ darkModeEnabled }) {
             : lightTheme.background,
           borderColor: darkModeEnabled
             ? darkTheme.pink
-            : lightTheme.cardOutline,
+            : lightTheme.pink,
         },
       ]}
     >
