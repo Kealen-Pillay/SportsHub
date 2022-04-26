@@ -1,12 +1,28 @@
 import { StyleSheet, Text, SafeAreaView } from "react-native";
 import React from "react";
-import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 
-const FeedScreen = () => {
+const FeedScreen = ({ darkModeEnabled }) => {
   return (
-    <SafeAreaView style={styles.container}>
-      <Text style={styles.text}>FeedScreen</Text>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: darkModeEnabled
+            ? darkTheme.background
+            : lightTheme.background,
+        },
+      ]}
+    >
+      <Text
+        style={[
+          styles.text,
+          { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+        ]}
+      >
+        FeedScreen
+      </Text>
       <NavGradient />
     </SafeAreaView>
   );
@@ -16,13 +32,11 @@ export default FeedScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colours.backgroundDark,
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
   text: {
-    color: "white",
     fontSize: 50,
   },
 });

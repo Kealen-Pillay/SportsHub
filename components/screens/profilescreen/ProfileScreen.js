@@ -6,23 +6,23 @@ import {
   TouchableOpacity,
 } from "react-native";
 import React from "react";
-import colours from "../../../theme/colours";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 import { Card, Switch } from "react-native-paper";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Rating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
 import UploadImage from "./UploadImage";
 import NavGradient from "../../NavGradient";
 
-const ProfileScreen = () => {
-  const [isSwitchOn, setIsSwitchOn] = useState(true);
-
-  const ratingCompleted = (rating) => {
-    console.log("Rating is: " + rating);
-  };
+const ProfileScreen = ({ setDarkModeEnabled }) => {
+  const [isEnabled, setIsEnabled] = useState(true);
 
   const navigation = useNavigation();
+
+  useEffect(() => {
+    setDarkModeEnabled(isEnabled);
+  }, [isEnabled]);
 
   const handleSignOut = () => {
     auth
@@ -34,37 +34,87 @@ const ProfileScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView
+      style={[
+        styles.container,
+        { backgroundColor: isEnabled ? darkTheme.background : lightTheme.background },
+      ]}
+    >
       <View style={styles.usernameCardContainer}>
-        <Card style={styles.usernameCard}>
-          <UploadImage />
+        <Card
+          style={[
+            styles.usernameCard,
+            {
+              backgroundColor: isEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+              borderColor: isEnabled ? darkTheme.pink : lightTheme.pink,
+            },
+          ]}
+        >
+          <UploadImage darkModeEnabled={isEnabled} />
           <Text style={styles.usernameText}>
             {auth.currentUser?.email.split("@")[0]}
           </Text>
         </Card>
       </View>
       <View style={styles.ratingCardContainer}>
-        <Card style={styles.ratingCard}>
+        <Card
+          style={[
+            styles.ratingCard,
+            {
+              backgroundColor: isEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+              borderColor: isEnabled ? darkTheme.pink : lightTheme.pink,
+            },
+          ]}
+        >
           <View style={styles.ratingsInnerContainer}>
-            <Text style={styles.ratingText}>Rating:</Text>
+            <Text
+              style={[
+                styles.ratingText,
+                { color: isEnabled ? darkTheme.text : lightTheme.text },
+              ]}
+            >
+              Rating:
+            </Text>
             <Rating
               type="custom"
-              onFinishRating={ratingCompleted}
-              ratingBackgroundColor={"black"}
+              ratingBackgroundColor={isEnabled ? "black" : "gray"}
               readonly={true}
-              tintColor={colours.lightGrey}
+              tintColor={
+                isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground
+              }
+              style={{ width: 160 }}
             />
           </View>
         </Card>
       </View>
       <View style={styles.darkModeCardContainer}>
-        <Card style={styles.darkModeCard}>
+        <Card
+          style={[
+            styles.darkModeCard,
+            {
+              backgroundColor: isEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+              borderColor: isEnabled ? darkTheme.pink : lightTheme.pink,
+            },
+          ]}
+        >
           <View style={styles.darkModeInnerContainer}>
-            <Text style={styles.darkModeText}>Dark Mode:</Text>
+            <Text
+              style={[
+                styles.darkModeText,
+                { color: isEnabled ? darkTheme.text : lightTheme.text },
+              ]}
+            >
+              Dark Mode:
+            </Text>
             <Switch
-              value={isSwitchOn}
-              onValueChange={() => setIsSwitchOn(!isSwitchOn)}
-              style={styles.switch}
+              value={isEnabled}
+              onValueChange={() => setIsEnabled(!isEnabled)}
             />
           </View>
         </Card>
@@ -86,7 +136,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: colours.backgroundDark,
     width: "100%",
   },
   buttonContainer: {
@@ -95,7 +144,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   signOutButton: {
-    backgroundColor: colours.pink,
+    backgroundColor: darkTheme.pink,
     height: 60,
     width: "90%",
     justifyContent: "center",
@@ -115,8 +164,6 @@ const styles = StyleSheet.create({
     marginTop: 80,
   },
   usernameCard: {
-    backgroundColor: colours.lightGrey,
-    borderColor: colours.pink,
     borderWidth: 2,
     borderRadius: 15,
     height: 200,
@@ -126,14 +173,11 @@ const styles = StyleSheet.create({
   usernameText: {
     textTransform: "uppercase",
     textAlign: "center",
-    color: "white",
     fontWeight: "bold",
     fontSize: 40,
     marginTop: 10,
   },
   ratingCard: {
-    backgroundColor: colours.lightGrey,
-    borderColor: colours.pink,
     borderWidth: 2,
     borderRadius: 15,
     height: 80,
@@ -151,36 +195,34 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   darkModeCard: {
-    backgroundColor: colours.lightGrey,
-    borderColor: colours.pink,
     borderWidth: 2,
     borderRadius: 15,
     height: 80,
     alignItems: "flex-start",
   },
   darkModeText: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 30,
-    marginLeft: 10,
-    marginRight: 130,
+    marginLeft: "5%",
+    marginRight: "30%",
   },
   ratingText: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 30,
     marginTop: 5,
-    marginLeft: 10,
-    marginRight: 35,
+    marginLeft: "5%",
+    marginRight: "10%",
   },
   darkModeInnerContainer: {
     flex: 1,
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   ratingsInnerContainer: {
     flex: 1,
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
 });
