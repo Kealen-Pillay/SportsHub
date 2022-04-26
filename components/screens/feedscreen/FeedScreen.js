@@ -288,13 +288,13 @@ const styles = StyleSheet.create({
     textAlign: "center",
     color: "white",
     fontWeight: "bold",
-    fontSize: 50,
+    fontSize: 40,
   },
   modalBody: {
     color: "white",
     fontWeight: "bold",
     margin: 20,
-    fontSize: 20,
+    fontSize: 15,
   },
   modalBodyContainer: {
     width: "100%",
