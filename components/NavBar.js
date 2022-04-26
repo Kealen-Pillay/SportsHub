@@ -4,6 +4,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import FeedScreen from "./screens/feedscreen/FeedScreen";
 import EventScreen from "./screens/eventscreen/EventScreen";
 import ProfileScreen from "./screens/profilescreen/ProfileScreen";
+import { useState } from "react";
 
 const feedScreen = "Feed";
 const eventScreen = "Events";
@@ -12,6 +13,8 @@ const profileScreen = "Profile";
 const Tab = createBottomTabNavigator();
 
 const NavBar = () => {
+  const [darkModeEnabled, setDarkModeEnabled] = useState(true);
+
   return (
     <Tab.Navigator
       initialRouteName={feedScreen}
@@ -58,9 +61,15 @@ const NavBar = () => {
         },
       })}
     >
-      <Tab.Screen name={eventScreen} component={EventScreen} />
-      <Tab.Screen name={feedScreen} component={FeedScreen} />
-      <Tab.Screen name={profileScreen} component={ProfileScreen} />
+      <Tab.Screen name={eventScreen}>
+        {()=> <EventScreen darkModeEnabled={darkModeEnabled}/>}
+      </Tab.Screen>
+      <Tab.Screen name={feedScreen}>
+        {()=> <FeedScreen darkModeEnabled={darkModeEnabled}/>}
+      </Tab.Screen>
+      <Tab.Screen name={profileScreen}>
+        {()=> <ProfileScreen setDarkModeEnabled={setDarkModeEnabled}/>}
+      </Tab.Screen>
     </Tab.Navigator>
   );
 };

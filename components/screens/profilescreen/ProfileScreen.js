@@ -15,24 +15,14 @@ import { auth } from "../../../firebase/firebase";
 import UploadImage from "./UploadImage";
 import NavGradient from "../../NavGradient";
 
-export var darkMode = true;
-
-const ProfileScreen = () => {
+const ProfileScreen = ({ setDarkModeEnabled }) => {
   const [isEnabled, setIsEnabled] = useState(true);
 
-  useEffect(() => {
-    if (isEnabled) {
-      darkMode = true;
-    } else {
-      darkMode = false;
-    }
-  }, [isEnabled]);
-
-  const ratingCompleted = (rating) => {
-    console.log("Rating is: " + rating);
-  };
-
   const navigation = useNavigation();
+
+  useEffect(() => {
+    setDarkModeEnabled(isEnabled);
+  }, [isEnabled]);
 
   const handleSignOut = () => {
     auth
@@ -91,7 +81,6 @@ const ProfileScreen = () => {
             </Text>
             <Rating
               type="custom"
-              onFinishRating={ratingCompleted}
               ratingBackgroundColor={"black"}
               readonly={true}
               tintColor={
