@@ -211,16 +211,18 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginTop: 5,
     marginLeft: "5%",
-    marginRight: 35,
+    marginRight: "10%",
   },
   darkModeInnerContainer: {
     flex: 1,
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
   ratingsInnerContainer: {
     flex: 1,
     flexDirection: "row",
+    justifyContent: "space-between",
     alignItems: "center",
   },
 });
