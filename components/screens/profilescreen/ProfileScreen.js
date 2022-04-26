@@ -86,6 +86,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
               tintColor={
                 isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground
               }
+              style={{ width: 175 }}
             />
           </View>
         </Card>
@@ -114,7 +115,6 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
             <Switch
               value={isEnabled}
               onValueChange={() => setIsEnabled(!isEnabled)}
-              style={styles.switch}
             />
           </View>
         </Card>
