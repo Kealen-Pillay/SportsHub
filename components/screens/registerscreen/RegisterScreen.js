@@ -23,6 +23,8 @@ const RegisterScreen = () => {
         <Text style={styles.abilityText}>Ability:</Text>
         <Rating
           type="custom"
+          minValue={1}
+          startingValue={0}
           onFinishRating={(rating) => setRating(rating)}
           ratingBackgroundColor={"black"}
           readonly={false}
@@ -54,6 +56,8 @@ const RegisterScreen = () => {
   const handleSignUp = () => {
     if (username.length < 3) {
       alert("Username must be at least 3 characters");
+    } else if (username.length > 10) {
+      alert("Username must be 10 or less characters");
     } else if (email.length == 0) {
       alert("Please enter an email");
     } else if (!email.match(/\w+@[A-Za-z_]+\.[A-Za-z]{2,6}/)) {
@@ -62,6 +66,8 @@ const RegisterScreen = () => {
       alert("Password must be at least 6 characters");
     } else if (password != confpassword) {
       alert("Passwords do not match! Please try again.");
+    } else if (rating == 0) {
+      alert("Please select a rating!")
     } else {
       addUser();
       auth
