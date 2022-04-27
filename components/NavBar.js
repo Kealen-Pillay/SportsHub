@@ -2,7 +2,7 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FeedScreen from "./screens/feedscreen/FeedScreen";
-import EventScreen from "./screens/eventscreen/EventScreen";
+import NewEventScreen from "./screens/eventscreen/NewEventScreen";
 import ProfileScreen from "./screens/profilescreen/ProfileScreen";
 import { useState } from "react";
 
@@ -62,7 +62,7 @@ const NavBar = () => {
       })}
     >
       <Tab.Screen name={eventScreen}>
-        {()=> <EventScreen darkModeEnabled={darkModeEnabled}/>}
+        {()=> <NewEventScreen darkModeEnabled={darkModeEnabled}/>}
       </Tab.Screen>
       <Tab.Screen name={feedScreen}>
         {()=> <FeedScreen darkModeEnabled={darkModeEnabled}/>}
