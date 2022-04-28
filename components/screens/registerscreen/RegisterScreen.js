@@ -11,35 +11,59 @@ import {
 import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
-import { Rating } from "react-native-ratings";
-
-
-
+//import { Rating } from "react-native-ratings";
+//import { StarRating } from "react-native-star-rating";
+ 
 const RegisterScreen = () => {
 
-  const RatingBox = () => {
+  const starImgFilled = require('../../../images/star_filled.png')
+  const starImgCorner = require('../../../images/star_corner.png')
+ 
+  
+const RatingBox = () => {
     return (
-      <View style={styles.ratingsContainer}>
-        <Text style={styles.abilityText}>Ability:</Text>
-        <Rating
-          type="custom"
-          minValue={1}
-          startingValue={0}
-          onFinishRating={(rating) => setRating(rating)}
-          ratingBackgroundColor={"black"}
-          readonly={false}
-          tintColor={"white"}
-          style={styles.rating}
-        />
+
+      <View style={styles.customRatingBarStyle}>   
+        <Text style={styles.abilityText}>Skill Rating:</Text>
+
+        {maxRating.map((rating, key) => {
+
+          return(
+
+            <TouchableOpacity
+            activeOpacity={0.7}
+            key={rating}
+            onPress={() => setdefaultRating(rating)}>
+
+            <Image
+
+              style = {styles.starImgStyle}
+              source = {
+                  rating <= defaultRating 
+                  ? starImgFilled 
+                  : starImgCorner
+              }
+            />
+
+            </TouchableOpacity>
+
+          );
+        })
+      }
+
       </View>
     );
   };
 
+  const [defaultRating, setdefaultRating] = useState(2)
+  const [maxRating, setmaxRating] = useState([1,2,3,4,5])
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setConfpassword] = useState("");
-  const [rating, setRating] = useState("");
+ // const [rating, setRating] = useState("");
+
+
 
 
   const navigation = useNavigation();
@@ -66,7 +90,7 @@ const RegisterScreen = () => {
       alert("Password must be at least 6 characters");
     } else if (password != confpassword) {
       alert("Passwords do not match! Please try again.");
-    } else if (rating == 0) {
+    } else if (defaultRating == 0) {
       alert("Please select a rating!")
     } else {
       addUser();
@@ -90,7 +114,7 @@ const RegisterScreen = () => {
       .add({
         username: username,
         email: email,
-        rating: rating,
+        rating: defaultRating,
         profileimg: "test",
       })
       .then(function (docRef) {
@@ -135,7 +159,11 @@ const RegisterScreen = () => {
           secureTextEntry
         />
       </View>
+
+      <View>
       <RatingBox />
+      </View>
+
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Create Account</Text>
@@ -147,12 +175,13 @@ const RegisterScreen = () => {
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
-  );
-};
+  )
+}
 
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
+ 
   container: {
     flex: 1,
     backgroundColor: "#1E1E1E",
@@ -197,21 +226,26 @@ const styles = StyleSheet.create({
   abilityText: {
     color: "black",
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 20,
     alignItems: "flex-start",
     marginRight: 10,
     marginTop: 10,
     marginLeft: 3,
   },
-  ratingsContainer: {
+  customRatingBarStyle: {
     flexDirection: "row",
     backgroundColor: "white",
     width: "80%",
-    marginTop: 10,
+    marginTop: 30,
     marginBottom: 5,
     borderRadius: 5,
     height: 50,
     justifyContent: "center",
+  },
+  starImgStyle: {
+    width: 40,
+    height: 40,
+    resizeMode: 'cover'
   },
   returnContainer: {
     width: "100%",
