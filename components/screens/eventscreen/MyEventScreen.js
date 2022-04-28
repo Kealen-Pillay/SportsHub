@@ -22,21 +22,18 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
 
 /**
- * 
+ *
  * TODO
- * 
- * if user has no events then display text "no events, please join or create one"
- * else display users events
+ *
  */
 
-
 const MyEventScreen = ({ darkModeEnabled }) => {
-
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
   const [long, setLong] = useState("");
   const [lat, setLat] = useState("");
+  const [isEmpty, setIsEmpty] = useState(false);
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
@@ -48,6 +45,7 @@ const MyEventScreen = ({ darkModeEnabled }) => {
   }, [isFocused]);
 
   const getEvents = () => {
+    let querySize = 0;
     firestore
       .collection("events")
       .where("attendees", "array-contains", currentUser)
@@ -57,7 +55,16 @@ const MyEventScreen = ({ darkModeEnabled }) => {
           let data = snapshot.data();
           setEvents((prev) => [...prev, data]);
         });
+        {
+          if (querySnapShot.size === 0) {
+            setIsEmpty(true);
+          } else {
+            setIsEmpty(false);
+          }
+        }
       });
+
+    return querySize;
   };
 
   const handleDirections = () => {
@@ -134,6 +141,13 @@ const MyEventScreen = ({ darkModeEnabled }) => {
           <Text style={styles.createText}>+</Text>
         </TouchableOpacity>
       </View>
+      {isEmpty && (
+        <View style={styles.centeredView}>
+          <Text style={styles.noEvntText}>
+            You have no events, please join or create one
+          </Text>
+        </View>
+      )}
       {setModalVisible && (
         <Modal
           animationType="slide"
@@ -359,5 +373,12 @@ const styles = StyleSheet.create({
     fontSize: 30,
     bottom: 6,
     right: 0.5,
+  },
+  noEvntText: {
+    color: colours.text,
+    fontWeight: "bold",
+    fontSize: 30,
+    marginTop: "20%",
+    textAlign: "center",
   },
 });
