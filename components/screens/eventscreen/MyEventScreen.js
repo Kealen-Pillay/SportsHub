@@ -25,7 +25,8 @@ import { auth } from "../../../firebase/firebase";
  * 
  * TODO
  * 
- * if events.size ==0 => display text "no events, please join or create one"
+ * if user has no events then display text "no events, please join or create one"
+ * else display users events
  */
 
 
