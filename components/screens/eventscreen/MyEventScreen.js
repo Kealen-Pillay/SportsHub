@@ -74,7 +74,7 @@ const MyEventScreen = ({ darkModeEnabled }) => {
   };
 
   const handleCreateEvent = () => {
-  
+
     navigation.navigate("CreateEvent");
   }
   return (

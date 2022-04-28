@@ -291,24 +291,24 @@ const NewEventScreen = () => {
             </View>
           </Modal>
         ) : (
-          <RNDateTimePicker
-            testID="dateTimePicker"
-            minimumDate={new Date()}
-            value={date}
-            mode={mode}
-            style={{
-              width: "90%",
-              backgroundColor: "black",
-              marginTop: 10,
-            }}
-            onChange={onChange}
-          />
-        ))}
+            <RNDateTimePicker
+              testID="dateTimePicker"
+              minimumDate={new Date()}
+              value={date}
+              mode={mode}
+              style={{
+                width: "90%",
+                backgroundColor: "black",
+                marginTop: 10,
+              }}
+              onChange={onChange}
+            />
+          ))}
 
       <TouchableOpacity style={styles.button} onPress={handlePublish}>
         <Text style={styles.buttonText}>Publish Event</Text>
       </TouchableOpacity>
-      <NavGradient />
+      {/* <NavGradient /> */}
     </KeyboardAvoidingView>
   );
 };
