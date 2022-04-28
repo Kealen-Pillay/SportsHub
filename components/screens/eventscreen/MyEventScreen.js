@@ -18,15 +18,14 @@ import { darkTheme, lightTheme } from "../../../theme/themes";
 import { firestore } from "../../../firebase/firestore";
 // import getDirections from "react-native-google-maps-directions";
 import colours from "../../../theme/colours";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useIsFocused } from "@react-navigation/native";
 
 /**
  * TODO
- * Refresh after create event
- * only show current user's event
  * 
+ * only show current user's event
+ *
  */
-
 
 const MyEventScreen = ({ darkModeEnabled }) => {
   const [search, setSearch] = useState("");
@@ -37,10 +36,12 @@ const MyEventScreen = ({ darkModeEnabled }) => {
   const [lat, setLat] = useState("");
 
   const navigation = useNavigation();
+  const isFocused = useIsFocused();
 
   useEffect(() => {
+    setEvents([]);
     getEvents();
-  }, []);
+  }, [isFocused]);
 
   const getEvents = () => {
     firestore
@@ -82,9 +83,8 @@ const MyEventScreen = ({ darkModeEnabled }) => {
   };
 
   const handleCreateEvent = () => {
-
     navigation.navigate("CreateEvent");
-  }
+  };
   return (
     <SafeAreaView
       style={[
@@ -98,7 +98,10 @@ const MyEventScreen = ({ darkModeEnabled }) => {
     >
       <View style={styles.titleContainer}>
         <Text style={styles.title}>My Events</Text>
-        <TouchableOpacity style={styles.createButton} onPress={handleCreateEvent}>
+        <TouchableOpacity
+          style={styles.createButton}
+          onPress={handleCreateEvent}
+        >
           <Text style={styles.createText}>+</Text>
         </TouchableOpacity>
       </View>
@@ -266,10 +269,9 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginBottom: 10,
   },
-  titleContainer:{
+  titleContainer: {
     flexDirection: "row",
     alignItems: "center",
-
   },
   createButton: {
     backgroundColor: colours.lightGrey,
@@ -290,7 +292,5 @@ const styles = StyleSheet.create({
     fontSize: 30,
     bottom: 6,
     right: 0.5,
-    
-    
   },
 });

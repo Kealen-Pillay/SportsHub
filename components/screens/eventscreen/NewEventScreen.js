@@ -18,8 +18,7 @@ import { Dropdown } from "react-native-element-dropdown";
 import { showMessage } from "react-native-flash-message";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
-import NavGradient from "../../NavGradient";
-import {auth} from "../../../firebase/firebase";
+import { auth } from "../../../firebase/firebase";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -47,7 +46,6 @@ const NewEventScreen = () => {
     { label: "eSports", sport: "eSports" },
     { label: "Sailing", sport: "Sailing" },
   ];
-  // const [owner, setOwner] = useState("");
 
   const navigation = useNavigation();
   const GOOGLE_PLACES_API_KEY = "AIzaSyDQVhiJCPkDE4AljpBO3fJINMQSLHsm0VU";
@@ -295,19 +293,19 @@ const NewEventScreen = () => {
             </View>
           </Modal>
         ) : (
-            <RNDateTimePicker
-              testID="dateTimePicker"
-              minimumDate={new Date()}
-              value={date}
-              mode={mode}
-              style={{
-                width: "90%",
-                backgroundColor: "black",
-                marginTop: 10,
-              }}
-              onChange={onChange}
-            />
-          ))}
+          <RNDateTimePicker
+            testID="dateTimePicker"
+            minimumDate={new Date()}
+            value={date}
+            mode={mode}
+            style={{
+              width: "90%",
+              backgroundColor: "black",
+              marginTop: 10,
+            }}
+            onChange={onChange}
+          />
+        ))}
 
       <TouchableOpacity style={styles.button} onPress={handlePublish}>
         <Text style={styles.buttonText}>Publish Event</Text>
