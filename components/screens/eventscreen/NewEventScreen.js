@@ -85,7 +85,7 @@ const NewEventScreen = () => {
       })
       .then(function (docRef) {
         showMessage({
-          message: "Event added!",
+          message: "Event Created!",
           type: "success",
           hideStatusBar: true,
         });

@@ -21,9 +21,16 @@ import colours from "../../../theme/colours";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
 
+/**
+ * 
+ * TODO
+ * 
+ * if events.size ==0 => display text "no events, please join or create one"
+ */
 
 
 const MyEventScreen = ({ darkModeEnabled }) => {
+
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
