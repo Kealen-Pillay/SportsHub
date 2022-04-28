@@ -65,9 +65,12 @@ const FeedScreen = () => {
     query.get().then((querySnapShot) => {
       querySnapShot.forEach((snapshot) => {
         let data = snapshot.data();
-        let name = data.eventName;
-        if (name.includes(search)) {
-          setEvents((prev) => [...prev, data]);
+        {
+          let name = data.eventName;
+          name = name.toLowerCase();
+          if (name.includes(search.toLowerCase())) {
+            setEvents((prev) => [...prev, data]);
+          }
         }
       });
     });
