@@ -162,7 +162,7 @@ const FeedScreen = () => {
                 </Text>
               </View>
               <Pressable
-                style={[styles.button, styles.maps]}
+                style={[styles.button, styles.buttonMap]}
                 onPress={handleDirections}
               >
                 <Text style={styles.textStyle}>Open Maps</Text>
@@ -280,6 +280,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    width: "70%",
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
@@ -287,7 +288,6 @@ const styles = StyleSheet.create({
   buttonClose: {
     backgroundColor: colours.backgroundDark,
     marginTop: "0%",
-    width: "70%",
   },
   textStyle: {
     color: "white",
@@ -313,9 +313,8 @@ const styles = StyleSheet.create({
     backgroundColor: colours.backgroundDark,
     borderRadius: 15,
   },
-  maps: {
+  buttonMap: {
     backgroundColor: colours.purple,
-    width: "70%",
     marginTop: "5%",
     marginBottom: "5%",
   },
