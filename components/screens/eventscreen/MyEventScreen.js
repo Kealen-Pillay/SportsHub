@@ -19,11 +19,13 @@ import { firestore } from "../../../firebase/firestore";
 // import getDirections from "react-native-google-maps-directions";
 import colours from "../../../theme/colours";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { auth } from "../../../firebase/firebase";
 
 /**
  * TODO
  * 
  * only show current user's event
+ * 
  *
  */
 
@@ -37,6 +39,7 @@ const MyEventScreen = ({ darkModeEnabled }) => {
 
   const navigation = useNavigation();
   const isFocused = useIsFocused();
+  const currentUser = auth.currentUser?.email;
 
   useEffect(() => {
     setEvents([]);
@@ -46,6 +49,7 @@ const MyEventScreen = ({ darkModeEnabled }) => {
   const getEvents = () => {
     firestore
       .collection("events")
+      .where("attendees", "array-contains", currentUser)
       .get()
       .then((querySnapShot) => {
         querySnapShot.forEach((snapshot) => {
