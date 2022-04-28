@@ -58,17 +58,17 @@ const FeedScreen = () => {
   };
 
   const getEvents = () => {
-    var query = firestore.collection("events");
-    if (search.length != 0) {
-      query = query.where("eventName", "==", search);
-    }
+    let query = firestore.collection("events");
     if (selectedSport.length > 0) {
       query = query.where("sport", "in", selectedSport);
     }
     query.get().then((querySnapShot) => {
       querySnapShot.forEach((snapshot) => {
         let data = snapshot.data();
-        setEvents((prev) => [...prev, data]);
+        let name = data.eventName;
+        if (name.includes(search)) {
+          setEvents((prev) => [...prev, data]);
+        }
       });
     });
   };
