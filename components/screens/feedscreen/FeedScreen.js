@@ -4,7 +4,6 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
-  LogBox,
   Modal,
   TouchableOpacity,
   Pressable,
@@ -19,8 +18,6 @@ import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
 import getDirections from "react-native-google-maps-directions";
 
-LogBox.ignoreLogs(["Setting a timer"]);
-
 const FeedScreen = () => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
@@ -28,6 +25,7 @@ const FeedScreen = () => {
   const [currentEvent, setCurrentEvent] = useState({});
   const [long, setLong] = useState("");
   const [lat, setLat] = useState("");
+  const [currentEventID, setCurrentEventID] = useState("");
 
   useEffect(() => {
     getEvents();
@@ -142,6 +140,7 @@ const FeedScreen = () => {
             <View style={styles.modalView}>
               <Text style={styles.modalText}>{currentEvent.eventName}</Text>
               <View style={styles.modalBodyContainer}>
+                <Text style={styles.modalBody}>Event ID: {currentEventID}</Text>
                 <Text style={styles.modalBody}>
                   Sport: {currentEvent.sport}
                 </Text>
@@ -174,6 +173,7 @@ const FeedScreen = () => {
               onPress={() => {
                 setModalVisible(true);
                 setCurrentEvent(event);
+                setCurrentEventID(event.eventID.slice(0, 8));
                 {
                   setLatLong(event.lat, event.long);
                 }
@@ -293,7 +293,7 @@ const styles = StyleSheet.create({
   modalBody: {
     color: "white",
     fontWeight: "bold",
-    margin: 20,
+    margin: 15,
     fontSize: 15,
   },
   modalBodyContainer: {
@@ -305,7 +305,7 @@ const styles = StyleSheet.create({
   maps: {
     backgroundColor: colours.purple,
     width: "70%",
-    marginTop: "5%",
+    marginTop: "10%",
     marginBottom: "5%",
   },
   eventDate: {
