@@ -17,6 +17,9 @@ import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
 import getDirections from "react-native-google-maps-directions";
+import * as Clipboard from "expo-clipboard";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Toast from "react-native-toast-message";
 
 const FeedScreen = () => {
   const [search, setSearch] = useState("");
@@ -97,6 +100,16 @@ const FeedScreen = () => {
     setLong(lng);
   };
 
+  const copyToClipboard = () => {
+    Clipboard.setString(currentEventID);
+    Toast.show({
+      type: "success",
+      text1: "Event ID Copied!",
+      visibilityTime: 900,
+      position: "bottom",
+    });
+  };
+
   return (
     <SafeAreaView style={styles.container}>
       <Searchbar
@@ -140,7 +153,17 @@ const FeedScreen = () => {
             <View style={styles.modalView}>
               <Text style={styles.modalText}>{currentEvent.eventName}</Text>
               <View style={styles.modalBodyContainer}>
-                <Text style={styles.modalBody}>Event ID: {currentEventID}</Text>
+                <View style={styles.clipboardContainer}>
+                  <Text style={styles.modalBody}>
+                    Event ID: {currentEventID}
+                  </Text>
+                  <TouchableOpacity
+                    style={styles.clipboard}
+                    onPress={() => copyToClipboard()}
+                  >
+                    <Ionicons name={"copy-outline"} />
+                  </TouchableOpacity>
+                </View>
                 <Text style={styles.modalBody}>
                   Sport: {currentEvent.sport}
                 </Text>
@@ -322,5 +345,17 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     marginBottom: 10,
+  },
+  clipboard: {
+    backgroundColor: "white",
+    height: 20,
+    width: 20,
+    borderRadius: 2,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  clipboardContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
