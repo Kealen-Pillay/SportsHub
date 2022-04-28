@@ -16,21 +16,14 @@ import { useState, useEffect } from "react";
 import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import { firestore } from "../../../firebase/firestore";
-// import getDirections from "react-native-google-maps-directions";
+import getDirections from "react-native-google-maps-directions";
 import colours from "../../../theme/colours";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
 
-/**
- * TODO
- * 
- * only show current user's event
- * 
- *
- */
+
 
 const MyEventScreen = ({ darkModeEnabled }) => {
-  const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
@@ -59,6 +52,27 @@ const MyEventScreen = ({ darkModeEnabled }) => {
       });
   };
 
+  const handleDirections = () => {
+    const data = {
+      source: {},
+      destination: {
+        latitude: lat,
+        longitude: long,
+      },
+      params: [
+        {
+          key: "travelmode",
+          value: "driving",
+        },
+        {
+          key: "dir_action",
+          value: "navigate",
+        },
+      ],
+    };
+
+    getDirections(data);
+  };
   const renderBall = (sport) => {
     switch (sport) {
       case "Basketball":
@@ -85,7 +99,10 @@ const MyEventScreen = ({ darkModeEnabled }) => {
       default:
     }
   };
-
+  const setLatLong = (lat, lng) => {
+    setLat(lat);
+    setLong(lng);
+  };
   const handleCreateEvent = () => {
     navigation.navigate("CreateEvent");
   };
@@ -109,6 +126,44 @@ const MyEventScreen = ({ darkModeEnabled }) => {
           <Text style={styles.createText}>+</Text>
         </TouchableOpacity>
       </View>
+      {setModalVisible && (
+        <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalText}>{currentEvent.eventName}</Text>
+              <View style={styles.modalBodyContainer}>
+                <Text style={styles.modalBody}>
+                  Sport: {currentEvent.sport}
+                </Text>
+                <Text style={styles.modalBody}>Time: {currentEvent.time}</Text>
+                <Text style={styles.modalBody}>Date: {currentEvent.date}</Text>
+                <Text style={styles.modalBody}>
+                  Location: {currentEvent.location}
+                </Text>
+              </View>
+              <Pressable
+                style={[styles.button, styles.maps]}
+                onPress={handleDirections}
+              >
+                <Text style={styles.textStyle}>Open Maps</Text>
+              </Pressable>
+              <Pressable
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => setModalVisible(!modalVisible)}
+              >
+                <Text style={styles.textStyle}>Close</Text>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+      )}
       <ScrollView style={styles.scrollView}>
         {events.map((event) => {
           return (
