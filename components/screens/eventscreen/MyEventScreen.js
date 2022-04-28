@@ -3,7 +3,7 @@ import React from "react";
 import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 
-const EventScreen = ({ darkModeEnabled }) => {
+const MyEventScreen = ({ darkModeEnabled }) => {
   return (
     <SafeAreaView
       style={[
@@ -28,7 +28,7 @@ const EventScreen = ({ darkModeEnabled }) => {
   );
 };
 
-export default EventScreen;
+export default MyEventScreen;
 
 const styles = StyleSheet.create({
   container: {
