@@ -25,11 +25,13 @@ export default function App() {
           name="Register"
           component={RegisterScreen}
         />
+
         <Stack.Screen
           options={{ headerShown: false }}
-          name="CreateEvent"
-          component={NewEventScreen}
+          name="Dashboard"
+          component={NavBar}
         />
+
         <Stack.Screen
           options={{ headerShown: false }}
           name="MyEventScreen"
@@ -37,8 +39,8 @@ export default function App() {
         />
         <Stack.Screen
           options={{ headerShown: false }}
-          name="Dashboard"
-          component={NavBar}
+          name="CreateEvent"
+          component={NewEventScreen}
         />
       </Stack.Navigator>
       <FlashMessage position="top" />

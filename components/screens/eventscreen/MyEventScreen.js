@@ -20,6 +20,14 @@ import { firestore } from "../../../firebase/firestore";
 import colours from "../../../theme/colours";
 import { useNavigation } from "@react-navigation/native";
 
+/**
+ * TODO
+ * Refresh after create event
+ * only show current user's event
+ * 
+ */
+
+
 const MyEventScreen = ({ darkModeEnabled }) => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
@@ -88,7 +96,7 @@ const MyEventScreen = ({ darkModeEnabled }) => {
         },
       ]}
     >
-      <View>
+      <View style={styles.titleContainer}>
         <Text style={styles.title}>My Events</Text>
         <TouchableOpacity style={styles.createButton} onPress={handleCreateEvent}>
           <Text style={styles.createText}>+</Text>
@@ -258,17 +266,31 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginBottom: 10,
   },
+  titleContainer:{
+    flexDirection: "row",
+    alignItems: "center",
+
+  },
   createButton: {
-    backgroundColor: colours.purple,
-    height: 50,
-    width: "80%",
+    backgroundColor: colours.lightGrey,
+    height: 35,
+    width: 35,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 5,
+    borderRadius: 35,
+    marginLeft: "5%",
+    marginTop: "20%",
+    marginBottom: "10%",
+    borderColor: colours.pink,
+    borderWidth: 2,
   },
   createText: {
     color: colours.text,
     fontWeight: "bold",
-    fontSize: 16,
+    fontSize: 30,
+    bottom: 6,
+    right: 0.5,
+    
+    
   },
 });
