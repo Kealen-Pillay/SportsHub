@@ -16,11 +16,11 @@ export default NavGradient;
 const styles = StyleSheet.create({
   linearGradient: {
     position: "absolute",
-    bottom: 30,
+    bottom: 25,
     left: 10,
     right: 10,
     borderRadius: 15,
-    height: 90,
+    height: 60,
     borderTopWidth: 0,
   },
 });

@@ -24,6 +24,7 @@ const NavBar = () => {
             iconName = focused ? "list" : "list-outline";
           } else if (routeName === feedScreen) {
             iconName = focused ? "map" : "map-outline";
+            
           } else if (routeName === profileScreen) {
             iconName = focused ? "person-circle" : "person-circle-outline";
           }
@@ -31,13 +32,13 @@ const NavBar = () => {
           return (
             <Ionicons
               name={iconName}
-              size={45}
+              size={40}
               color={color}
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                marginTop: 60,
-                height: "130%",
+                height: "150%",
+                top: "50%",
               }}
             />
           );
@@ -48,12 +49,12 @@ const NavBar = () => {
         headerShown: false,
         tabBarStyle: {
           position: "absolute",
-          bottom: 30,
+          bottom: 25,
           left: 10,
           right: 10,
           borderRadius: 15,
           backgroundColor: "transparent",
-          height: 90,
+          height: 60,
           borderTopWidth: 0,
         },
       })}
