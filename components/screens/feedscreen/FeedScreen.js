@@ -28,10 +28,12 @@ const FeedScreen = () => {
   const [currentEvent, setCurrentEvent] = useState({});
   const [long, setLong] = useState("");
   const [lat, setLat] = useState("");
+  const [selectedSport, setSelectedSport] = useState([]);
 
   useEffect(() => {
+    setEvents([]);
     getEvents();
-  }, []);
+  }, [search, selectedSport]);
 
   const handleDirections = () => {
     const data = {
@@ -56,15 +58,19 @@ const FeedScreen = () => {
   };
 
   const getEvents = () => {
-    firestore
-      .collection("events")
-      .get()
-      .then((querySnapShot) => {
-        querySnapShot.forEach((snapshot) => {
-          let data = snapshot.data();
-          setEvents((prev) => [...prev, data]);
-        });
+    var query = firestore.collection("events");
+    if (search.length != 0) {
+      query = query.where("eventName", "==", search);
+    }
+    if (selectedSport.length > 0) {
+      query = query.where("sport", "in", selectedSport);
+    }
+    query.get().then((querySnapShot) => {
+      querySnapShot.forEach((snapshot) => {
+        let data = snapshot.data();
+        setEvents((prev) => [...prev, data]);
       });
+    });
   };
 
   const renderBall = (sport) => {
@@ -102,13 +108,14 @@ const FeedScreen = () => {
   return (
     <SafeAreaView style={styles.container}>
       <Searchbar
-        placeholder="Search"
+        placeholder="Search Event Name"
         onChangeText={(text) => setSearch(text)}
         value={search}
         style={styles.searchBar}
       />
       <SelectableChips
         initialChips={["Football", "Basketball", "Volleyball"]}
+        onChangeChips={(chips) => setSelectedSport(chips)}
         alertRequired={false}
         valueStyle={{
           color: "white",
@@ -220,14 +227,15 @@ const styles = StyleSheet.create({
   },
   eventContainer: {
     backgroundColor: colours.lightGrey,
-    borderColor: colours.pink,
-    borderWidth: 2,
     margin: 20,
-    borderRadius: 5,
     height: 90,
     width: "90%",
     flexDirection: "row",
     alignItems: "center",
+    overflow: "hidden",
+    borderColor: colours.pink,
+    borderWidth: 2,
+    borderRadius: 5,
   },
   eventName: {
     color: "white",
