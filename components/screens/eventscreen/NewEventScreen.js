@@ -89,7 +89,7 @@ const NewEventScreen = () => {
         });
       })
       .then(() => {
-        navigation.navigate("TempEvent");
+        navigation.navigate("MyEventScreen");
       })
       .catch(function (error) {
         console.error("Error adding document: ", error);
