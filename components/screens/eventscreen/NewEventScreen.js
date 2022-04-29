@@ -20,7 +20,6 @@ import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import { auth } from "../../../firebase/firebase";
 import colours from "../../../theme/colours";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import LinearGradient from "react-native-linear-gradient";
 
 const NewEventScreen = () => {
   const [eventName, setEventName] = useState("");

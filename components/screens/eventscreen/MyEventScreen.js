@@ -18,6 +18,7 @@ import getDirections from "react-native-google-maps-directions";
 import colours from "../../../theme/colours";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
+import Ionicons from "react-native-vector-icons/Ionicons";
 
 const MyEventScreen = ({ darkModeEnabled }) => {
   const [events, setEvents] = useState([]);
@@ -147,21 +148,20 @@ const MyEventScreen = ({ darkModeEnabled }) => {
           ]}
           onPress={handleCreateEvent}
         >
-          <Text
+          <Ionicons
+            name={"add-outline"}
+            size={30}
             style={[
-              styles.createText,
               { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
             ]}
-          >
-            +
-          </Text>
+          />
         </TouchableOpacity>
       </View>
       {isEmpty && (
         <View style={styles.centeredView}>
           <Text
             style={[
-              styles.noEvntText,
+              styles.noEventText,
               { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
             ]}
           >
@@ -328,15 +328,14 @@ export default MyEventScreen;
 const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
-    fontSize: 50,
+    fontSize: 60,
     marginLeft: "5%",
-    marginTop: "20%",
-    marginBottom: "10%",
+    marginRight: "10%",
   },
   container: {
     flex: 1,
-    justifyContent: "flex-start",
-    alignItems: "center",
+    alignItems: "flex-start",
+    justifyContent: "center",
   },
   text: {
     fontSize: 50,
@@ -446,16 +445,14 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
+    marginTop: "5%"
   },
   createButton: {
-    height: 35,
-    width: 35,
+    height: 50,
+    width: 50,
     justifyContent: "center",
     alignItems: "center",
     borderRadius: 35,
-    marginLeft: "5%",
-    marginTop: "20%",
-    marginBottom: "10%",
     borderColor: colours.pink,
     borderWidth: 2,
   },
@@ -465,7 +462,7 @@ const styles = StyleSheet.create({
     bottom: 6,
     right: 0.5,
   },
-  noEvntText: {
+  noEventText: {
     fontWeight: "bold",
     fontSize: 30,
     marginTop: "20%",
