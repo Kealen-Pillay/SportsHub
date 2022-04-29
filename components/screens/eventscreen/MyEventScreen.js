@@ -162,7 +162,7 @@ const MyEventScreen = ({ darkModeEnabled }) => {
       </View>
       {isEmpty && (
         <View style={styles.emptyContainer}>
-          <Text style={styles.noEventText}>You Have No Events</Text>
+          <Text style={[styles.noEventText, {color: darkModeEnabled ? darkTheme.text : lightTheme.text}]}>You Have No Events</Text>
         </View>
       )}
 
@@ -442,8 +442,10 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
+    justifyContent: "space-between",
     marginTop: "5%",
-    marginBottom: "5%"
+    marginBottom: "5%",
+    width: "95%"
   },
   createButton: {
     height: 50,
@@ -464,7 +466,6 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 30,
     textAlign: "center",
-    color: "white",
   },
   icon: {
     marginLeft: "5%",
