@@ -150,25 +150,17 @@ const MyEventScreen = ({ darkModeEnabled }) => {
         >
           <Ionicons
             name={"add-outline"}
-            size={30}
+            size={35}
             style={[
-              { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+              styles.icon,
+              {
+                color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+              },
             ]}
           />
         </TouchableOpacity>
       </View>
-      {isEmpty && (
-        <View style={styles.centeredView}>
-          <Text
-            style={[
-              styles.noEventText,
-              { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
-            ]}
-          >
-            You have no events, please join or create one
-          </Text>
-        </View>
-      )}
+
       {setModalVisible && (
         <Modal
           animationType="slide"
@@ -445,14 +437,14 @@ const styles = StyleSheet.create({
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginTop: "5%"
+    marginTop: "5%",
   },
   createButton: {
     height: 50,
     width: 50,
     justifyContent: "center",
     alignItems: "center",
-    borderRadius: 35,
+    borderRadius: 50,
     borderColor: colours.pink,
     borderWidth: 2,
   },
@@ -467,5 +459,8 @@ const styles = StyleSheet.create({
     fontSize: 30,
     marginTop: "20%",
     textAlign: "center",
+  },
+  icon: {
+    marginLeft: "5%",
   },
 });
