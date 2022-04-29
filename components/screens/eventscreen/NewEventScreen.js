@@ -19,6 +19,7 @@ import { showMessage } from "react-native-flash-message";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import { auth } from "../../../firebase/firebase";
+import colours from "../../../theme/colours";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -67,7 +68,9 @@ const NewEventScreen = () => {
       addEvent();
     }
   };
-
+  const handleBack = () => {
+    navigation.navigate("Dashboard");
+  };
   const addEvent = () => {
     firestore
       .collection("events")
@@ -310,6 +313,10 @@ const NewEventScreen = () => {
       <TouchableOpacity style={styles.button} onPress={handlePublish}>
         <Text style={styles.buttonText}>Publish Event</Text>
       </TouchableOpacity>
+      
+      <TouchableOpacity style={styles.backButton} onPress={handleBack}>
+        <Text style={styles.backButtonText}>Back</Text>
+      </TouchableOpacity>
       {/* <NavGradient /> */}
     </KeyboardAvoidingView>
   );
@@ -360,6 +367,20 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "700",
     fontSize: 25,
+  },
+  backButton: {
+    backgroundColor: colours.purple,
+    marginTop: 20,
+    height: 40,
+    width: "30%",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 25,
+  },
+  backButtonText: {
+    color: "white",
+    fontWeight: "700",
+    fontSize: 15,
   },
   datePicker: {
     backgroundColor: "white",
