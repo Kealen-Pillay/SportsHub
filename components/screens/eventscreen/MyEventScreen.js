@@ -114,13 +114,16 @@ const MyEventScreen = ({ darkModeEnabled }) => {
       default:
     }
   };
+
   const setLatLong = (lat, lng) => {
     setLat(lat);
     setLong(lng);
   };
+
   const handleCreateEvent = () => {
     navigation.navigate("CreateEvent");
   };
+
   return (
     <SafeAreaView
       style={[
