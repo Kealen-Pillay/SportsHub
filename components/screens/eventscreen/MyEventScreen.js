@@ -133,17 +133,43 @@ const MyEventScreen = ({ darkModeEnabled }) => {
       ]}
     >
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>My Events</Text>
+        <Text
+          style={[
+            styles.title,
+            { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+          ]}
+        >
+          My Events
+        </Text>
         <TouchableOpacity
-          style={styles.createButton}
+          style={[
+            styles.createButton,
+            {
+              backgroundColor: darkModeEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+            },
+          ]}
           onPress={handleCreateEvent}
         >
-          <Text style={styles.createText}>+</Text>
+          <Text
+            style={[
+              styles.createText,
+              { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+            ]}
+          >
+            +
+          </Text>
         </TouchableOpacity>
       </View>
       {isEmpty && (
         <View style={styles.centeredView}>
-          <Text style={styles.noEvntText}>
+          <Text
+            style={[
+              styles.noEvntText,
+              { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+            ]}
+          >
             You have no events, please join or create one
           </Text>
         </View>
@@ -158,15 +184,72 @@ const MyEventScreen = ({ darkModeEnabled }) => {
           }}
         >
           <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>{currentEvent.eventName}</Text>
-              <View style={styles.modalBodyContainer}>
-                <Text style={styles.modalBody}>
+            <View
+              style={[
+                styles.modalView,
+                {
+                  backgroundColor: darkModeEnabled
+                    ? darkTheme.cardBackground
+                    : lightTheme.cardBackground,
+                },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.modalText,
+                  { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+                ]}
+              >
+                {currentEvent.eventName}
+              </Text>
+              <View
+                style={[
+                  styles.modalBodyContainer,
+                  {
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.background
+                      : lightTheme.background,
+                  },
+                ]}
+              >
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
                   Sport: {currentEvent.sport}
                 </Text>
-                <Text style={styles.modalBody}>Time: {currentEvent.time}</Text>
-                <Text style={styles.modalBody}>Date: {currentEvent.date}</Text>
-                <Text style={styles.modalBody}>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
+                  Time: {currentEvent.time}
+                </Text>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
+                  Date: {currentEvent.date}
+                </Text>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
                   Location: {currentEvent.location}
                 </Text>
               </View>
@@ -198,11 +281,40 @@ const MyEventScreen = ({ darkModeEnabled }) => {
                 }
               }}
             >
-              <View style={styles.eventContainer}>
+              <View
+                style={[
+                  styles.eventContainer,
+                  {
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.cardBackground
+                      : lightTheme.cardBackground,
+                  },
+                ]}
+              >
                 {renderBall(event.sport)}
                 <View style={styles.infoContainer}>
-                  <Text style={styles.eventName}>{event.eventName}</Text>
-                  <Text style={styles.eventDate}>
+                  <Text
+                    style={[
+                      styles.eventName,
+                      {
+                        color: darkModeEnabled
+                          ? darkTheme.text
+                          : lightTheme.text,
+                      },
+                    ]}
+                  >
+                    {event.eventName}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.eventDate,
+                      {
+                        color: darkModeEnabled
+                          ? darkTheme.text
+                          : lightTheme.text,
+                      },
+                    ]}
+                  >
                     {event.date} - {event.time}
                   </Text>
                 </View>
@@ -220,7 +332,6 @@ export default MyEventScreen;
 
 const styles = StyleSheet.create({
   title: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 50,
     marginLeft: "5%",
@@ -228,13 +339,11 @@ const styles = StyleSheet.create({
     marginBottom: "10%",
   },
   container: {
-    backgroundColor: colours.backgroundDark,
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
   },
   text: {
-    color: "white",
     fontSize: 50,
   },
   searchBar: {
@@ -243,10 +352,8 @@ const styles = StyleSheet.create({
   },
   event: {
     width: "80%",
-    backgroundColor: "white",
   },
   eventContainer: {
-    backgroundColor: colours.lightGrey,
     borderColor: colours.pink,
     borderWidth: 2,
     margin: 20,
@@ -257,7 +364,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   eventName: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 30,
     paddingLeft: 10,
@@ -277,7 +383,6 @@ const styles = StyleSheet.create({
     width: "95%",
     height: "60%",
     marginTop: 40,
-    backgroundColor: colours.lightGrey,
     borderRadius: 20,
     borderColor: colours.pink,
     borderWidth: 2,
@@ -297,28 +402,23 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
   buttonClose: {
-    backgroundColor: colours.backgroundDark,
+    backgroundColor: colours.pink,
     marginTop: 0,
     width: "70%",
   },
   textStyle: {
-    color: "white",
+    color: darkTheme.text,
     fontWeight: "bold",
     textAlign: "center",
   },
   modalText: {
     marginBottom: 20,
     textAlign: "center",
-    color: "white",
     fontWeight: "bold",
     fontSize: 50,
   },
   modalBody: {
-    color: "white",
     fontWeight: "bold",
     margin: 20,
     fontSize: 20,
@@ -326,7 +426,6 @@ const styles = StyleSheet.create({
   modalBodyContainer: {
     width: "100%",
     alignItems: "center",
-    backgroundColor: colours.backgroundDark,
     borderRadius: 15,
   },
   maps: {
@@ -337,7 +436,6 @@ const styles = StyleSheet.create({
   },
   eventDate: {
     fontWeight: "bold",
-    color: "white",
     paddingLeft: 10,
     paddingTop: 10,
   },
@@ -355,7 +453,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   createButton: {
-    backgroundColor: colours.lightGrey,
     height: 35,
     width: 35,
     justifyContent: "center",
@@ -368,14 +465,12 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   createText: {
-    color: colours.text,
     fontWeight: "bold",
     fontSize: 30,
     bottom: 6,
     right: 0.5,
   },
   noEvntText: {
-    color: colours.text,
     fontWeight: "bold",
     fontSize: 30,
     marginTop: "20%",
