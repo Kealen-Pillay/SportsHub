@@ -325,7 +325,7 @@ export default MyEventScreen;
 const styles = StyleSheet.create({
   title: {
     fontWeight: "bold",
-    fontSize: 60,
+    fontSize: 50,
     marginLeft: "5%",
     marginRight: "10%",
   },
@@ -477,6 +477,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     height: 50,
-    marginLeft: "5%"
+    marginLeft: "5%",
+    marginTop: "60%",
   },
 });

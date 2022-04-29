@@ -336,7 +336,7 @@ const styles = StyleSheet.create({
   title: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 60,
+    fontSize: 50,
   },
   text: {
     paddingHorizontal: 10,
