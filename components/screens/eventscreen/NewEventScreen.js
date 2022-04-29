@@ -13,15 +13,14 @@ import { firestore } from "../../../firebase/firestore";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import { LogBox } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { showMessage } from "react-native-flash-message";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import { auth } from "../../../firebase/firebase";
 import colours from "../../../theme/colours";
-
-LogBox.ignoreLogs(["Setting a timer"]);
+import Ionicons from "react-native-vector-icons/Ionicons";
+import LinearGradient from "react-native-linear-gradient";
 
 const NewEventScreen = () => {
   const [eventName, setEventName] = useState("");
@@ -40,12 +39,7 @@ const NewEventScreen = () => {
   const validSports = [
     { label: "Basketball", sport: "Basketball" },
     { label: "Football", sport: "Football" },
-    { label: "Cricket", sport: "Cricket" },
-    { label: "Rugby", sport: "Rugby" },
-    { label: "Waterpolo", sport: "Waterpolo" },
-    { label: "Tennis", sport: "Tennis" },
-    { label: "eSports", sport: "eSports" },
-    { label: "Sailing", sport: "Sailing" },
+    { label: "Volleyball", sport: "Volleyball" },
   ];
 
   const navigation = useNavigation();
@@ -171,6 +165,13 @@ const NewEventScreen = () => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.titleContainer}>
+          <TouchableOpacity onPress={handleBack} style={styles.icon}>
+            <Ionicons
+              name={"chevron-back-outline"}
+              color={colours.pink}
+              size={45}
+            />
+          </TouchableOpacity>
         <Text style={styles.title}>New Event</Text>
       </View>
 
@@ -313,11 +314,6 @@ const NewEventScreen = () => {
       <TouchableOpacity style={styles.button} onPress={handlePublish}>
         <Text style={styles.buttonText}>Publish Event</Text>
       </TouchableOpacity>
-      
-      <TouchableOpacity style={styles.backButton} onPress={handleBack}>
-        <Text style={styles.backButtonText}>Back</Text>
-      </TouchableOpacity>
-      {/* <NavGradient /> */}
     </KeyboardAvoidingView>
   );
 };
@@ -333,14 +329,15 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: "15%",
+    marginBottom: "10%"
   },
   title: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 50,
-    marginLeft: "5%",
-    marginTop: "20%",
-    marginBottom: "10%",
+    fontSize: 60,
   },
   text: {
     paddingHorizontal: 10,
@@ -435,5 +432,9 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  icon: {
+    marginLeft: "2%",
+    marginRight: "5%",
   },
 });

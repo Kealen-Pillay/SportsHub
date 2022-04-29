@@ -4,12 +4,10 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
-  LogBox,
   Modal,
   TouchableOpacity,
   Pressable,
   Image,
-  Button,
 } from "react-native";
 import React from "react";
 import { useState, useEffect } from "react";
@@ -20,12 +18,6 @@ import getDirections from "react-native-google-maps-directions";
 import colours from "../../../theme/colours";
 import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
-
-/**
- *
- * TODO
- *
- */
 
 const MyEventScreen = ({ darkModeEnabled }) => {
   const [events, setEvents] = useState([]);
