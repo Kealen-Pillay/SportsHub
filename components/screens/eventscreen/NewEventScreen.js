@@ -276,7 +276,7 @@ const NewEventScreen = () => {
                   mode={mode}
                   minimumDate={new Date()}
                   style={{
-                    width: "90%",
+                    width: "100%",
                     backgroundColor: "black",
                     marginTop: 10,
                   }}
@@ -290,7 +290,7 @@ const NewEventScreen = () => {
                     setShow(false);
                   }}
                 >
-                  <Text style={styles.textStyle}>Close</Text>
+                  <Text style={styles.closeButtonText}>Close</Text>
                 </Pressable>
               </View>
             </View>
@@ -350,11 +350,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    backgroundColor: "#3F3D41",
+    backgroundColor: colours.purple,
     width: "90%",
     borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#E82A96",
     alignItems: "center",
     height: 50,
     justifyContent: "center",
@@ -427,7 +425,7 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  textStyle: {
+  closeButtonText: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
