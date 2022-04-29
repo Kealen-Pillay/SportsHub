@@ -185,7 +185,7 @@ const NewEventScreen = () => {
         style={styles.text}
         data={validSports}
         search
-        maxHeight={300}
+        maxHeight={200}
         labelField="label"
         valueField="sport"
         placeholder="Sport"

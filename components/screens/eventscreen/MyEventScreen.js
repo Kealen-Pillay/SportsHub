@@ -327,7 +327,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 50,
     marginLeft: "5%",
-    marginRight: "10%",
+    marginRight: "13%",
   },
   container: {
     flex: 1,
