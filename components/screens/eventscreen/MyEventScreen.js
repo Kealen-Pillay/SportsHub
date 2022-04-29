@@ -160,6 +160,11 @@ const MyEventScreen = ({ darkModeEnabled }) => {
           />
         </TouchableOpacity>
       </View>
+      {isEmpty && (
+        <View style={styles.emptyContainer}>
+          <Text style={styles.noEventText}>You Have No Events</Text>
+        </View>
+      )}
 
       {setModalVisible && (
         <Modal
@@ -438,6 +443,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: "5%",
+    marginBottom: "5%"
   },
   createButton: {
     height: 50,
@@ -457,10 +463,20 @@ const styles = StyleSheet.create({
   noEventText: {
     fontWeight: "bold",
     fontSize: 30,
-    marginTop: "20%",
     textAlign: "center",
+    color: "white",
   },
   icon: {
     marginLeft: "5%",
+  },
+  emptyContainer: {
+    width: "90%",
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: darkTheme.pink,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50,
+    marginLeft: "5%"
   },
 });
