@@ -37,7 +37,7 @@ const NavBar = () => {
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                height: "150%",
+                height: "140%",
                 top: "50%",
               }}
             />
@@ -54,7 +54,7 @@ const NavBar = () => {
           right: 10,
           borderRadius: 15,
           backgroundColor: "transparent",
-          height: 60,
+          height: 65,
           borderTopWidth: 0,
         },
       })}

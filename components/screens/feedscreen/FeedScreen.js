@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: "100%",
-    marginBottom: 50,
+    marginBottom: 55,
   },
   centeredView: {
     flex: 1,
