@@ -11,60 +11,46 @@ import {
 import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
-//import { Rating } from "react-native-ratings";
-//import { StarRating } from "react-native-star-rating";
- 
+
+
 const RegisterScreen = () => {
 
   const starImgFilled = require('../../../images/star_filled.png')
   const starImgCorner = require('../../../images/star_corner.png')
- 
-  
-const RatingBox = () => {
+
+  const RatingBox = () => {
     return (
-
-      <View style={styles.customRatingBarStyle}>   
-        <Text style={styles.abilityText}>Skill Rating:</Text>
-
+      <View style={styles.customRatingBarStyle}>
+        <Text style={styles.abilityText}>Skill:</Text>
         {maxRating.map((rating, key) => {
-
-          return(
-
+          return (
             <TouchableOpacity
-            activeOpacity={0.7}
-            key={rating}
-            onPress={() => setdefaultRating(rating)}>
-
-            <Image
-
-              style = {styles.starImgStyle}
-              source = {
-                  rating <= defaultRating 
-                  ? starImgFilled 
-                  : starImgCorner
-              }
-            />
-
+              activeOpacity={0.7}
+              key={rating}
+              onPress={() => setdefaultRating(rating)}>
+              <Image
+                style={styles.starImgStyle}
+                source={
+                  rating <= defaultRating
+                    ? starImgFilled
+                    : starImgCorner
+                }
+              />
             </TouchableOpacity>
-
           );
         })
-      }
-
+        }
       </View>
     );
   };
 
   const [defaultRating, setdefaultRating] = useState(2)
-  const [maxRating, setmaxRating] = useState([1,2,3,4,5])
+  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5])
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setConfpassword] = useState("");
- // const [rating, setRating] = useState("");
-
-
-
+  const [newUser, setNewUser] = useState(true);
 
   const navigation = useNavigation();
 
@@ -93,14 +79,18 @@ const RatingBox = () => {
     } else if (defaultRating == 0) {
       alert("Please select a rating!")
     } else {
-      addUser();
       auth
         .createUserWithEmailAndPassword(email, password)
         .then((userCredentials) => {
           const user = userCredentials.user;
           console.log(user.email);
         })
-        .catch((error) => alert(error.message));
+        .catch((error) => {
+          setNewUser(false);
+          alert(error.message);
+        });
+      if (newUser == true)
+        addUser();
     }
   };
 
@@ -115,7 +105,7 @@ const RatingBox = () => {
         username: username,
         email: email,
         rating: defaultRating,
-        profileimg: "test",
+        profileimg: "",
       })
       .then(function (docRef) {
       })
@@ -136,7 +126,6 @@ const RatingBox = () => {
           value={username}
           onChangeText={(text) => setUsername(text)}
         />
-
         <TextInput
           style={styles.text}
           placeholder="Email"
@@ -159,11 +148,9 @@ const RatingBox = () => {
           secureTextEntry
         />
       </View>
-
       <View>
-      <RatingBox />
+        <RatingBox />
       </View>
-
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Create Account</Text>
@@ -181,7 +168,7 @@ const RatingBox = () => {
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
- 
+
   container: {
     flex: 1,
     backgroundColor: "#1E1E1E",
