@@ -372,8 +372,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "95%",
-    height: "60%",
-    marginTop: 40,
+    height: "70%",
     borderRadius: 20,
     borderColor: colours.pink,
     borderWidth: 2,
