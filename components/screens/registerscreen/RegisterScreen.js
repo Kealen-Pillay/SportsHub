@@ -12,40 +12,34 @@ import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
 
-
 const RegisterScreen = () => {
-
-  const starImgFilled = require('../../../images/star_filled.png')
-  const starImgCorner = require('../../../images/star_corner.png')
+  const starImgFilled = require("../../../images/star_filled.png");
+  const starImgCorner = require("../../../images/star_corner.png");
 
   const RatingBox = () => {
     return (
-      <View style={styles.customRatingBarStyle}>
+      <View style={styles.customRatingBar}>
         <Text style={styles.abilityText}>Skill:</Text>
         {maxRating.map((rating, key) => {
           return (
             <TouchableOpacity
               activeOpacity={0.7}
               key={rating}
-              onPress={() => setdefaultRating(rating)}>
+              onPress={() => setdefaultRating(rating)}
+            >
               <Image
                 style={styles.starImgStyle}
-                source={
-                  rating <= defaultRating
-                    ? starImgFilled
-                    : starImgCorner
-                }
+                source={rating <= defaultRating ? starImgFilled : starImgCorner}
               />
             </TouchableOpacity>
           );
-        })
-        }
+        })}
       </View>
     );
   };
 
-  const [defaultRating, setdefaultRating] = useState(2)
-  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5])
+  const [defaultRating, setdefaultRating] = useState(2);
+  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -77,7 +71,7 @@ const RegisterScreen = () => {
     } else if (password != confpassword) {
       alert("Passwords do not match! Please try again.");
     } else if (defaultRating == 0) {
-      alert("Please select a rating!")
+      alert("Please select a rating!");
     } else {
       auth
         .createUserWithEmailAndPassword(email, password)
@@ -89,14 +83,13 @@ const RegisterScreen = () => {
           setNewUser(false);
           alert(error.message);
         });
-      if (newUser == true)
-        addUser();
+      if (newUser == true) addUser();
     }
   };
 
   const handleReturn = () => {
     navigation.navigate("Login");
-  }
+  };
 
   const addUser = () => {
     firestore
@@ -107,10 +100,8 @@ const RegisterScreen = () => {
         rating: defaultRating,
         profileimg: "",
       })
-      .then(function (docRef) {
-      })
-      .catch(function (error) {
-      });
+      .then(function (docRef) {})
+      .catch(function (error) {});
   };
 
   return (
@@ -162,13 +153,12 @@ const RegisterScreen = () => {
         </TouchableOpacity>
       </View>
     </KeyboardAvoidingView>
-  )
-}
+  );
+};
 
 export default RegisterScreen;
 
 const styles = StyleSheet.create({
-
   container: {
     flex: 1,
     backgroundColor: "#1E1E1E",
@@ -213,26 +203,24 @@ const styles = StyleSheet.create({
   abilityText: {
     color: "black",
     fontWeight: "bold",
-    fontSize: 20,
-    alignItems: "flex-start",
-    marginRight: 10,
-    marginTop: 10,
-    marginLeft: 3,
+    fontSize: 30,
+    marginLeft: 5,
   },
-  customRatingBarStyle: {
+  customRatingBar: {
     flexDirection: "row",
     backgroundColor: "white",
     width: "80%",
-    marginTop: 30,
-    marginBottom: 5,
+    marginTop: 20,
+    marginBottom: 10,
     borderRadius: 5,
     height: 50,
-    justifyContent: "center",
+    justifyContent: "space-between",
+    alignItems: "center"
   },
   starImgStyle: {
-    width: 40,
-    height: 40,
-    resizeMode: 'cover'
+    width: 35,
+    height: 35,
+    resizeMode: "cover",
   },
   returnContainer: {
     width: "100%",
@@ -249,5 +237,5 @@ const styles = StyleSheet.create({
   },
   rating: {
     marginTop: 5,
-  }
+  },
 });
