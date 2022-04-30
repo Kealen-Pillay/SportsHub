@@ -429,7 +429,7 @@ const styles = StyleSheet.create({
   maps: {
     backgroundColor: colours.purple,
     width: "70%",
-    marginTop: "15%",
+    marginTop: "10%",
     marginBottom: "10%",
   },
   eventDate: {
