@@ -256,13 +256,13 @@ const MyEventScreen = ({ darkModeEnabled }) => {
                 style={[styles.button, styles.maps]}
                 onPress={handleDirections}
               >
-                <Text style={styles.textStyle}>Open Maps</Text>
+                <Text style={styles.modalButtonText}>Open Maps</Text>
               </Pressable>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
-                <Text style={styles.textStyle}>Close</Text>
+                <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
             </View>
           </View>
@@ -405,7 +405,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     width: "70%",
   },
-  textStyle: {
+  modalButtonText: {
     color: darkTheme.text,
     fontWeight: "bold",
     textAlign: "center",
@@ -429,8 +429,8 @@ const styles = StyleSheet.create({
   maps: {
     backgroundColor: colours.purple,
     width: "70%",
-    marginTop: 20,
-    marginBottom: 10,
+    marginTop: "15%",
+    marginBottom: "10%",
   },
   eventDate: {
     fontWeight: "bold",

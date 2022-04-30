@@ -42,7 +42,7 @@ const LoginScreen = () => {
 
   const handleRegister = () => {
     navigation.navigate("Register");
-  }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -52,6 +52,7 @@ const LoginScreen = () => {
       />
       <View style={styles.inputContainer}>
         <TextInput
+          keyboardType="email-address"
           style={styles.textInput}
           placeholder="Email"
           value={email}
@@ -78,7 +79,10 @@ const LoginScreen = () => {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.text}>Don't have an account?</Text>
-        <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+        <TouchableOpacity
+          style={styles.registerButton}
+          onPress={handleRegister}
+        >
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
