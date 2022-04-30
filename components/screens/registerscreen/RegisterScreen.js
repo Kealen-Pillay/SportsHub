@@ -15,6 +15,24 @@ import { useNavigation } from "../../../node_modules/@react-navigation/core";
 const RegisterScreen = () => {
   const starImgFilled = require("../../../images/star_filled.png");
   const starImgCorner = require("../../../images/star_corner.png");
+  const [defaultRating, setdefaultRating] = useState(3);
+  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
+  const [username, setUsername] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [confpassword, setConfpassword] = useState("");
+  const [newUser, setNewUser] = useState(true);
+
+  const navigation = useNavigation();
+
+  useEffect(() => {
+    const unsubscribe = auth.onAuthStateChanged((user) => {
+      if (user) {
+        navigation.navigate("Dashboard");
+      }
+    });
+    return unsubscribe;
+  }, []);
 
   const RatingBox = () => {
     return (
@@ -37,25 +55,6 @@ const RegisterScreen = () => {
       </View>
     );
   };
-
-  const [defaultRating, setdefaultRating] = useState(2);
-  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
-  const [username, setUsername] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confpassword, setConfpassword] = useState("");
-  const [newUser, setNewUser] = useState(true);
-
-  const navigation = useNavigation();
-
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged((user) => {
-      if (user) {
-        navigation.navigate("Dashboard");
-      }
-    });
-    return unsubscribe;
-  }, []);
 
   const handleSignUp = () => {
     if (username.length < 3) {
@@ -215,7 +214,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     height: 50,
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   starImgStyle: {
     width: 35,
