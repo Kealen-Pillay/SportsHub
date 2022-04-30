@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet } from "react-native";
 import React from "react";
 import MyEventScreen from "./MyEventScreen";
 import NewEventScreen from "../eventscreen/NewEventScreen";

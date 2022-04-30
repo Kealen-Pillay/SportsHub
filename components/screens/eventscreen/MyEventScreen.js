@@ -28,7 +28,6 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [lat, setLat] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
 
-  const navigation = useNavigation();
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
 

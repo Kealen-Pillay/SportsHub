@@ -21,6 +21,7 @@ import { auth } from "../../../firebase/firebase";
 import colours from "../../../theme/colours";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import NavGradient from "../../NavGradient";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 
 const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
   const [eventName, setEventName] = useState("");
@@ -163,7 +164,7 @@ const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView style={[styles.container, {backgroundColor: darkModeEnabled? darkTheme.background: lightTheme.background}]}>
       <View style={styles.titleContainer}>
         <TouchableOpacity onPress={handleBack} style={styles.icon}>
           <Ionicons
@@ -172,7 +173,7 @@ const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
             size={45}
           />
         </TouchableOpacity>
-        <Text style={styles.title}>New Event</Text>
+        <Text style={[styles.title, {color: darkModeEnabled? darkTheme.text : lightTheme.text}]}>New Event</Text>
       </View>
 
       <TextInput
@@ -225,12 +226,12 @@ const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
           },
           textInputContainer: {
             backgroundColor: "white",
-            borderWidth: 1,
-            borderColor: "white",
             width: "90%",
-            borderRadius: 10,
+            borderRadius: 5,
             marginBottom: "5%",
             height: 50,
+            borderWidth: 2,
+            borderColor: darkTheme.pink,
           },
           textInput: {
             height: 46,
@@ -270,7 +271,7 @@ const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
             }}
           >
             <View style={styles.centeredView}>
-              <View style={styles.modalView}>
+              <View style={[styles.modalView, {backgroundColor: darkModeEnabled ? darkTheme.cardBackground : lightTheme.cardBackground}]}>
                 <RNDateTimePicker
                   testID="dateTimePicker"
                   value={date}
@@ -326,7 +327,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#1E1E1E",
   },
   titleContainer: {
     width: "100%",
@@ -336,15 +336,14 @@ const styles = StyleSheet.create({
     marginBottom: "10%",
   },
   title: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 50,
   },
   text: {
     paddingHorizontal: 10,
     backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "white",
+    borderWidth: 2,
+    borderColor: darkTheme.pink,
     width: "90%",
     borderRadius: 10,
     marginBottom: "10%",
@@ -364,22 +363,10 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 25,
   },
-  backButton: {
-    backgroundColor: colours.purple,
-    marginTop: 20,
-    height: 40,
-    width: "30%",
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 25,
-  },
-  backButtonText: {
-    color: "white",
-    fontWeight: "700",
-    fontSize: 15,
-  },
   datePicker: {
     backgroundColor: "white",
+    borderColor: darkTheme.pink,
+    borderWidth: 2,
     width: "90%",
     height: 50,
     borderRadius: 15,
@@ -394,6 +381,8 @@ const styles = StyleSheet.create({
   },
   timePicker: {
     backgroundColor: "white",
+    borderColor: darkTheme.pink,
+    borderWidth: 2,
     width: "90%",
     height: 50,
     borderRadius: 15,
@@ -410,8 +399,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "#1E1E1E",
-    borderColor: "#E82A96",
+    borderColor: colours.pink,
     borderWidth: 2,
     borderRadius: 20,
     padding: 35,
