@@ -268,7 +268,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  rating: {
-    marginTop: 5,
-  },
 });
