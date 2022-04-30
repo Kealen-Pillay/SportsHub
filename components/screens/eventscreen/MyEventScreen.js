@@ -20,7 +20,7 @@ import { useNavigation, useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
-const MyEventScreen = ({ darkModeEnabled }) => {
+const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
@@ -114,7 +114,7 @@ const MyEventScreen = ({ darkModeEnabled }) => {
   };
 
   const handleCreateEvent = () => {
-    navigation.navigate("CreateEvent");
+    setNewEventShow(true);
   };
 
   return (

@@ -20,8 +20,9 @@ import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import { auth } from "../../../firebase/firebase";
 import colours from "../../../theme/colours";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import NavGradient from "../../NavGradient";
 
-const NewEventScreen = () => {
+const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
   const [eventName, setEventName] = useState("");
   const [sport, setSport] = useState("");
   const [location, setLocation] = useState("");
@@ -62,7 +63,7 @@ const NewEventScreen = () => {
     }
   };
   const handleBack = () => {
-    navigation.navigate("Dashboard");
+    setNewEventShow(false);
   };
   const addEvent = () => {
     firestore
@@ -164,13 +165,13 @@ const NewEventScreen = () => {
   return (
     <KeyboardAvoidingView style={styles.container}>
       <View style={styles.titleContainer}>
-          <TouchableOpacity onPress={handleBack} style={styles.icon}>
-            <Ionicons
-              name={"chevron-back-outline"}
-              color={colours.pink}
-              size={45}
-            />
-          </TouchableOpacity>
+        <TouchableOpacity onPress={handleBack} style={styles.icon}>
+          <Ionicons
+            name={"chevron-back-outline"}
+            color={colours.pink}
+            size={45}
+          />
+        </TouchableOpacity>
         <Text style={styles.title}>New Event</Text>
       </View>
 
@@ -313,6 +314,7 @@ const NewEventScreen = () => {
       <TouchableOpacity style={styles.button} onPress={handlePublish}>
         <Text style={styles.buttonText}>Publish Event</Text>
       </TouchableOpacity>
+      <NavGradient />
     </KeyboardAvoidingView>
   );
 };
@@ -331,7 +333,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     marginTop: "15%",
-    marginBottom: "10%"
+    marginBottom: "10%",
   },
   title: {
     color: "white",

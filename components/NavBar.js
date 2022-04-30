@@ -6,6 +6,7 @@ import MyEventScreen from "./screens/eventscreen/MyEventScreen";
 import ProfileScreen from "./screens/profilescreen/ProfileScreen";
 import { useState } from "react";
 import { LogBox } from 'react-native';
+import MyEventsTab from "./screens/eventscreen/MyEventsTab";
 
 LogBox.ignoreLogs(['Setting a timer']);
 
@@ -17,6 +18,7 @@ const Tab = createBottomTabNavigator();
 
 const NavBar = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(true);
+  const [newEventShow, setNewEventShow] = useState(false);
 
   return (
     <Tab.Navigator
@@ -66,7 +68,7 @@ const NavBar = () => {
       })}
     >
       <Tab.Screen name={eventScreen}>
-        {() => <MyEventScreen darkModeEnabled={darkModeEnabled} />}
+        {() => <MyEventsTab darkModeEnabled={darkModeEnabled} newEventShow={newEventShow} setNewEventShow={setNewEventShow}/>}
       </Tab.Screen>
       <Tab.Screen name={feedScreen}>
         {() => <FeedScreen darkModeEnabled={darkModeEnabled} />}
