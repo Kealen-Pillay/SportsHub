@@ -5,6 +5,9 @@ import FeedScreen from "./screens/feedscreen/FeedScreen";
 import MyEventScreen from "./screens/eventscreen/MyEventScreen";
 import ProfileScreen from "./screens/profilescreen/ProfileScreen";
 import { useState } from "react";
+import { LogBox } from 'react-native';
+
+LogBox.ignoreLogs(['Setting a timer']);
 
 const feedScreen = "Feed";
 const eventScreen = "Events";
