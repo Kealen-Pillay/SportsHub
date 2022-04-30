@@ -21,26 +21,15 @@ export default function App() {
           component={LoginScreen}
         />
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
           name="Register"
           component={RegisterScreen}
         />
 
         <Stack.Screen
-          options={{ headerShown: false }}
+          options={{ headerShown: false, gestureEnabled: false }}
           name="Dashboard"
           component={NavBar}
-        />
-
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="MyEventScreen"
-          component={MyEventScreen}
-        />
-        <Stack.Screen
-          options={{ headerShown: false }}
-          name="CreateEvent"
-          component={NewEventScreen}
         />
       </Stack.Navigator>
       <FlashMessage position="top" />

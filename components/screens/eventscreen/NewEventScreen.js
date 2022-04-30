@@ -67,6 +67,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
       });
     } else {
       addEvent();
+      setNewEventShow(false);
     }
   };
   const handleBack = () => {
@@ -317,7 +318,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                   onChange={onChange}
                 />
                 <Pressable
-                  style={[styles.button, styles.buttonClose]}
+                  style={styles.button}
                   onPress={() => {
                     setModalVisible(!modalVisible);
                     setShow(false);
