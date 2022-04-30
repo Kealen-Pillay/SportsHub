@@ -11,6 +11,8 @@ import {
 import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
+import { showMessage } from "react-native-flash-message";
+
 
 const RegisterScreen = () => {
   const starImgFilled = require("../../../images/star_filled.png");
@@ -58,25 +60,57 @@ const RegisterScreen = () => {
 
   const handleSignUp = () => {
     if (username.length < 3) {
-      alert("Username must be at least 3 characters");
+      showMessage({
+        message: "Username must be at least 3 characters!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (username.length > 10) {
-      alert("Username must be 10 or less characters");
+      showMessage({
+        message: "Username must be 10 characters or less!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (email.length == 0) {
-      alert("Please enter an email");
+      showMessage({
+        message: "Please enter an email!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (!email.match(/\w+@[A-Za-z_]+\.[A-Za-z]{2,6}/)) {
-      alert("Please enter an email of the format: example@gmail.com");
+      showMessage({
+        message: "Please enter an email of the format: example@gmail.com",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (password.length < 6) {
-      alert("Password must be at least 6 characters");
+      showMessage({
+        message: "Password must be at least 6 characters!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (password != confpassword) {
-      alert("Passwords do not match! Please try again.");
+      showMessage({
+        message: "Passwords do not match! Please try again!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (defaultRating == 0) {
-      alert("Please select a rating!");
+      showMessage({
+        message:"Please select a rating!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else {
       auth
         .createUserWithEmailAndPassword(email, password)
         .then((userCredentials) => {
           const user = userCredentials.user;
-          console.log(user.email);
+          showMessage({
+            message:"Account Created",
+            type: "success",
+            hideStatusBar: true,
+          });
         })
         .catch((error) => {
           setNewUser(false);
