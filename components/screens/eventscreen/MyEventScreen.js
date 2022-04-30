@@ -16,7 +16,7 @@ import { darkTheme, lightTheme } from "../../../theme/themes";
 import { firestore } from "../../../firebase/firestore";
 import getDirections from "react-native-google-maps-directions";
 import colours from "../../../theme/colours";
-import { useNavigation, useIsFocused } from "@react-navigation/native";
+import { useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 
@@ -101,6 +101,48 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
           <Image
             style={styles.ball}
             source={require("../../../images/Football.png")}
+          />
+        );
+        case "Tennis":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Tennis.png")}
+          />
+        );
+      case "Waterpolo":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Waterpolo.png")}
+          />
+        );
+      case "Rugby":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Rugby.png")}
+          />
+        );
+        case "eSports":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Esports.png")}
+          />
+        );
+      case "Sailing":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Sailing.png")}
+          />
+        );
+      case "Cricket":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Cricket.png")}
           />
         );
       default:

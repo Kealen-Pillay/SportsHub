@@ -23,7 +23,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 
-const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
+const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [eventName, setEventName] = useState("");
   const [sport, setSport] = useState("");
   const [location, setLocation] = useState("");
@@ -41,6 +41,12 @@ const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
     { label: "Basketball", sport: "Basketball" },
     { label: "Football", sport: "Football" },
     { label: "Volleyball", sport: "Volleyball" },
+    { label: "Tennis", sport: "Tennis" },
+    { label: "eSports", sport: "eSports" },
+    { label: "Cricket", sport: "Cricket" },
+    { label: "Sailing", sport: "Sailing" },
+    { label: "Rugby", sport: "Rugby" },
+    { label: "Waterpolo", sport: "Waterpolo" },
   ];
 
   const navigation = useNavigation();
@@ -164,7 +170,16 @@ const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
   };
 
   return (
-    <KeyboardAvoidingView style={[styles.container, {backgroundColor: darkModeEnabled? darkTheme.background: lightTheme.background}]}>
+    <KeyboardAvoidingView
+      style={[
+        styles.container,
+        {
+          backgroundColor: darkModeEnabled
+            ? darkTheme.background
+            : lightTheme.background,
+        },
+      ]}
+    >
       <View style={styles.titleContainer}>
         <TouchableOpacity onPress={handleBack} style={styles.icon}>
           <Ionicons
@@ -173,7 +188,14 @@ const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
             size={45}
           />
         </TouchableOpacity>
-        <Text style={[styles.title, {color: darkModeEnabled? darkTheme.text : lightTheme.text}]}>New Event</Text>
+        <Text
+          style={[
+            styles.title,
+            { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+          ]}
+        >
+          New Event
+        </Text>
       </View>
 
       <TextInput
@@ -271,7 +293,16 @@ const NewEventScreen = ({darkModeEnabled, setNewEventShow}) => {
             }}
           >
             <View style={styles.centeredView}>
-              <View style={[styles.modalView, {backgroundColor: darkModeEnabled ? darkTheme.cardBackground : lightTheme.cardBackground}]}>
+              <View
+                style={[
+                  styles.modalView,
+                  {
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.cardBackground
+                      : lightTheme.cardBackground,
+                  },
+                ]}
+              >
                 <RNDateTimePicker
                   testID="dateTimePicker"
                   value={date}
