@@ -37,7 +37,11 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
     <KeyboardAvoidingView
       style={[
         styles.container,
-        { backgroundColor: isEnabled ? darkTheme.background : lightTheme.background },
+        {
+          backgroundColor: isEnabled
+            ? darkTheme.background
+            : lightTheme.background,
+        },
       ]}
     >
       <View style={styles.usernameCardContainer}>
@@ -48,7 +52,6 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
               backgroundColor: isEnabled
                 ? darkTheme.cardBackground
                 : lightTheme.cardBackground,
-              borderColor: isEnabled ? darkTheme.pink : lightTheme.pink,
             },
           ]}
         >
@@ -66,7 +69,6 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
               backgroundColor: isEnabled
                 ? darkTheme.cardBackground
                 : lightTheme.cardBackground,
-              borderColor: isEnabled ? darkTheme.pink : lightTheme.pink,
             },
           ]}
         >
@@ -99,7 +101,6 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
               backgroundColor: isEnabled
                 ? darkTheme.cardBackground
                 : lightTheme.cardBackground,
-              borderColor: isEnabled ? darkTheme.pink : lightTheme.pink,
             },
           ]}
         >
@@ -113,6 +114,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
               Dark Mode:
             </Text>
             <Switch
+              color={darkTheme.pink}
               value={isEnabled}
               onValueChange={() => setIsEnabled(!isEnabled)}
             />
@@ -169,6 +171,7 @@ const styles = StyleSheet.create({
     height: 200,
     alignItems: "center",
     justifyContent: "center",
+    borderColor: darkTheme.pink,
   },
   usernameText: {
     textTransform: "uppercase",
@@ -183,6 +186,7 @@ const styles = StyleSheet.create({
     height: 80,
     alignItems: "flex-start",
     justifyContent: "center",
+    borderColor: darkTheme.pink,
   },
   ratingCardContainer: {
     height: 80,
@@ -199,6 +203,7 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     height: 80,
     alignItems: "flex-start",
+    borderColor: darkTheme.pink,
   },
   darkModeText: {
     fontWeight: "bold",
