@@ -158,6 +158,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
     setNewEventShow(true);
   };
 
+  let eventLocation = currentEvent.location;
   return (
     <SafeAreaView
       style={[
@@ -290,7 +291,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                     },
                   ]}
                 >
-                  Location: {currentEvent.location}
+                  Location: {eventLocation.split(',')[0]}
                 </Text>
               </View>
               <Pressable
