@@ -346,7 +346,6 @@ const styles = StyleSheet.create({
   },
   modalBodyContainer: {
     width: "100%",
-    // alignItems: "center",
     backgroundColor: colours.backgroundDark,
     borderRadius: 15,
   },
