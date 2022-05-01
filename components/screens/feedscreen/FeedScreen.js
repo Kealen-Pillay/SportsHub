@@ -155,7 +155,12 @@ const FeedScreen = () => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalText}>{currentEvent.eventName}</Text>
+              <View style={styles.modalTitleContainer}>
+                <TouchableOpacity>
+                  <Ionicons name={"bookmark-outline"} size={40} style={styles.bookmark}/>
+                </TouchableOpacity>
+                <Text style={styles.modalText}>{currentEvent.eventName}</Text>
+              </View>
               <View style={styles.modalBodyContainer}>
                 <View style={styles.clipboardContainer}>
                   <Text style={styles.modalBody}>
@@ -181,13 +186,13 @@ const FeedScreen = () => {
                 style={[styles.button, styles.maps]}
                 onPress={handleDirections}
               >
-                <Text style={styles.textStyle}>Open Maps</Text>
+                <Text style={styles.modalButtonText}>Open Maps</Text>
               </Pressable>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
-                <Text style={styles.textStyle}>Close</Text>
+                <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
             </View>
           </View>
@@ -223,7 +228,11 @@ const FeedScreen = () => {
                     {!isAttending ? (
                       <Ionicons name={"bookmark-outline"} size={40} />
                     ) : (
-                      <Ionicons name={"bookmark"} size={40} />
+                      <Ionicons
+                        name={"bookmark"}
+                        size={40}
+                        color={colours.pink}
+                      />
                     )}
                   </TouchableOpacity>
                 </View>
@@ -318,14 +327,13 @@ const styles = StyleSheet.create({
     marginTop: "0%",
     width: "70%",
   },
-  textStyle: {
+  modalButtonText: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
   },
   modalText: {
     marginBottom: 20,
-    textAlign: "center",
     color: "white",
     fontWeight: "bold",
     fontSize: 40,
@@ -338,7 +346,7 @@ const styles = StyleSheet.create({
   },
   modalBodyContainer: {
     width: "100%",
-    alignItems: "center",
+    // alignItems: "center",
     backgroundColor: colours.backgroundDark,
     borderRadius: 15,
   },
@@ -381,4 +389,12 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     width: "70%",
   },
+  modalTitleContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "flex-start"
+  },
+  bookmark: {
+    marginRight: "5%"
+  }
 });
