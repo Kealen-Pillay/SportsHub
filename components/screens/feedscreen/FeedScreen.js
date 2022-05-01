@@ -72,22 +72,23 @@ const FeedScreen = () => {
       });
   };
 
-  // const handleAttend = (eventID) => {
-  //   firestore
-  //     .collection("events")
-  //     .doc(eventID)
-  //     .update({
-  //       attendees: arrayUnion(auth.currentUser?.email),
-  //     })
-  //     .then(() => {
-  //       Toast.show({
-  //         type: "success",
-  //         text1: "Saved To My Events",
-  //         visibilityTime: 900,
-  //         position: "bottom",
-  //       });
-  //     });
-  // };
+  const handleAttend = (eventID) => {
+    const isAttending = checkAttendance(eventID);
+
+    if (isAttending) {
+      //remove attendee
+    } else {
+      firestore
+        .collection("Users")
+        .doc(eventID)
+        .update({
+          attendees: firebase.firestore.FieldValue.arrayUnion(auth.currentUser?.email),
+        },
+        {merge: true}
+        )
+        .then();
+    }
+  };
 
   const renderBall = (sport) => {
     switch (sport) {
