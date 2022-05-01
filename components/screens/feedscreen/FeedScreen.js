@@ -205,14 +205,14 @@ const FeedScreen = () => {
                 >
                   {checkAttendance(currentEvent.eventID) ? (
                     <Ionicons
-                      name={"bookmark-outline"}
+                      name={"bookmark"}
                       size={40}
                       style={styles.bookmark}
                       color={colours.pink}
                     />
                   ) : (
                     <Ionicons
-                      name={"bookmark"}
+                      name={"bookmark-outline"}
                       size={40}
                       style={styles.bookmark}
                       color={colours.pink}
@@ -285,13 +285,13 @@ const FeedScreen = () => {
                   <TouchableOpacity onPress={() => handleAttend(event.eventID)}>
                     {checkAttendance(event.eventID) ? (
                       <Ionicons
-                        name={"bookmark-outline"}
+                        name={"bookmark"}
                         size={40}
                         color={colours.pink}
                       />
                     ) : (
                       <Ionicons
-                        name={"bookmark"}
+                        name={"bookmark-outline"}
                         size={40}
                         color={colours.pink}
                       />
