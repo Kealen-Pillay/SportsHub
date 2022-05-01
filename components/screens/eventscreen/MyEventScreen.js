@@ -19,6 +19,7 @@ import colours from "../../../theme/colours";
 import { useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
+import { BlurView } from "expo-blur";
 
 const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [events, setEvents] = useState([]);
@@ -223,7 +224,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
             setModalVisible(!modalVisible);
           }}
         >
-          <View style={styles.centeredView}>
+          <BlurView intensity={40} tint={darkModeEnabled? "dark" : "light"} style={styles.blurContainer}>
             <View
               style={[
                 styles.modalView,
@@ -306,7 +307,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
             </View>
-          </View>
+          </BlurView>
         </Modal>
       )}
       <ScrollView style={styles.scrollView}>
@@ -412,11 +413,10 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 100,
   },
-  centeredView: {
+  blurContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
   },
   modalView: {
     width: "95%",
