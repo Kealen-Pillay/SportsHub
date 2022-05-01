@@ -21,9 +21,9 @@ import * as Clipboard from "expo-clipboard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
 import { auth } from "../../../firebase/firebase";
-import { LogBox } from 'react-native';
+import { LogBox } from "react-native";
 
-LogBox.ignoreLogs(['Setting a timer']);
+LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
 
@@ -77,37 +77,28 @@ const FeedScreen = () => {
 
   const handleAttend = (eventID) => {
     firestore
-    .collection("events")
-    .doc(eventID)
-    .get()
-    .then((documentSnapshot) => {
-      let attendees = documentSnapshot.data().attendees;
-      if (attendees.includes(auth.currentUser?.email)) {
-        for (let i = 0; i < attendees.length; i++) {
-          if (attendees[i] === auth.currentUser?.email) {
-            attendees.splice(i, 1);
-            break;
+      .collection("events")
+      .doc(eventID)
+      .get()
+      .then((documentSnapshot) => {
+        let attendees = documentSnapshot.data().attendees;
+        if (attendees.includes(auth.currentUser?.email)) {
+          for (let i = 0; i < attendees.length; i++) {
+            if (attendees[i] === auth.currentUser?.email) {
+              attendees.splice(i, 1);
+              break;
+            }
           }
-
-        }
-        firestore
-          .collection("events")
-          .doc(eventID)
-          .update({
+          firestore.collection("events").doc(eventID).update({
             attendees: attendees,
           });
-         
-      } else {
-       attendees = [...attendees, auth.currentUser?.email];
-       firestore
-       .collection("events")
-       .doc(eventID)
-       .update({
-         attendees: attendees,
-       });
-       
-      }
-    });
+        } else {
+          attendees = [...attendees, auth.currentUser?.email];
+          firestore.collection("events").doc(eventID).update({
+            attendees: attendees,
+          });
+        }
+      });
   };
 
   const renderBall = (sport) => {
@@ -209,7 +200,9 @@ const FeedScreen = () => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={styles.modalTitleContainer}>
-                <TouchableOpacity onPress={() =>handleAttend(currentEvent.eventID)}>
+                <TouchableOpacity
+                  onPress={() => handleAttend(currentEvent.eventID)}
+                >
                   {checkAttendance(currentEvent.eventID) ? (
                     <Ionicons
                       name={"bookmark-outline"}
@@ -289,7 +282,7 @@ const FeedScreen = () => {
                       {event.date} - {event.time}
                     </Text>
                   </View>
-                  <TouchableOpacity onPress={() =>handleAttend(event.eventID)}>
+                  <TouchableOpacity onPress={() => handleAttend(event.eventID)}>
                     {checkAttendance(event.eventID) ? (
                       <Ionicons
                         name={"bookmark-outline"}
