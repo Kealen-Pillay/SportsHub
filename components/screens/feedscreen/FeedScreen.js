@@ -20,6 +20,7 @@ import getDirections from "react-native-google-maps-directions";
 import * as Clipboard from "expo-clipboard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
+import { auth } from "../../../firebase/firebase";
 
 var counter = 0;
 
@@ -31,7 +32,6 @@ const FeedScreen = () => {
   const [long, setLong] = useState("");
   const [lat, setLat] = useState("");
   const [currentEventID, setCurrentEventID] = useState("");
-  const [isAttending, setIsAttending] = useState(false);
 
   useEffect(() => {
     setEvents([]);
@@ -72,6 +72,23 @@ const FeedScreen = () => {
       });
   };
 
+  // const handleAttend = (eventID) => {
+  //   firestore
+  //     .collection("events")
+  //     .doc(eventID)
+  //     .update({
+  //       attendees: arrayUnion(auth.currentUser?.email),
+  //     })
+  //     .then(() => {
+  //       Toast.show({
+  //         type: "success",
+  //         text1: "Saved To My Events",
+  //         visibilityTime: 900,
+  //         position: "bottom",
+  //       });
+  //     });
+  // };
+
   const renderBall = (sport) => {
     switch (sport) {
       case "Basketball":
@@ -110,8 +127,23 @@ const FeedScreen = () => {
       type: "success",
       text1: "Event ID Copied!",
       visibilityTime: 900,
-      position: "bottom",
+      position: "top",
     });
+  };
+
+  const checkAttendance = (eventID) => {
+    firestore
+      .collection("events")
+      .doc(eventID)
+      .get()
+      .then((documentSnapshot) => {
+        const attendees = documentSnapshot.data().attendees;
+        if (attendees.includes(auth.currentUser?.email)) {
+          return true;
+        } else {
+          return false;
+        }
+      });
   };
 
   return (
@@ -157,7 +189,21 @@ const FeedScreen = () => {
             <View style={styles.modalView}>
               <View style={styles.modalTitleContainer}>
                 <TouchableOpacity>
-                  <Ionicons name={"bookmark-outline"} size={40} style={styles.bookmark}/>
+                  {checkAttendance(currentEvent.eventID) ? (
+                    <Ionicons
+                      name={"bookmark-outline"}
+                      size={40}
+                      style={styles.bookmark}
+                      color={colours.pink}
+                    />
+                  ) : (
+                    <Ionicons
+                      name={"bookmark"}
+                      size={40}
+                      style={styles.bookmark}
+                      color={colours.pink}
+                    />
+                  )}
                 </TouchableOpacity>
                 <Text style={styles.modalText}>{currentEvent.eventName}</Text>
               </View>
@@ -222,11 +268,13 @@ const FeedScreen = () => {
                       {event.date} - {event.time}
                     </Text>
                   </View>
-                  <TouchableOpacity
-                    onPress={() => setIsAttending(!isAttending)}
-                  >
-                    {!isAttending ? (
-                      <Ionicons name={"bookmark-outline"} size={40} />
+                  <TouchableOpacity onPress={() => {}}>
+                    {checkAttendance(event.eventID) ? (
+                      <Ionicons
+                        name={"bookmark-outline"}
+                        size={40}
+                        color={colours.pink}
+                      />
                     ) : (
                       <Ionicons
                         name={"bookmark"}
@@ -391,9 +439,9 @@ const styles = StyleSheet.create({
   modalTitleContainer: {
     flexDirection: "row",
     width: "100%",
-    justifyContent: "flex-start"
+    justifyContent: "flex-start",
   },
   bookmark: {
-    marginRight: "5%"
-  }
+    marginRight: "5%",
+  },
 });
