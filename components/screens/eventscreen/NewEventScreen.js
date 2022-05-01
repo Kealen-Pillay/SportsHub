@@ -74,11 +74,13 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
     setNewEventShow(false);
   };
   const addEvent = () => {
+    const eventID = uuid();
     firestore
       .collection("events")
-      .add({
+      .doc(eventID)
+      .set({
         eventName: eventName,
-        eventID: uuid(),
+        eventID: eventID,
         date: dateText,
         time: timeText,
         sport: sport,
