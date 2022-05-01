@@ -21,6 +21,8 @@ import * as Clipboard from "expo-clipboard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
 
+var counter = 0;
+
 const FeedScreen = () => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
@@ -29,8 +31,10 @@ const FeedScreen = () => {
   const [long, setLong] = useState("");
   const [lat, setLat] = useState("");
   const [currentEventID, setCurrentEventID] = useState("");
+  const [isAttending, setIsAttending] = useState(false);
 
   useEffect(() => {
+    setEvents([]);
     getEvents();
   }, []);
 
@@ -191,8 +195,10 @@ const FeedScreen = () => {
       )}
       <ScrollView style={styles.scrollView}>
         {events.map((event) => {
+          counter++;
           return (
             <TouchableOpacity
+              key={counter}
               onPress={() => {
                 setModalVisible(true);
                 setCurrentEvent(event);
@@ -204,11 +210,22 @@ const FeedScreen = () => {
             >
               <View style={styles.eventContainer}>
                 {renderBall(event.sport)}
-                <View style={styles.infoContainer}>
-                  <Text style={styles.eventName}>{event.eventName}</Text>
-                  <Text style={styles.eventDate}>
-                    {event.date} - {event.time}
-                  </Text>
+                <View style={styles.attendContainer}>
+                  <View style={styles.infoContainer}>
+                    <Text style={styles.eventName}>{event.eventName}</Text>
+                    <Text style={styles.eventDate}>
+                      {event.date} - {event.time}
+                    </Text>
+                  </View>
+                  <TouchableOpacity
+                    onPress={() => setIsAttending(!isAttending)}
+                  >
+                    {!isAttending ? (
+                      <Ionicons name={"bookmark-outline"} size={40} />
+                    ) : (
+                      <Ionicons name={"bookmark"} size={40} />
+                    )}
+                  </TouchableOpacity>
                 </View>
               </View>
             </TouchableOpacity>
@@ -357,5 +374,11 @@ const styles = StyleSheet.create({
   clipboardContainer: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  attendContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "70%",
   },
 });
