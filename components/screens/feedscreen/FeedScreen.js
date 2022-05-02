@@ -60,7 +60,6 @@ const FeedScreen = () => {
         },
       ],
     };
-
     getDirections(data);
   };
 
@@ -143,8 +142,6 @@ const FeedScreen = () => {
       position: "top",
     });
   };
-
-  
 
   return (
     <SafeAreaView style={styles.container}>
