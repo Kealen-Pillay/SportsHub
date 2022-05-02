@@ -354,7 +354,6 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 20,
     color: "white",
     fontWeight: "bold",
     fontSize: 40,
@@ -411,8 +410,9 @@ const styles = StyleSheet.create({
   },
   modalTitleContainer: {
     flexDirection: "row",
-    width: "90%",
+    width: "100%",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 15,
   }
 });
