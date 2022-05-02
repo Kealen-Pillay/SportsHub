@@ -31,6 +31,7 @@ const FeedScreen = () => {
   const [selectedSport, setSelectedSport] = useState([]);
 
   useEffect(() => {
+    setEvents([]);
     getEvents();
   }, [search, selectedSport]);
 
@@ -57,7 +58,6 @@ const FeedScreen = () => {
   };
 
   const getEvents = () => {
-    setEvents([]);
     let query = firestore.collection("events");
     if (selectedSport.length > 0) {
       query = query.where("sport", "in", selectedSport);
