@@ -22,6 +22,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
 import { auth } from "../../../firebase/firebase";
 import { LogBox } from "react-native";
+import { BlurView } from "expo-blur";
 import Bookmark from "../feedscreen/Bookmark";
 
 LogBox.ignoreLogs(["Setting a timer"]);
@@ -182,7 +183,7 @@ const FeedScreen = () => {
             setModalVisible(!modalVisible);
           }}
         >
-          <View style={styles.centeredView}>
+          <BlurView intensity={40} tint="dark" style={styles.blurContainer}>
             <View style={styles.modalView}>
               <View style={styles.modalTitleContainer}>
                 <Text style={styles.modalText}>{currentEvent.eventName}</Text>
@@ -200,7 +201,7 @@ const FeedScreen = () => {
                     style={styles.clipboard}
                     onPress={() => copyToClipboard()}
                   >
-                    <Ionicons name={"copy-outline"} />
+                    <Ionicons name={"copy-outline"} color= "white" size={20}/>
                   </TouchableOpacity>
                 </View>
                 <Text style={styles.modalBody}>
@@ -225,7 +226,7 @@ const FeedScreen = () => {
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
             </View>
-          </View>
+          </BlurView>
         </Modal>
       )}
       <ScrollView style={styles.scrollView}>
@@ -310,11 +311,10 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 100,
   },
-  centeredView: {
+  blurContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
   },
   modalView: {
     width: "95%",
@@ -391,10 +391,8 @@ const styles = StyleSheet.create({
     marginBottom: 10,
   },
   clipboard: {
-    backgroundColor: "white",
     height: 20,
     width: 20,
-    borderRadius: 2,
     alignItems: "center",
     justifyContent: "center",
   },
