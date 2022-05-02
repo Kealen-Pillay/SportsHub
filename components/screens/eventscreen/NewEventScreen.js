@@ -65,6 +65,12 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
         type: "danger",
         hideStatusBar: true,
       });
+    } else if (eventName.length > 12) {
+      showMessage({
+        message: "Event name cannot exceed 12 characters",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else {
       addEvent();
       setNewEventShow(false);
