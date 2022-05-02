@@ -39,7 +39,6 @@ const FeedScreen = () => {
   const [currentEventID, setCurrentEventID] = useState("");
 
   useEffect(() => {
-    setEvents([]);
     getEvents();
   }, []);
 
@@ -139,7 +138,7 @@ const FeedScreen = () => {
     Toast.show({
       type: "success",
       text1: "Event ID Copied!",
-      visibilityTime: 900,
+      visibilityTime: 1000,
       position: "top",
     });
   };
