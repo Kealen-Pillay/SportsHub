@@ -55,6 +55,7 @@ const NavBar = () => {
           backgroundColor: "transparent",
           height: 90,
           borderTopWidth: 0,
+          elevation: 0,
         },
       })}
     >
