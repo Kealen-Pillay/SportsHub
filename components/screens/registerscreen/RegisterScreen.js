@@ -105,6 +105,7 @@ const RegisterScreen = () => {
           placeholder="Username"
           value={username}
           onChangeText={(text) => setUsername(text)}
+          keyboardAppearance='dark'
         />
 
         <TextInput
@@ -113,6 +114,7 @@ const RegisterScreen = () => {
           value={email}
           onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
+          keyboardAppearance='dark'
         />
         <TextInput
           style={styles.text}
@@ -120,6 +122,7 @@ const RegisterScreen = () => {
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
+          keyboardAppearance='dark'
         />
         <TextInput
           style={styles.text}
@@ -127,6 +130,7 @@ const RegisterScreen = () => {
           value={confpassword}
           onChangeText={(text) => setConfpassword(text)}
           secureTextEntry
+          keyboardAppearance='dark'
         />
       </View>
       <RatingBox />

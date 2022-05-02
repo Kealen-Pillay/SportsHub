@@ -12,7 +12,7 @@ import {
 import React from "react";
 import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
-import { Searchbar } from "react-native-paper";
+import SearchBar from 'react-native-platform-searchbar';
 import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
@@ -39,6 +39,7 @@ const FeedScreen = () => {
   const [currentEventID, setCurrentEventID] = useState("");
 
   useEffect(() => {
+    setEvents([]);
     getEvents();
   }, []);
 
@@ -145,11 +146,14 @@ const FeedScreen = () => {
 
   return (
     <SafeAreaView style={styles.container}>
-      <Searchbar
+      <SearchBar
         placeholder="Search"
         onChangeText={(text) => setSearch(text)}
         value={search}
         style={styles.searchBar}
+        //fix with dark mode
+        theme= "dark"
+        keyboardAppearance='dark'
       />
       <SelectableChips
         initialChips={["Football", "Basketball", "Volleyball"]}
@@ -283,7 +287,6 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     width: "90%",
-    marginTop: 30,
   },
   event: {
     width: "80%",
