@@ -25,6 +25,7 @@ const Bookmark = ({ handleAttend, eventID }) => {
   const [isAttending, setIsAttending] = useState(checkAttendance(eventID));
   return (
     <TouchableOpacity
+    style={styles.bookmark}
       onPress={() => {
         handleAttend(eventID);
         setIsAttending(!isAttending);
@@ -42,4 +43,10 @@ const Bookmark = ({ handleAttend, eventID }) => {
 
 export default Bookmark;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  bookmark:
+  {
+    marginBottom: "5%",
+    marginLeft: "5%",
+  }
+});

@@ -185,11 +185,11 @@ const FeedScreen = () => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={styles.modalTitleContainer}>
+                <Text style={styles.modalText}>{currentEvent.eventName}</Text>
                 <Bookmark
                   handleAttend={handleAttend}
                   eventID={currentEvent.eventID}
                 />
-                <Text style={styles.modalText}>{currentEvent.eventName}</Text>
               </View>
               <View style={styles.modalBodyContainer}>
                 <View style={styles.clipboardContainer}>
@@ -412,9 +412,7 @@ const styles = StyleSheet.create({
   modalTitleContainer: {
     flexDirection: "row",
     width: "100%",
-    justifyContent: "flex-start",
-  },
-  bookmark: {
-    marginRight: "5%",
-  },
+    justifyContent: "center",
+    alignItems: "center",
+  }
 });
