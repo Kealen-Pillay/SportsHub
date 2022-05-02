@@ -303,7 +303,7 @@ const styles = StyleSheet.create({
   eventName: {
     color: "white",
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 28,
     paddingLeft: 10,
     paddingTop: 10,
   },
