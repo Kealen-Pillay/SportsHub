@@ -44,9 +44,7 @@ const Bookmark = ({ handleAttend, eventID }) => {
 export default Bookmark;
 
 const styles = StyleSheet.create({
-  bookmark:
-  {
-    marginBottom: "5%",
-    marginLeft: "5%",
+  bookmark: {
+    marginBottom: "6%",
   }
 });

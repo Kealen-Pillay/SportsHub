@@ -411,8 +411,8 @@ const styles = StyleSheet.create({
   },
   modalTitleContainer: {
     flexDirection: "row",
-    width: "100%",
-    justifyContent: "center",
+    width: "90%",
+    justifyContent: "space-between",
     alignItems: "center",
   }
 });
