@@ -169,7 +169,6 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
 
       setTimeText(fTime);
     }
-    setShow(false);
   };
 
   const handleLocation = (data, lat, long) => {
@@ -270,8 +269,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
             fontSize: 14,
           },
           listView: {
-            width: "95%",
-            paddingLeft: 10,
+            width: "90%",
           },
         }}
       />
@@ -319,9 +317,12 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                   minimumDate={new Date()}
                   style={{
                     width: "100%",
-                    backgroundColor: "black",
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.cardBackground
+                      : lightTheme.cardBackground,
                     marginTop: 10,
                   }}
+                  textColor={darkModeEnabled ? darkTheme.text : lightTheme.text}
                   display={Platform.OS === "ios" ? "spinner" : "default"}
                   onChange={onChange}
                 />
