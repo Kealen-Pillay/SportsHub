@@ -184,6 +184,7 @@ const FeedScreen = () => {
           }}
         >
           <BlurView intensity={40} tint="dark" style={styles.blurContainer}>
+            <Toast/>
             <View style={styles.modalView}>
               <View style={styles.modalTitleContainer}>
                 <Text style={styles.modalText}>{currentEvent.eventName}</Text>
