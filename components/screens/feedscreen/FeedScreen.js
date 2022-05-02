@@ -22,6 +22,7 @@ import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
 import { auth } from "../../../firebase/firebase";
 import { LogBox } from "react-native";
+import Bookmark from "../feedscreen/Bookmark";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -143,20 +144,7 @@ const FeedScreen = () => {
     });
   };
 
-  const checkAttendance = (eventID) => {
-    firestore
-      .collection("events")
-      .doc(eventID)
-      .get()
-      .then((documentSnapshot) => {
-        const attendees = documentSnapshot.data().attendees;
-        if (attendees.includes(auth.currentUser?.email)) {
-          return true;
-        } else {
-          return false;
-        }
-      });
-  };
+  
 
   return (
     <SafeAreaView style={styles.container}>
@@ -200,25 +188,10 @@ const FeedScreen = () => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <View style={styles.modalTitleContainer}>
-                <TouchableOpacity
-                  onPress={() => handleAttend(currentEvent.eventID)}
-                >
-                  {checkAttendance(currentEvent.eventID) ? (
-                    <Ionicons
-                      name={"bookmark"}
-                      size={40}
-                      style={styles.bookmark}
-                      color={colours.pink}
-                    />
-                  ) : (
-                    <Ionicons
-                      name={"bookmark-outline"}
-                      size={40}
-                      style={styles.bookmark}
-                      color={colours.pink}
-                    />
-                  )}
-                </TouchableOpacity>
+                <Bookmark
+                  handleAttend={handleAttend}
+                  eventID={currentEvent.eventID}
+                />
                 <Text style={styles.modalText}>{currentEvent.eventName}</Text>
               </View>
               <View style={styles.modalBodyContainer}>
@@ -282,21 +255,10 @@ const FeedScreen = () => {
                       {event.date} - {event.time}
                     </Text>
                   </View>
-                  <TouchableOpacity onPress={() => handleAttend(event.eventID)}>
-                    {checkAttendance(event.eventID) ? (
-                      <Ionicons
-                        name={"bookmark"}
-                        size={40}
-                        color={colours.pink}
-                      />
-                    ) : (
-                      <Ionicons
-                        name={"bookmark-outline"}
-                        size={40}
-                        color={colours.pink}
-                      />
-                    )}
-                  </TouchableOpacity>
+                  <Bookmark
+                    handleAttend={handleAttend}
+                    eventID={event.eventID}
+                  />
                 </View>
               </View>
             </TouchableOpacity>
