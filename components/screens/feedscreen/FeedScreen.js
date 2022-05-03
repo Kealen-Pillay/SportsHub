@@ -12,7 +12,7 @@ import {
 import React from "react";
 import NavGradient from "../../NavGradient";
 import SearchBar from "react-native-platform-searchbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
 import getDirections from "react-native-google-maps-directions";
@@ -24,6 +24,7 @@ import { LogBox } from "react-native";
 import { BlurView } from "expo-blur";
 import Bookmark from "../feedscreen/Bookmark";
 import { darkTheme, lightTheme } from "../../../theme/themes";
+import debounce from "lodash.debounce";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -42,7 +43,14 @@ const FeedScreen = ({ darkModeEnabled }) => {
   useEffect(() => {
     setEvents([]);
     getEvents();
+    return () => {
+      debouncedResults.cancel();
+    };
   }, [search, selectedSport]);
+
+  const debouncedResults = useMemo(() => {
+    return debounce(setSearch, 300);
+  }, []);
 
   const handleDirections = () => {
     const data = {
@@ -166,8 +174,8 @@ const FeedScreen = ({ darkModeEnabled }) => {
     >
       <SearchBar
         placeholder="Search Event Name or ID"
-        onChangeText={(text) => setSearch(text)}
-        value={search}
+        onChangeText={debouncedResults}
+        // value={search}
         style={styles.searchBar}
         theme={darkModeEnabled ? "dark" : "light"}
         keyboardAppearance={darkModeEnabled ? "dark" : "light"}
