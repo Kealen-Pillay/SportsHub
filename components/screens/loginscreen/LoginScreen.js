@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import {darkTheme, lightTheme} from "../../../theme/themes";
+import { darkTheme } from "../../../theme/themes";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { auth } from "../../../firebase/firebase";

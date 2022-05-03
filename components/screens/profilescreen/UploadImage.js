@@ -28,9 +28,7 @@ export default function UploadImage({ darkModeEnabled }) {
           backgroundColor: darkModeEnabled
             ? darkTheme.background
             : lightTheme.background,
-          borderColor: darkModeEnabled
-            ? darkTheme.pink
-            : lightTheme.pink,
+          borderColor: darkModeEnabled ? darkTheme.pink : lightTheme.pink,
         },
       ]}
     >

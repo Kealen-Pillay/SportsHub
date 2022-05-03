@@ -1,6 +1,6 @@
 import { LinearGradient } from "expo-linear-gradient";
 import { StyleSheet } from "react-native";
-import {darkTheme, lightTheme} from "../theme/themes";
+import { darkTheme } from "../theme/themes";
 
 const NavGradient = () => {
   return (
