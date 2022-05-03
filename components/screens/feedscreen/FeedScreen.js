@@ -175,8 +175,11 @@ const FeedScreen = ({ darkModeEnabled }) => {
       <SearchBar
         placeholder="Search Event Name or ID"
         onChangeText={debouncedResults}
-        // value={search}
+        //value={search}
         style={styles.searchBar}
+        placeholderTextColor={
+          darkModeEnabled ? darkTheme.text : lightTheme.text
+        }
         theme={darkModeEnabled ? "dark" : "light"}
         keyboardAppearance={darkModeEnabled ? "dark" : "light"}
       />
