@@ -58,17 +58,18 @@ const NavBar = () => {
           backgroundColor: "transparent",
           height: 90,
           borderTopWidth: 0,
+          elevation: 0,
         },
       })}
     >
       <Tab.Screen name={eventScreen}>
-        {()=> <NewEventScreen darkModeEnabled={darkModeEnabled}/>}
+        {() => <NewEventScreen darkModeEnabled={darkModeEnabled} />}
       </Tab.Screen>
       <Tab.Screen name={feedScreen}>
-        {()=> <FeedScreen darkModeEnabled={darkModeEnabled}/>}
+        {() => <FeedScreen darkModeEnabled={darkModeEnabled} />}
       </Tab.Screen>
       <Tab.Screen name={profileScreen}>
-        {()=> <ProfileScreen setDarkModeEnabled={setDarkModeEnabled}/>}
+        {() => <ProfileScreen setDarkModeEnabled={setDarkModeEnabled} />}
       </Tab.Screen>
     </Tab.Navigator>
   );

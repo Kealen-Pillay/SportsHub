@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   Text,
 } from "react-native";
-import colours from "../../../theme/colours";
+import { darkTheme } from "../../../theme/themes";
 import React, { useEffect } from "react";
 import { useState } from "react";
 import { auth } from "../../../firebase/firebase";
@@ -29,20 +29,20 @@ const LoginScreen = () => {
   }, []);
 
   const handleLogin = () => {
-    // auth
-      // .signInWithEmailAndPassword(email, password)
-      // .then((userCredentials) => {
-      //   const user = userCredentials.user;
+    auth
+      .signInWithEmailAndPassword(email, password)
+      .then((userCredentials) => {
+        const user = userCredentials.user;
         navigation.navigate("Dashboard");
-      //   setEmail("");
-      //   setPassword("");
-      // })
-      // .catch((error) => alert("User does not exist"));
+        setEmail("");
+        setPassword("");
+      })
+      .catch((error) => alert("User does not exist"));
   };
 
   const handleRegister = () => {
     navigation.navigate("Register");
-  }
+  };
 
   return (
     <KeyboardAvoidingView style={styles.container} behavior="padding">
@@ -52,6 +52,7 @@ const LoginScreen = () => {
       />
       <View style={styles.inputContainer}>
         <TextInput
+          keyboardAppearance="dark"
           style={styles.textInput}
           placeholder="Email"
           value={email}
@@ -60,6 +61,7 @@ const LoginScreen = () => {
           }}
         />
         <TextInput
+          keyboardAppearance="dark"
           secureTextEntry
           style={styles.textInput}
           placeholder="Password"
@@ -78,7 +80,10 @@ const LoginScreen = () => {
           <Text style={styles.buttonText}>Login</Text>
         </TouchableOpacity>
         <Text style={styles.text}>Don't have an account?</Text>
-        <TouchableOpacity style={styles.registerButton} onPress={handleRegister}>
+        <TouchableOpacity
+          style={styles.registerButton}
+          onPress={handleRegister}
+        >
           <Text style={styles.buttonText}>Register</Text>
         </TouchableOpacity>
       </View>
@@ -99,7 +104,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: colours.backgroundDark,
+    backgroundColor: darkTheme.background,
     width: "100%",
   },
   inputContainer: {
@@ -109,7 +114,7 @@ const styles = StyleSheet.create({
   textInput: {
     marginTop: 20,
     height: 50,
-    backgroundColor: colours.text,
+    backgroundColor: darkTheme.text,
     borderRadius: 5,
     paddingLeft: 10,
   },
@@ -121,7 +126,7 @@ const styles = StyleSheet.create({
     marginBottom: 100,
   },
   loginButton: {
-    backgroundColor: colours.purple,
+    backgroundColor: darkTheme.purple,
     height: 50,
     width: "70%",
     justifyContent: "center",
@@ -129,12 +134,12 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   buttonText: {
-    color: colours.text,
+    color: darkTheme.text,
     fontWeight: "bold",
     fontSize: 16,
   },
   registerButton: {
-    backgroundColor: colours.pink,
+    backgroundColor: darkTheme.pink,
     justifyContent: "center",
     alignItems: "center",
     height: 50,
@@ -142,7 +147,7 @@ const styles = StyleSheet.create({
     borderRadius: 5,
   },
   text: {
-    color: colours.text,
+    color: darkTheme.text,
     margin: 20,
     fontWeight: "bold",
   },
