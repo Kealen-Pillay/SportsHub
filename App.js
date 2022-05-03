@@ -6,6 +6,7 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NavBar from "./components/NavBar";
 import RegisterScreen from "./components/screens/registerscreen/RegisterScreen";
 import Toast from "react-native-toast-message";
+import FlashMessage from "react-native-flash-message";
 
 const Stack = createNativeStackNavigator();
 
@@ -30,6 +31,7 @@ export default function App() {
         />
       </Stack.Navigator>
       <Toast />
+      <FlashMessage position="top" />
     </NavigationContainer>
   );
 }

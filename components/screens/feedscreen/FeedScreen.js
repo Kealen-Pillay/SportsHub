@@ -10,7 +10,6 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
 import SearchBar from 'react-native-platform-searchbar';
 import { useState, useEffect } from "react";
@@ -23,6 +22,7 @@ import Toast from "react-native-toast-message";
 import { auth } from "../../../firebase/firebase";
 import { LogBox } from "react-native";
 import { BlurView } from "expo-blur";
+import colours from "../../../theme/colours";
 import Bookmark from "../feedscreen/Bookmark";
 
 LogBox.ignoreLogs(["Setting a timer"]);
@@ -276,13 +276,11 @@ export default FeedScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colours.backgroundDark,
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
   },
   text: {
-    color: "white",
     fontSize: 50,
   },
   searchBar: {
