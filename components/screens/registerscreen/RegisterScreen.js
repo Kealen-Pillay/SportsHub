@@ -11,34 +11,19 @@ import {
 import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
-import { Rating } from "react-native-ratings";
-
+import { showMessage } from "react-native-flash-message";
 
 
 const RegisterScreen = () => {
-
-  const RatingBox = () => {
-    return (
-      <View style={styles.ratingsContainer}>
-        <Text style={styles.abilityText}>Ability:</Text>
-        <Rating
-          type="custom"
-          onFinishRating={(rating) => setRating(rating)}
-          ratingBackgroundColor={"black"}
-          readonly={false}
-          tintColor={"white"}
-          style={styles.rating}
-        />
-      </View>
-    );
-  };
-
+  const starImgFilled = require("../../../images/star_filled.png");
+  const starImgCorner = require("../../../images/star_corner.png");
+  const [defaultRating, setdefaultRating] = useState(3);
+  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setConfpassword] = useState("");
-  const [rating, setRating] = useState("");
-
+  const [newUser, setNewUser] = useState(true);
 
   const navigation = useNavigation();
 
@@ -51,32 +36,93 @@ const RegisterScreen = () => {
     return unsubscribe;
   }, []);
 
+  const RatingBox = () => {
+    return (
+      <View style={styles.customRatingBar}>
+        <Text style={styles.abilityText}>Skill:</Text>
+        {maxRating.map((rating, key) => {
+          return (
+            <TouchableOpacity
+              activeOpacity={0.7}
+              key={rating}
+              onPress={() => setdefaultRating(rating)}
+            >
+              <Image
+                style={styles.starImgStyle}
+                source={rating <= defaultRating ? starImgFilled : starImgCorner}
+              />
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    );
+  };
+
   const handleSignUp = () => {
     if (username.length < 3) {
-      alert("Username must be at least 3 characters");
+      showMessage({
+        message: "Username must be at least 3 characters!",
+        type: "danger",
+        hideStatusBar: true,
+      });
+    } else if (username.length > 10) {
+      showMessage({
+        message: "Username must be 10 characters or less!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (email.length == 0) {
-      alert("Please enter an email");
+      showMessage({
+        message: "Please enter an email!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (!email.match(/\w+@[A-Za-z_]+\.[A-Za-z]{2,6}/)) {
-      alert("Please enter an email of the format: example@gmail.com");
+      showMessage({
+        message: "Please enter an email of the format: example@gmail.com",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (password.length < 6) {
-      alert("Password must be at least 6 characters");
+      showMessage({
+        message: "Password must be at least 6 characters!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else if (password != confpassword) {
-      alert("Passwords do not match! Please try again.");
+      showMessage({
+        message: "Passwords do not match! Please try again!",
+        type: "danger",
+        hideStatusBar: true,
+      });
+    } else if (defaultRating == 0) {
+      showMessage({
+        message:"Please select a rating!",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else {
-      addUser();
       auth
         .createUserWithEmailAndPassword(email, password)
         .then((userCredentials) => {
           const user = userCredentials.user;
-          console.log(user.email);
+          showMessage({
+            message:"Account Created",
+            type: "success",
+            hideStatusBar: true,
+          });
         })
-        .catch((error) => alert(error.message));
+        .catch((error) => {
+          setNewUser(false);
+          alert(error.message);
+        });
+      if (newUser == true) addUser();
     }
   };
 
   const handleReturn = () => {
     navigation.navigate("Login");
-  }
+  };
 
   const addUser = () => {
     firestore
@@ -84,13 +130,11 @@ const RegisterScreen = () => {
       .add({
         username: username,
         email: email,
-        rating: rating,
-        profileimg: "test",
+        rating: defaultRating,
+        profileimg: "",
       })
-      .then(function (docRef) {
-      })
-      .catch(function (error) {
-      });
+      .then(function (docRef) {})
+      .catch(function (error) {});
   };
 
   return (
@@ -105,14 +149,15 @@ const RegisterScreen = () => {
           placeholder="Username"
           value={username}
           onChangeText={(text) => setUsername(text)}
+          keyboardAppearance='dark'
         />
-
         <TextInput
           style={styles.text}
           placeholder="Email"
           value={email}
           onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
+          keyboardAppearance='dark'
         />
         <TextInput
           style={styles.text}
@@ -120,6 +165,7 @@ const RegisterScreen = () => {
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
+          keyboardAppearance='dark'
         />
         <TextInput
           style={styles.text}
@@ -127,9 +173,12 @@ const RegisterScreen = () => {
           value={confpassword}
           onChangeText={(text) => setConfpassword(text)}
           secureTextEntry
+          keyboardAppearance='dark'
         />
       </View>
-      <RatingBox />
+      <View>
+        <RatingBox />
+      </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={styles.button} onPress={handleSignUp}>
           <Text style={styles.buttonText}>Create Account</Text>
@@ -192,20 +241,23 @@ const styles = StyleSheet.create({
     color: "black",
     fontWeight: "bold",
     fontSize: 30,
-    alignItems: "flex-start",
-    marginRight: 10,
-    marginTop: 10,
-    marginLeft: 3,
+    marginLeft: 5,
   },
-  ratingsContainer: {
+  customRatingBar: {
     flexDirection: "row",
     backgroundColor: "white",
     width: "80%",
-    marginTop: 10,
-    marginBottom: 5,
+    marginTop: 20,
+    marginBottom: 10,
     borderRadius: 5,
     height: 50,
-    justifyContent: "center",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  starImgStyle: {
+    width: 35,
+    height: 35,
+    resizeMode: "cover",
   },
   returnContainer: {
     width: "100%",
@@ -220,7 +272,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  rating: {
-    marginTop: 5,
-  }
 });

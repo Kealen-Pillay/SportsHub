@@ -4,24 +4,32 @@ import {
   Text,
   SafeAreaView,
   ScrollView,
-  LogBox,
   Modal,
   TouchableOpacity,
   Pressable,
   Image,
 } from "react-native";
 import React from "react";
-import colours from "../../../theme/colours";
 import NavGradient from "../../NavGradient";
-import { Searchbar } from "react-native-paper";
+import SearchBar from "react-native-platform-searchbar";
 import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
 import getDirections from "react-native-google-maps-directions";
+import * as Clipboard from "expo-clipboard";
+import Ionicons from "react-native-vector-icons/Ionicons";
+import Toast from "react-native-toast-message";
+import { auth } from "../../../firebase/firebase";
+import { LogBox } from "react-native";
+import { BlurView } from "expo-blur";
+import Bookmark from "../feedscreen/Bookmark";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
-const FeedScreen = () => {
+var counter = 0;
+
+const FeedScreen = ({ darkModeEnabled }) => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,6 +37,7 @@ const FeedScreen = () => {
   const [long, setLong] = useState("");
   const [lat, setLat] = useState("");
   const [selectedSport, setSelectedSport] = useState([]);
+  const [currentEventID, setCurrentEventID] = useState("");
 
   useEffect(() => {
     setEvents([]);
@@ -53,7 +62,6 @@ const FeedScreen = () => {
         },
       ],
     };
-
     getDirections(data);
   };
 
@@ -68,12 +76,39 @@ const FeedScreen = () => {
         {
           let name = data.eventName;
           name = name.toLowerCase();
-          if (name.includes(search.toLowerCase())) {
-            setEvents((prev)=>[...prev, data]);
+          let id = data.eventID;
+          if (id.includes(search) || name.includes(search.toLowerCase())) {
+            setEvents((prev) => [...prev, data]);
           }
         }
       });
     });
+  };
+
+  const handleAttend = (eventID) => {
+    firestore
+      .collection("events")
+      .doc(eventID)
+      .get()
+      .then((documentSnapshot) => {
+        let attendees = documentSnapshot.data().attendees;
+        if (attendees.includes(auth.currentUser?.email)) {
+          for (let i = 0; i < attendees.length; i++) {
+            if (attendees[i] === auth.currentUser?.email) {
+              attendees.splice(i, 1);
+              break;
+            }
+          }
+          firestore.collection("events").doc(eventID).update({
+            attendees: attendees,
+          });
+        } else {
+          attendees = [...attendees, auth.currentUser?.email];
+          firestore.collection("events").doc(eventID).update({
+            attendees: attendees,
+          });
+        }
+      });
   };
 
   const renderBall = (sport) => {
@@ -108,25 +143,48 @@ const FeedScreen = () => {
     setLong(lng);
   };
 
+  const copyToClipboard = () => {
+    Clipboard.setString(currentEventID);
+    Toast.show({
+      type: "success",
+      text1: "Event ID Copied!",
+      visibilityTime: 1000,
+      position: "top",
+    });
+  };
+
   return (
-    <SafeAreaView style={styles.container}>
-      <Searchbar
-        placeholder="Search Event Name"
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: darkModeEnabled
+            ? darkTheme.background
+            : lightTheme.background,
+        },
+      ]}
+    >
+      <SearchBar
+        placeholder="Search Event Name or ID"
         onChangeText={(text) => setSearch(text)}
         value={search}
         style={styles.searchBar}
+        theme={darkModeEnabled ? "dark" : "light"}
+        keyboardAppearance={darkModeEnabled ? "dark" : "light"}
       />
       <SelectableChips
         initialChips={["Football", "Basketball", "Volleyball"]}
         onChangeChips={(chips) => setSelectedSport(chips)}
         alertRequired={false}
         valueStyle={{
-          color: "white",
+          color: darkModeEnabled ? darkTheme.text : lightTheme.text,
           fontSize: 19,
         }}
         chipStyle={{
           borderColor: "black",
-          backgroundColor: colours.lightGrey,
+          backgroundColor: darkModeEnabled
+            ? darkTheme.cardBackground
+            : lightTheme.cardBackground,
           borderWidth: 2,
           width: 110,
           marginTop: 20,
@@ -134,7 +192,7 @@ const FeedScreen = () => {
           height: 45,
         }}
         chipStyleSelected={{
-          backgroundColor: colours.pink,
+          backgroundColor: darkTheme.pink,
           borderColor: "black",
           borderWidth: 2,
         }}
@@ -148,16 +206,117 @@ const FeedScreen = () => {
             setModalVisible(!modalVisible);
           }}
         >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Text style={styles.modalText}>{currentEvent.eventName}</Text>
-              <View style={styles.modalBodyContainer}>
-                <Text style={styles.modalBody}>
+          <BlurView
+            intensity={40}
+            tint={darkModeEnabled ? "dark" : "light"}
+            style={styles.blurContainer}
+          >
+            <Toast />
+            <View
+              style={[
+                styles.modalView,
+                {
+                  backgroundColor: darkModeEnabled
+                    ? darkTheme.cardBackground
+                    : lightTheme.cardBackground,
+                },
+              ]}
+            >
+              <View style={styles.modalTitleContainer}>
+                <Text
+                  style={[
+                    styles.modalText,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
+                  {currentEvent.eventName}
+                </Text>
+                <Bookmark
+                  handleAttend={handleAttend}
+                  eventID={currentEvent.eventID}
+                />
+              </View>
+              <View
+                style={[
+                  styles.modalBodyContainer,
+                  {
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.background
+                      : lightTheme.background,
+                  },
+                ]}
+              >
+                <View style={styles.clipboardContainer}>
+                  <Text
+                    style={[
+                      styles.modalBody,
+                      {
+                        color: darkModeEnabled
+                          ? darkTheme.text
+                          : lightTheme.text,
+                      },
+                    ]}
+                  >
+                    Event ID: {currentEventID}
+                  </Text>
+                  <TouchableOpacity
+                    style={[
+                      styles.clipboard,
+                      {
+                        backgroundColor: darkModeEnabled
+                          ? darkTheme.background
+                          : lightTheme.background,
+                      },
+                    ]}
+                    onPress={() => copyToClipboard()}
+                  >
+                    <Ionicons
+                      name={"copy-outline"}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                      size={20}
+                    />
+                  </TouchableOpacity>
+                </View>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
                   Sport: {currentEvent.sport}
                 </Text>
-                <Text style={styles.modalBody}>Time: {currentEvent.time}</Text>
-                <Text style={styles.modalBody}>Date: {currentEvent.date}</Text>
-                <Text style={styles.modalBody}>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
+                  Time: {currentEvent.time}
+                </Text>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
+                  Date: {currentEvent.date}
+                </Text>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
                   Location: {currentEvent.location}
                 </Text>
               </View>
@@ -165,37 +324,75 @@ const FeedScreen = () => {
                 style={[styles.button, styles.buttonMap]}
                 onPress={handleDirections}
               >
-                <Text style={styles.textStyle}>Open Maps</Text>
+                <Text style={styles.modalButtonText}>Open Maps</Text>
               </Pressable>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
-                <Text style={styles.textStyle}>Close</Text>
+                <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
             </View>
-          </View>
+          </BlurView>
         </Modal>
       )}
       <ScrollView style={styles.scrollView}>
         {events.map((event) => {
+          counter++;
           return (
             <TouchableOpacity
+              key={counter}
               onPress={() => {
                 setModalVisible(true);
                 setCurrentEvent(event);
+                setCurrentEventID(event.eventID.slice(0, 8));
                 {
                   setLatLong(event.lat, event.long);
                 }
               }}
             >
-              <View style={styles.eventContainer}>
+              <View
+                style={[
+                  styles.eventContainer,
+                  {
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.cardBackground
+                      : lightTheme.cardBackground,
+                  },
+                ]}
+              >
                 {renderBall(event.sport)}
-                <View style={styles.infoContainer}>
-                  <Text style={styles.eventName}>{event.eventName}</Text>
-                  <Text style={styles.eventDate}>
-                    {event.date} - {event.time}
-                  </Text>
+                <View style={styles.attendContainer}>
+                  <View style={styles.infoContainer}>
+                    <Text
+                      style={[
+                        styles.eventName,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {event.eventName}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.eventDate,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {event.date} - {event.time}
+                    </Text>
+                  </View>
+                  <Bookmark
+                    handleAttend={handleAttend}
+                    eventID={event.eventID}
+                  />
                 </View>
               </View>
             </TouchableOpacity>
@@ -211,39 +408,32 @@ export default FeedScreen;
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: colours.backgroundDark,
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
   },
   text: {
-    color: "white",
     fontSize: 50,
   },
   searchBar: {
     width: "90%",
-    marginTop: 30,
-  },
-  event: {
-    width: "80%",
-    backgroundColor: "white",
   },
   eventContainer: {
-    backgroundColor: colours.lightGrey,
+    borderColor: darkTheme.pink,
+    borderWidth: 2,
     margin: 20,
     height: 90,
     width: "90%",
     flexDirection: "row",
     alignItems: "center",
     overflow: "hidden",
-    borderColor: colours.pink,
+    borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 5,
   },
   eventName: {
-    color: "white",
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 28,
     paddingLeft: 10,
     paddingTop: 10,
   },
@@ -251,19 +441,17 @@ const styles = StyleSheet.create({
     width: "100%",
     marginBottom: 55,
   },
-  centeredView: {
+  blurContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
   },
   modalView: {
     width: "95%",
     height: "60%",
     marginTop: 40,
-    backgroundColor: colours.lightGrey,
     borderRadius: 20,
-    borderColor: colours.pink,
+    borderColor: darkTheme.pink,
     borderWidth: 2,
     padding: 35,
     alignItems: "center",
@@ -282,45 +470,37 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: "70%",
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
   buttonClose: {
-    backgroundColor: colours.backgroundDark,
+    backgroundColor: darkTheme.pink,
     marginTop: "0%",
   },
-  textStyle: {
+  modalButtonText: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 20,
-    textAlign: "center",
-    color: "white",
     fontWeight: "bold",
     fontSize: 40,
   },
   modalBody: {
-    color: "white",
     fontWeight: "bold",
-    margin: 20,
+    margin: 15,
     fontSize: 15,
   },
   modalBodyContainer: {
     width: "100%",
-    alignItems: "center",
-    backgroundColor: colours.backgroundDark,
+    backgroundColor: darkTheme.background,
     borderRadius: 15,
   },
   buttonMap: {
-    backgroundColor: colours.purple,
-    marginTop: "5%",
+    backgroundColor: darkTheme.purple,
+    width: "70%",
+    marginTop: "10%",
     marginBottom: "5%",
   },
   eventDate: {
     fontWeight: "bold",
-    color: "white",
     paddingLeft: 10,
     paddingTop: 10,
   },
@@ -332,5 +512,28 @@ const styles = StyleSheet.create({
   },
   infoContainer: {
     marginBottom: 10,
+  },
+  clipboard: {
+    height: 20,
+    width: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  clipboardContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  attendContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "70%",
+  },
+  modalTitleContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
   },
 });
