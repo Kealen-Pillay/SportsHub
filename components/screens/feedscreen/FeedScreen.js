@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import React from "react";
 import NavGradient from "../../NavGradient";
-import SearchBar from 'react-native-platform-searchbar';
+import SearchBar from "react-native-platform-searchbar";
 import { useState, useEffect } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
@@ -22,14 +22,14 @@ import Toast from "react-native-toast-message";
 import { auth } from "../../../firebase/firebase";
 import { LogBox } from "react-native";
 import { BlurView } from "expo-blur";
-import colours from "../../../theme/colours";
 import Bookmark from "../feedscreen/Bookmark";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
 
-const FeedScreen = () => {
+const FeedScreen = ({ darkModeEnabled }) => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -145,26 +145,36 @@ const FeedScreen = () => {
   };
 
   return (
-    <SafeAreaView style={styles.container}>
+    <SafeAreaView
+      style={[
+        styles.container,
+        {
+          backgroundColor: darkModeEnabled
+            ? darkTheme.background
+            : lightTheme.background,
+        },
+      ]}
+    >
       <SearchBar
         placeholder="Search"
         onChangeText={(text) => setSearch(text)}
         value={search}
         style={styles.searchBar}
-        //fix with dark mode
-        theme= "dark"
-        keyboardAppearance='dark'
+        theme={darkModeEnabled ? "dark" : "light"}
+        keyboardAppearance={darkModeEnabled ? "dark" : "light"}
       />
       <SelectableChips
         initialChips={["Football", "Basketball", "Volleyball"]}
         alertRequired={false}
         valueStyle={{
-          color: "white",
+          color: darkModeEnabled ? darkTheme.text : lightTheme.text,
           fontSize: 19,
         }}
         chipStyle={{
           borderColor: "black",
-          backgroundColor: colours.lightGrey,
+          backgroundColor: darkModeEnabled
+            ? darkTheme.cardBackground
+            : lightTheme.cardBackground,
           borderWidth: 2,
           width: 110,
           marginTop: 20,
@@ -172,7 +182,7 @@ const FeedScreen = () => {
           height: 45,
         }}
         chipStyleSelected={{
-          backgroundColor: colours.pink,
+          backgroundColor: darkTheme.pink,
           borderColor: "black",
           borderWidth: 2,
         }}
@@ -186,34 +196,117 @@ const FeedScreen = () => {
             setModalVisible(!modalVisible);
           }}
         >
-          <BlurView intensity={40} tint="dark" style={styles.blurContainer}>
-            <Toast/>
-            <View style={styles.modalView}>
+          <BlurView
+            intensity={40}
+            tint={darkModeEnabled ? "dark" : "light"}
+            style={styles.blurContainer}
+          >
+            <Toast />
+            <View
+              style={[
+                styles.modalView,
+                {
+                  backgroundColor: darkModeEnabled
+                    ? darkTheme.cardBackground
+                    : lightTheme.cardBackground,
+                },
+              ]}
+            >
               <View style={styles.modalTitleContainer}>
-                <Text style={styles.modalText}>{currentEvent.eventName}</Text>
+                <Text
+                  style={[
+                    styles.modalText,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
+                  {currentEvent.eventName}
+                </Text>
                 <Bookmark
                   handleAttend={handleAttend}
                   eventID={currentEvent.eventID}
                 />
               </View>
-              <View style={styles.modalBodyContainer}>
+              <View
+                style={[
+                  styles.modalBodyContainer,
+                  {
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.background
+                      : lightTheme.background,
+                  },
+                ]}
+              >
                 <View style={styles.clipboardContainer}>
-                  <Text style={styles.modalBody}>
+                  <Text
+                    style={[
+                      styles.modalBody,
+                      {
+                        color: darkModeEnabled
+                          ? darkTheme.text
+                          : lightTheme.text,
+                      },
+                    ]}
+                  >
                     Event ID: {currentEventID}
                   </Text>
                   <TouchableOpacity
-                    style={styles.clipboard}
+                    style={[
+                      styles.clipboard,
+                      {
+                        backgroundColor: darkModeEnabled
+                          ? darkTheme.background
+                          : lightTheme.background,
+                      },
+                    ]}
                     onPress={() => copyToClipboard()}
                   >
-                    <Ionicons name={"copy-outline"} color= "white" size={20}/>
+                    <Ionicons
+                      name={"copy-outline"}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                      size={20}
+                    />
                   </TouchableOpacity>
                 </View>
-                <Text style={styles.modalBody}>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
                   Sport: {currentEvent.sport}
                 </Text>
-                <Text style={styles.modalBody}>Time: {currentEvent.time}</Text>
-                <Text style={styles.modalBody}>Date: {currentEvent.date}</Text>
-                <Text style={styles.modalBody}>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
+                  Time: {currentEvent.time}
+                </Text>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
+                  Date: {currentEvent.date}
+                </Text>
+                <Text
+                  style={[
+                    styles.modalBody,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
                   Location: {currentEvent.location}
                 </Text>
               </View>
@@ -248,12 +341,41 @@ const FeedScreen = () => {
                 }
               }}
             >
-              <View style={styles.eventContainer}>
+              <View
+                style={[
+                  styles.eventContainer,
+                  {
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.cardBackground
+                      : lightTheme.cardBackground,
+                  },
+                ]}
+              >
                 {renderBall(event.sport)}
                 <View style={styles.attendContainer}>
                   <View style={styles.infoContainer}>
-                    <Text style={styles.eventName}>{event.eventName}</Text>
-                    <Text style={styles.eventDate}>
+                    <Text
+                      style={[
+                        styles.eventName,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {event.eventName}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.eventDate,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
                       {event.date} - {event.time}
                     </Text>
                   </View>
@@ -286,13 +408,8 @@ const styles = StyleSheet.create({
   searchBar: {
     width: "90%",
   },
-  event: {
-    width: "80%",
-    backgroundColor: "white",
-  },
   eventContainer: {
-    backgroundColor: colours.lightGrey,
-    borderColor: colours.pink,
+    borderColor: darkTheme.pink,
     borderWidth: 2,
     margin: 20,
     borderRadius: 5,
@@ -302,7 +419,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   eventName: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 28,
     paddingLeft: 10,
@@ -321,9 +437,8 @@ const styles = StyleSheet.create({
     width: "95%",
     height: "60%",
     marginTop: 40,
-    backgroundColor: colours.lightGrey,
     borderRadius: 20,
-    borderColor: colours.pink,
+    borderColor: darkTheme.pink,
     borderWidth: 2,
     padding: 35,
     alignItems: "center",
@@ -341,11 +456,8 @@ const styles = StyleSheet.create({
     padding: 10,
     elevation: 2,
   },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
-  },
   buttonClose: {
-    backgroundColor: colours.backgroundDark,
+    backgroundColor: darkTheme.background,
     marginTop: "0%",
     width: "70%",
   },
@@ -355,30 +467,27 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 40,
   },
   modalBody: {
-    color: "white",
     fontWeight: "bold",
     margin: 15,
     fontSize: 15,
   },
   modalBodyContainer: {
     width: "100%",
-    backgroundColor: colours.backgroundDark,
+    backgroundColor: darkTheme.background,
     borderRadius: 15,
   },
   maps: {
-    backgroundColor: colours.purple,
+    backgroundColor: darkTheme.purple,
     width: "70%",
     marginTop: "10%",
     marginBottom: "5%",
   },
   eventDate: {
     fontWeight: "bold",
-    color: "white",
     paddingLeft: 10,
     paddingTop: 10,
   },
@@ -413,5 +522,5 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 15,
-  }
+  },
 });

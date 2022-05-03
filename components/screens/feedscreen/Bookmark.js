@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import colours from "../../../theme/colours";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 import { firestore } from "../../../firebase/firestore";
 import { auth } from "../../../firebase/firebase";
 
@@ -34,7 +34,7 @@ const Bookmark = ({ handleAttend, eventID }) => {
         name={isAttending ? "bookmark" : "bookmark-outline"}
         size={40}
         style={styles.bookmark}
-        color={colours.pink}
+        color={darkTheme.pink}
       />
     </TouchableOpacity>
   );

@@ -56,7 +56,12 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
           ]}
         >
           <UploadImage darkModeEnabled={isEnabled} />
-          <Text style={styles.usernameText}>
+          <Text
+            style={[
+              styles.usernameText,
+              { color: isEnabled ? darkTheme.text : lightTheme.text },
+            ]}
+          >
             {auth.currentUser?.email.split("@")[0]}
           </Text>
         </Card>

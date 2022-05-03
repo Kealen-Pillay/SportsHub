@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import LoginScreen from "./components/screens/loginscreen/LoginScreen";
-import colours from "./theme/colours";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import NavBar from "./components/NavBar";
@@ -39,6 +38,5 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colours.backgroundDark,
   },
 });
