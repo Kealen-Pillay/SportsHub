@@ -4,24 +4,81 @@ import {
   View,
   KeyboardAvoidingView,
   TouchableOpacity,
+  Image,
 } from "react-native";
 import React from "react";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import { Card, Switch } from "react-native-paper";
 import { useState, useEffect } from "react";
-import { Rating } from "react-native-ratings";
 import { useNavigation } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
+import { firestore } from "../../../firebase/firestore";
 import UploadImage from "./UploadImage";
 import NavGradient from "../../NavGradient";
 
 const ProfileScreen = ({ setDarkModeEnabled }) => {
   const [isEnabled, setIsEnabled] = useState(true);
+  const [defaultRating, setdefaultRating] = useState();
+  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
+  const [username, setUsername] = useState("");
+  const starImgFilled = require("../../../images/star_filled.png");
+  const starImgCorner = require("../../../images/star_corner.png");
 
   const navigation = useNavigation();
 
+  const RatingBox = () => {
+    return (
+      <View style={styles.customRatingBar}>
+        {maxRating.map((rating, key) => {
+          return (
+            <TouchableOpacity activeOpacity={0.7} key={rating}>
+              <Image
+                style={styles.starImgStyle}
+                source={rating <= defaultRating ? starImgFilled : starImgCorner}
+              />
+            </TouchableOpacity>
+          );
+        })}
+      </View>
+    );
+  };
+
+  const getRating = () => {
+    firestore
+      .collection("users")
+      .where("email", "==", auth.currentUser?.email)
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((snapshot) => {
+          let data = snapshot.data();
+          {
+            let rating = data.rating;
+            setdefaultRating(rating);
+          }
+        });
+      });
+  };
+
+  const getUsername = () => {
+    firestore
+      .collection("users")
+      .where("email", "==", auth.currentUser?.email)
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((snapshot) => {
+          let data = snapshot.data();
+          {
+            let name = data.username;
+            setUsername(name);
+          }
+        });
+      });
+  };
+
   useEffect(() => {
     setDarkModeEnabled(isEnabled);
+    getRating();
+    getUsername();
   }, [isEnabled]);
 
   const handleSignOut = () => {
@@ -55,15 +112,17 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
             },
           ]}
         >
-          <UploadImage darkModeEnabled={isEnabled} />
-          <Text
-            style={[
-              styles.usernameText,
-              { color: isEnabled ? darkTheme.text : lightTheme.text },
-            ]}
-          >
-            {auth.currentUser?.email.split("@")[0]}
-          </Text>
+          <View style={styles.imageContainer}>
+            <UploadImage darkModeEnabled={isEnabled} />
+            <Text
+              style={[
+                styles.usernameText,
+                { color: isEnabled ? darkTheme.text : lightTheme.text },
+              ]}
+            >
+              {username}
+            </Text>
+          </View>
         </Card>
       </View>
       <View style={styles.ratingCardContainer}>
@@ -86,15 +145,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
             >
               Rating:
             </Text>
-            <Rating
-              type="custom"
-              ratingBackgroundColor={isEnabled ? "black" : "gray"}
-              readonly={true}
-              tintColor={
-                isEnabled ? darkTheme.cardBackground : lightTheme.cardBackground
-              }
-              style={{ width: 160 }}
-            />
+            <RatingBox />
           </View>
         </Card>
       </View>
@@ -174,13 +225,13 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 15,
     height: 200,
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
     borderColor: darkTheme.pink,
   },
   usernameText: {
     textTransform: "uppercase",
-    textAlign: "center",
     fontWeight: "bold",
     fontSize: 40,
     marginTop: 10,
@@ -233,6 +284,21 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     justifyContent: "space-between",
+    alignItems: "center",
+  },
+  starImgStyle: {
+    width: 35,
+    height: 35,
+  },
+  customRatingBar: {
+    flexDirection: "row",
+    height: 50,
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  imageContainer: {
+    marginBottom: 10,
+    justifyContent: "center",
     alignItems: "center",
   },
 });

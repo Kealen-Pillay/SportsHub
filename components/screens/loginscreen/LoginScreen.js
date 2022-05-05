@@ -53,6 +53,7 @@ const LoginScreen = () => {
       <View style={styles.inputContainer}>
         <TextInput
           keyboardAppearance="dark"
+          keyboardType="email-address"
           style={styles.textInput}
           placeholder="Email"
           value={email}
