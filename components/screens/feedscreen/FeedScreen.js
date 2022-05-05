@@ -40,6 +40,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
   const [selectedSport, setSelectedSport] = useState([]);
   const [currentEventID, setCurrentEventID] = useState("");
   const [attendeesArray, setAttendeesArray] = useState([]);
+  const [checkAttendance, setCheckAttendance] = useState(false);
 
   useEffect(() => {
     setEvents([]);
@@ -47,7 +48,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
     return () => {
       debouncedResults.cancel();
     };
-  }, [search, selectedSport]);
+  }, [search, selectedSport, checkAttendance]);
 
   const debouncedResults = useMemo(() => {
     return debounce(setSearch, 300);
@@ -109,6 +110,9 @@ const FeedScreen = ({ darkModeEnabled }) => {
         if (attendees.includes(auth.currentUser?.email)) {
           for (let i = 0; i < attendees.length; i++) {
             if (attendees[i] === auth.currentUser?.email) {
+              //fix this
+              // setCheckAttendance(false);
+              // console.log("left");
               attendees.splice(i, 1);
               break;
             }
@@ -117,6 +121,9 @@ const FeedScreen = ({ darkModeEnabled }) => {
             attendees: attendees,
           });
         } else {
+          // fix this
+          // setCheckAttendance(true);
+          // console.log("joined");
           attendees = [...attendees, auth.currentUser?.email];
           firestore.collection("events").doc(eventID).update({
             attendees: attendees,
@@ -389,7 +396,6 @@ const FeedScreen = ({ darkModeEnabled }) => {
                 setCurrentEvent(event);
                 setCurrentEventID(event.eventID.slice(0, 8));
                 setAttendeesArray(event.attendees);
-
                 {
                   setLatLong(event.lat, event.long);
                 }
