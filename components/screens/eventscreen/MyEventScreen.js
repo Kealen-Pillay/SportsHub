@@ -416,13 +416,6 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "center",
   },
-  text: {
-    fontSize: 50,
-  },
-  searchBar: {
-    width: "90%",
-    marginTop: 30,
-  },
   event: {
     width: "80%",
   },
@@ -487,10 +480,8 @@ const styles = StyleSheet.create({
     textAlign: "center",
   },
   modalText: {
-    marginBottom: 20,
-    textAlign: "center",
     fontWeight: "bold",
-    fontSize: 50,
+    fontSize: 40,
   },
   modalBody: {
     fontWeight: "bold",
@@ -502,11 +493,11 @@ const styles = StyleSheet.create({
     backgroundColor: darkTheme.background,
     borderRadius: 15,
   },
-  maps: {
+  buttonMap: {
     backgroundColor: darkTheme.purple,
     width: "70%",
     marginTop: "10%",
-    marginBottom: "10%",
+    marginBottom: "5%",
   },
   eventDate: {
     fontWeight: "bold",
@@ -581,5 +572,15 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     marginBottom: 15,
+  },
+  clipboard: {
+    height: 20,
+    width: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  clipboardContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
