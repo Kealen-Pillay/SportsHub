@@ -106,6 +106,30 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled, editEventID }) => 
       });
   };
 
+  const handleDeleteEvent = (eventID) => {
+    firestore
+  .collection('events')
+  .doc(eventID)
+  .delete()
+  .then(function (docRef) {
+    showMessage({
+      message: "Event Deleted!",
+      type: "success",
+      hideStatusBar: true,
+    });
+  })
+  .then(() => {
+    navigation.navigate("Dashboard");
+  })
+  .catch(function (error) {
+    showMessage({
+      message: "ERROR deleting event",
+      type: "danger",
+      hideStatusBar: true,
+    });
+  });
+  }
+
   const newDate = (currentMode) => {
     setChangingDate(true);
     setChangingTime(false);
@@ -346,7 +370,7 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled, editEventID }) => 
       </TouchableOpacity>
       <TouchableOpacity
         style={[styles.button, styles.deleteEventButton]}
-        onPress={handleEditEvent}
+        onPress={() => handleDeleteEvent(editEventID)}
       >
         <Text style={styles.buttonText}>Delete Event</Text>
       </TouchableOpacity>
