@@ -147,6 +147,48 @@ const MyEventScreen = ({
             source={require("../../../images/Football.png")}
           />
         );
+      case "Cricket":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Cricket.png")}
+          />
+        );
+      case "eSports":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Esports.png")}
+          />
+        );
+      case "Rugby":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Rugby.png")}
+          />
+        );
+      case "Sailing":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Sailing.png")}
+          />
+        );
+      case "Tennis":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Tennis.png")}
+          />
+        );
+      case "Waterpolo":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Waterpolo.png")}
+          />
+        );
       default:
     }
   };
