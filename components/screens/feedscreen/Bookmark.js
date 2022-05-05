@@ -20,6 +20,9 @@ const Bookmark = ({ handleAttend, eventID }) => {
           setIsAttending(false);
           return false;
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
   const [isAttending, setIsAttending] = useState(checkAttendance(eventID));

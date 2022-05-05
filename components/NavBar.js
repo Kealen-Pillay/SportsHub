@@ -19,6 +19,7 @@ const Tab = createBottomTabNavigator();
 const NavBar = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(true);
   const [newEventShow, setNewEventShow] = useState(false);
+  const [editEventShow, setEditEventShow] = useState(false);
 
   return (
     <Tab.Navigator
@@ -73,11 +74,13 @@ const NavBar = () => {
             darkModeEnabled={darkModeEnabled}
             newEventShow={newEventShow}
             setNewEventShow={setNewEventShow}
+            setEditEventShow={setEditEventShow}
+            editEventShow={editEventShow}
           />
         )}
       </Tab.Screen>
       <Tab.Screen name={feedScreen}>
-        {() => <FeedScreen darkModeEnabled={darkModeEnabled} />}
+        {() => <FeedScreen darkModeEnabled={darkModeEnabled} newEventShow={newEventShow} editEventShow={editEventShow}/>}
       </Tab.Screen>
       <Tab.Screen name={profileScreen}>
         {() => <ProfileScreen setDarkModeEnabled={setDarkModeEnabled} />}

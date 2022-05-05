@@ -19,6 +19,7 @@ import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import Bookmark from "../feedscreen/Bookmark";
+import EditButton from "../eventscreen/EditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
@@ -27,7 +28,12 @@ LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
 
-const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
+const MyEventScreen = ({
+  darkModeEnabled,
+  setNewEventShow,
+  setEditEventShow,
+  setEditEventID,
+}) => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
@@ -66,6 +72,8 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
     return querySize;
   };
 
+ 
+
   const handleAttend = (eventID) => {
     firestore
       .collection("events")
@@ -89,6 +97,8 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
             attendees: attendees,
           });
         }
+      }).catch((error) => {
+        console.log(error);
       });
   };
 
@@ -113,6 +123,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
 
     getDirections(data);
   };
+
   const renderBall = (sport) => {
     switch (sport) {
       case "Basketball":
@@ -136,6 +147,48 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
             source={require("../../../images/Football.png")}
           />
         );
+      case "Cricket":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Cricket.png")}
+          />
+        );
+      case "eSports":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Esports.png")}
+          />
+        );
+      case "Rugby":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Rugby.png")}
+          />
+        );
+      case "Sailing":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Sailing.png")}
+          />
+        );
+      case "Tennis":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Tennis.png")}
+          />
+        );
+      case "Waterpolo":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Waterpolo.png")}
+          />
+        );
       default:
     }
   };
@@ -147,6 +200,10 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
 
   const handleCreateEvent = () => {
     setNewEventShow(true);
+  };
+
+  const handleEditEvent = () => {
+    setEditEventShow(true);
   };
 
   const copyToClipboard = () => {
@@ -407,6 +464,25 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                       {event.date} - {event.time}
                     </Text>
                   </View>
+                  {/* <TouchableOpacity onPress={() => {
+                    handleEditEvent()
+                    setEditEventID(event.eventID)
+                  }}>
+                    <Ionicons
+                      name={isEditable ? "pencil-sharp" : ""}
+                      size={40}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                    />
+
+
+                  </TouchableOpacity> */}
+
+                  <EditButton
+                    handleEditEvent={handleEditEvent}
+                    eventID={event.eventID}
+                    darkModeEnabled={darkModeEnabled}
+                    setEditEventID={setEditEventID}
+                    />
                   <Bookmark
                     handleAttend={handleAttend}
                     eventID={event.eventID}

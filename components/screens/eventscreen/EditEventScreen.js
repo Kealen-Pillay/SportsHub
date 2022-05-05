@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -11,18 +11,22 @@ import {
 } from "react-native";
 import { firestore } from "../../../firebase/firestore";
 import "react-native-get-random-values";
-import { v4 as uuid } from "uuid";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { Dropdown } from "react-native-element-dropdown";
 import { showMessage } from "react-native-flash-message";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
-import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
+import { useState } from "react";
 
-const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
+const EditEventScreen = ({
+  setEditEventShow,
+  darkModeEnabled,
+  editEventID,
+  setEditEventID,
+}) => {
   const [eventName, setEventName] = useState("");
   const [sport, setSport] = useState("");
   const [location, setLocation] = useState("");
@@ -51,7 +55,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const navigation = useNavigation();
   const GOOGLE_PLACES_API_KEY = "AIzaSyCM5iQ4ICJBVnHqP53EEgOo8qo6xRoLq14";
 
-  const handlePublish = () => {
+  const handleEditEvent = (eventID) => {
     if (
       eventName.length == 0 ||
       sport.length == 0 ||
@@ -60,7 +64,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
       timeText.length == 0
     ) {
       showMessage({
-        message: "Please fill out all fields before publishing",
+        message: "Please fill out all fields before updating event!",
         type: "danger",
         hideStatusBar: true,
       });
@@ -71,33 +75,29 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
         hideStatusBar: true,
       });
     } else {
-      addEvent();
-      setNewEventShow(false);
+      updateEvent(eventID);
+      setEditEventShow(false);
     }
   };
   const handleBack = () => {
-    setNewEventShow(false);
+    setEditEventShow(false);
   };
-  const addEvent = () => {
-    const eventID = uuid();
+  const updateEvent = (eventID) => {
     firestore
       .collection("events")
       .doc(eventID)
-      .set({
+      .update({
         eventName: eventName,
-        eventID: eventID,
         date: dateText,
         time: timeText,
         sport: sport,
         location: location,
         long: long,
         lat: lat,
-        owner: auth.currentUser?.email,
-        attendees: [auth.currentUser?.email],
       })
       .then(function (docRef) {
         showMessage({
-          message: "Event Created!",
+          message: "Event Updated!",
           type: "success",
           hideStatusBar: true,
         });
@@ -106,9 +106,32 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
         navigation.navigate("Dashboard");
       })
       .catch(function (error) {
-        console.error("Error adding document: ", error);
         showMessage({
-          message: "ERROR adding event",
+          message: "ERROR updating event",
+          type: "danger",
+          hideStatusBar: true,
+        });
+      });
+  };
+
+  const handleDeleteEvent = (eventID) => {
+    firestore
+      .collection("events")
+      .doc(eventID)
+      .delete()
+      .then(() => {
+        showMessage({
+          message: "Event Deleted!",
+          type: "success",
+          hideStatusBar: true,
+        });
+        handleBack();
+        setEditEventID("");
+      })
+      .catch((error) => {
+        setEditEventID("");
+        showMessage({
+          message: "ERROR deleting event",
           type: "danger",
           hideStatusBar: true,
         });
@@ -201,7 +224,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
             { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
           ]}
         >
-          New Event
+          Edit Event
         </Text>
       </View>
 
@@ -317,13 +340,13 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                   style={{
                     width: "100%",
                     backgroundColor: darkModeEnabled
-                      ? darkTheme.cardBackground
-                      : lightTheme.cardBackground,
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
                     marginTop: 10,
                   }}
+                  textColor={darkModeEnabled?darkTheme.text:lightTheme.text}
                   display={Platform.OS === "ios" ? "spinner" : "default"}
                   onChange={onChange}
-                  textColor={darkModeEnabled ? darkTheme.text : lightTheme.text}
                 />
                 <Pressable
                   style={styles.button}
@@ -352,15 +375,24 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
           />
         ))}
 
-      <TouchableOpacity style={styles.button} onPress={handlePublish}>
-        <Text style={styles.buttonText}>Publish Event</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleEditEvent(editEventID)}
+      >
+        <Text style={styles.buttonText}>Edit Event</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, styles.deleteEventButton]}
+        onPress={() => handleDeleteEvent(editEventID)}
+      >
+        <Text style={styles.buttonText}>Delete Event</Text>
       </TouchableOpacity>
       <NavGradient />
     </KeyboardAvoidingView>
   );
 };
 
-export default NewEventScreen;
+export default EditEventScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -460,5 +492,8 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: "2%",
     marginRight: "5%",
+  },
+  deleteEventButton: {
+    backgroundColor: "#e85454",
   },
 });

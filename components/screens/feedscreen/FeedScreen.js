@@ -26,11 +26,12 @@ import Bookmark from "../feedscreen/Bookmark";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import debounce from "lodash.debounce";
 
-LogBox.ignoreLogs(["Setting a timer"]);
+LogBox.ignoreLogs(["Setting a timer", "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.", 
+"Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details."]);
 
 var counter = 0;
 
-const FeedScreen = ({ darkModeEnabled }) => {
+const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -46,7 +47,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
     return () => {
       debouncedResults.cancel();
     };
-  }, [search, selectedSport]);
+  }, [search, selectedSport, newEventShow, editEventShow]);
 
   const debouncedResults = useMemo(() => {
     return debounce(setSearch, 300);
@@ -116,6 +117,9 @@ const FeedScreen = ({ darkModeEnabled }) => {
             attendees: attendees,
           });
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -140,6 +144,48 @@ const FeedScreen = ({ darkModeEnabled }) => {
           <Image
             style={styles.ball}
             source={require("../../../images/Football.png")}
+          />
+        );
+      case "Cricket":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Cricket.png")}
+          />
+        );
+      case "eSports":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Esports.png")}
+          />
+        );
+      case "Rugby":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Rugby.png")}
+          />
+        );
+      case "Sailing":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Sailing.png")}
+          />
+        );
+      case "Tennis":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Tennis.png")}
+          />
+        );
+      case "Waterpolo":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Waterpolo.png")}
           />
         );
       default:
