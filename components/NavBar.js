@@ -45,7 +45,7 @@ const NavBar = () => {
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 60,
-                height: "135%",
+                height: "170%",
               }}
             />
           );
