@@ -120,9 +120,7 @@ const EditEventScreen = ({
           type: "success",
           hideStatusBar: true,
         });
-      })
-      .then(() => {
-        navigation.navigate("Dashboard");
+        handleBack();
       })
       .catch(function (error) {
         showMessage({
