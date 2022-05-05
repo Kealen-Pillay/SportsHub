@@ -64,6 +64,12 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
         type: "danger",
         hideStatusBar: true,
       });
+    } else if (eventName.length > 10) {
+      showMessage({
+        message: "Event name should be 10 characters or less",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else {
       addEvent();
       setNewEventShow(false);
@@ -162,7 +168,6 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
 
       setTimeText(fTime);
     }
-    setShow(false);
   };
 
   const handleLocation = (data, lat, long) => {
@@ -311,11 +316,14 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                   minimumDate={new Date()}
                   style={{
                     width: "100%",
-                    backgroundColor: "black",
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.cardBackground
+                      : lightTheme.cardBackground,
                     marginTop: 10,
                   }}
                   display={Platform.OS === "ios" ? "spinner" : "default"}
                   onChange={onChange}
+                  textColor={darkModeEnabled ? darkTheme.text : lightTheme.text}
                 />
                 <Pressable
                   style={styles.button}

@@ -1,7 +1,7 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { darkTheme } from "../../../theme/themes";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 import { firestore } from "../../../firebase/firestore";
 import { auth } from "../../../firebase/firebase";
 

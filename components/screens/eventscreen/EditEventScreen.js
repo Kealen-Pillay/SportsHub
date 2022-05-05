@@ -70,6 +70,12 @@ const EditEventScreen = ({
         type: "danger",
         hideStatusBar: true,
       });
+    } else if (eventName.length > 10) {
+      showMessage({
+        message: "Event name should be 10 characters or less",
+        type: "danger",
+        hideStatusBar: true,
+      });
     } else {
       updateEvent(eventID);
       setEditEventShow(false);
@@ -187,7 +193,6 @@ const EditEventScreen = ({
 
       setTimeText(fTime);
     }
-    setShow(false);
   };
 
   const handleLocation = (data, lat, long) => {
@@ -336,9 +341,12 @@ const EditEventScreen = ({
                   minimumDate={new Date()}
                   style={{
                     width: "100%",
-                    backgroundColor: "black",
+                    backgroundColor: darkModeEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
                     marginTop: 10,
                   }}
+                  textColor={darkModeEnabled?darkTheme.text:lightTheme.text}
                   display={Platform.OS === "ios" ? "spinner" : "default"}
                   onChange={onChange}
                 />
