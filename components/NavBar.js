@@ -39,13 +39,13 @@ const NavBar = () => {
           return (
             <Ionicons
               name={iconName}
-              size={45}
+              size={40}
               color={color}
               style={{
                 justifyContent: "center",
                 alignItems: "center",
                 marginTop: 60,
-                height: "130%",
+                height: "135%",
               }}
             />
           );
@@ -61,7 +61,7 @@ const NavBar = () => {
           right: 10,
           borderRadius: 15,
           backgroundColor: "transparent",
-          height: 90,
+          height: 65,
           borderTopWidth: 0,
           elevation: 0,
         },

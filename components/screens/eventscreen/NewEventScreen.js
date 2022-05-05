@@ -13,16 +13,16 @@ import { firestore } from "../../../firebase/firestore";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
-import { LogBox } from "react-native";
 import { Dropdown } from "react-native-element-dropdown";
 import { showMessage } from "react-native-flash-message";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
+import { auth } from "../../../firebase/firebase";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import NavGradient from "../../NavGradient";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 
-LogBox.ignoreLogs(["Setting a timer"]);
-
-const NewEventScreen = () => {
+const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [eventName, setEventName] = useState("");
   const [sport, setSport] = useState("");
   const [location, setLocation] = useState("");
@@ -39,12 +39,13 @@ const NewEventScreen = () => {
   const validSports = [
     { label: "Basketball", sport: "Basketball" },
     { label: "Football", sport: "Football" },
-    { label: "Cricket", sport: "Cricket" },
-    { label: "Rugby", sport: "Rugby" },
-    { label: "Waterpolo", sport: "Waterpolo" },
+    { label: "Volleyball", sport: "Volleyball" },
     { label: "Tennis", sport: "Tennis" },
     { label: "eSports", sport: "eSports" },
+    { label: "Cricket", sport: "Cricket" },
     { label: "Sailing", sport: "Sailing" },
+    { label: "Rugby", sport: "Rugby" },
+    { label: "Waterpolo", sport: "Waterpolo" },
   ];
 
   const navigation = useNavigation();
@@ -65,31 +66,38 @@ const NewEventScreen = () => {
       });
     } else {
       addEvent();
+      setNewEventShow(false);
     }
   };
-
+  const handleBack = () => {
+    setNewEventShow(false);
+  };
   const addEvent = () => {
+    const eventID = uuid();
     firestore
       .collection("events")
-      .add({
+      .doc(eventID)
+      .set({
         eventName: eventName,
-        eventID: uuid(),
+        eventID: eventID,
         date: dateText,
         time: timeText,
         sport: sport,
         location: location,
         long: long,
         lat: lat,
+        owner: auth.currentUser?.email,
+        attendees: [auth.currentUser?.email],
       })
       .then(function (docRef) {
         showMessage({
-          message: "Event added!",
+          message: "Event Created!",
           type: "success",
           hideStatusBar: true,
         });
       })
       .then(() => {
-        navigation.navigate("TempEvent");
+        navigation.navigate("Dashboard");
       })
       .catch(function (error) {
         console.error("Error adding document: ", error);
@@ -164,9 +172,32 @@ const NewEventScreen = () => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView
+      style={[
+        styles.container,
+        {
+          backgroundColor: darkModeEnabled
+            ? darkTheme.background
+            : lightTheme.background,
+        },
+      ]}
+    >
       <View style={styles.titleContainer}>
-        <Text style={styles.title}>New Event</Text>
+        <TouchableOpacity onPress={handleBack} style={styles.icon}>
+          <Ionicons
+            name={"chevron-back-outline"}
+            color={darkTheme.pink}
+            size={45}
+          />
+        </TouchableOpacity>
+        <Text
+          style={[
+            styles.title,
+            { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+          ]}
+        >
+          New Event
+        </Text>
       </View>
 
       <TextInput
@@ -180,7 +211,7 @@ const NewEventScreen = () => {
         style={styles.text}
         data={validSports}
         search
-        maxHeight={300}
+        maxHeight={200}
         labelField="label"
         valueField="sport"
         placeholder="Sport"
@@ -219,12 +250,11 @@ const NewEventScreen = () => {
           },
           textInputContainer: {
             backgroundColor: "white",
-            borderWidth: 1,
-            borderColor: "white",
             width: "90%",
-            borderRadius: 10,
+            borderRadius: 5,
             marginBottom: "5%",
             height: 50,
+            borderWidth: 2,
           },
           textInput: {
             height: 46,
@@ -264,14 +294,23 @@ const NewEventScreen = () => {
             }}
           >
             <View style={styles.centeredView}>
-              <View style={styles.modalView}>
+              <View
+                style={[
+                  styles.modalView,
+                  {
+                    backgroundColor: darkModeEnabled
+                      ? darkTheme.cardBackground
+                      : lightTheme.cardBackground,
+                  },
+                ]}
+              >
                 <RNDateTimePicker
                   testID="dateTimePicker"
                   value={date}
                   mode={mode}
                   minimumDate={new Date()}
                   style={{
-                    width: "90%",
+                    width: "100%",
                     backgroundColor: "black",
                     marginTop: 10,
                   }}
@@ -279,13 +318,13 @@ const NewEventScreen = () => {
                   onChange={onChange}
                 />
                 <Pressable
-                  style={[styles.button, styles.buttonClose]}
+                  style={styles.button}
                   onPress={() => {
                     setModalVisible(!modalVisible);
                     setShow(false);
                   }}
                 >
-                  <Text style={styles.textStyle}>Close</Text>
+                  <Text style={styles.closeButtonText}>Close</Text>
                 </Pressable>
               </View>
             </View>
@@ -320,24 +359,22 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "flex-start",
     alignItems: "center",
-    backgroundColor: "#1E1E1E",
   },
   titleContainer: {
     width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: "15%",
+    marginBottom: "10%",
   },
   title: {
-    color: "white",
     fontWeight: "bold",
     fontSize: 50,
-    marginLeft: "5%",
-    marginTop: "20%",
-    marginBottom: "10%",
   },
   text: {
     paddingHorizontal: 10,
     backgroundColor: "white",
-    borderWidth: 1,
-    borderColor: "white",
+    borderWidth: 2,
     width: "90%",
     borderRadius: 10,
     marginBottom: "10%",
@@ -345,11 +382,9 @@ const styles = StyleSheet.create({
   },
   button: {
     marginTop: 20,
-    backgroundColor: "#3F3D41",
+    backgroundColor: darkTheme.purple,
     width: "90%",
     borderRadius: 10,
-    borderWidth: 2,
-    borderColor: "#E82A96",
     alignItems: "center",
     height: 50,
     justifyContent: "center",
@@ -361,6 +396,7 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     backgroundColor: "white",
+    borderWidth: 2,
     width: "90%",
     height: 50,
     borderRadius: 15,
@@ -375,6 +411,7 @@ const styles = StyleSheet.create({
   },
   timePicker: {
     backgroundColor: "white",
+    borderWidth: 2,
     width: "90%",
     height: 50,
     borderRadius: 15,
@@ -391,8 +428,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     margin: 20,
-    backgroundColor: "#1E1E1E",
-    borderColor: "#E82A96",
+    borderColor: darkTheme.pink,
     borderWidth: 2,
     borderRadius: 20,
     padding: 35,
@@ -408,9 +444,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  textStyle: {
+  closeButtonText: {
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  icon: {
+    marginLeft: "2%",
+    marginRight: "5%",
   },
 });
