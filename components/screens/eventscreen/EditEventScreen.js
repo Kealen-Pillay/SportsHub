@@ -55,7 +55,7 @@ const EditEventScreen = ({
   ];
 
   const navigation = useNavigation();
-  const GOOGLE_PLACES_API_KEY = "AIzaSyCM5iQ4ICJBVnHqP53EEgOo8qo6xRoLq14";
+  const GOOGLE_PLACES_API_KEY = "";
 
   const handleEditEvent = (eventID) => {
     if (
