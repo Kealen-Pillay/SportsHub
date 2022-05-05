@@ -23,7 +23,11 @@ import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import { useState } from "react";
 
-const EditEventScreen = ({ setEditEventShow, darkModeEnabled, editEventID }) => {
+const EditEventScreen = ({
+  setEditEventShow,
+  darkModeEnabled,
+  editEventID,
+}) => {
   const [eventName, setEventName] = useState("");
   const [sport, setSport] = useState("");
   const [location, setLocation] = useState("");
@@ -97,7 +101,6 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled, editEventID }) => 
         navigation.navigate("Dashboard");
       })
       .catch(function (error) {
-
         showMessage({
           message: "ERROR updating event",
           type: "danger",
@@ -108,27 +111,27 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled, editEventID }) => 
 
   const handleDeleteEvent = (eventID) => {
     firestore
-  .collection('events')
-  .doc(eventID)
-  .delete()
-  .then(function (docRef) {
-    showMessage({
-      message: "Event Deleted!",
-      type: "success",
-      hideStatusBar: true,
-    });
-  })
-  .then(() => {
-    navigation.navigate("Dashboard");
-  })
-  .catch(function (error) {
-    showMessage({
-      message: "ERROR deleting event",
-      type: "danger",
-      hideStatusBar: true,
-    });
-  });
-  }
+      .collection("events")
+      .doc(eventID)
+      .delete()
+      .then(function (docRef) {
+        showMessage({
+          message: "Event Deleted!",
+          type: "success",
+          hideStatusBar: true,
+        });
+      })
+      .then(() => {
+        navigation.navigate("Dashboard");
+      })
+      .catch(function (error) {
+        showMessage({
+          message: "ERROR deleting event",
+          type: "danger",
+          hideStatusBar: true,
+        });
+      });
+  };
 
   const newDate = (currentMode) => {
     setChangingDate(true);
@@ -365,7 +368,10 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled, editEventID }) => 
           />
         ))}
 
-      <TouchableOpacity style={styles.button} onPress={() => handleEditEvent(editEventID)}>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleEditEvent(editEventID)}
+      >
         <Text style={styles.buttonText}>Edit Event</Text>
       </TouchableOpacity>
       <TouchableOpacity
