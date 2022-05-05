@@ -27,6 +27,7 @@ const EditEventScreen = ({
   setEditEventShow,
   darkModeEnabled,
   editEventID,
+  setEditEventID,
 }) => {
   const [eventName, setEventName] = useState("");
   const [sport, setSport] = useState("");
@@ -114,15 +115,17 @@ const EditEventScreen = ({
       .collection("events")
       .doc(eventID)
       .delete()
-      .then(function (docRef) {
+      .then(() => {
         showMessage({
           message: "Event Deleted!",
           type: "success",
           hideStatusBar: true,
         });
         handleBack();
+        setEditEventID("");
       })
-      .catch(function (error) {
+      .catch((error) => {
+        setEditEventID("");
         showMessage({
           message: "ERROR deleting event",
           type: "danger",

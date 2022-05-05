@@ -12,7 +12,6 @@ const MyEventsTab = ({
   editEventShow,
   setEditEventShow,
 }) => {
-
   const [editEventID, setEditEventID] = useState("");
 
   if (newEventShow) {
@@ -28,6 +27,7 @@ const MyEventsTab = ({
         darkModeEnabled={darkModeEnabled}
         setEditEventShow={setEditEventShow}
         editEventID={editEventID}
+        setEditEventID={setEditEventID}
       />
     );
   } else {

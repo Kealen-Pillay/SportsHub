@@ -116,6 +116,9 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
             attendees: attendees,
           });
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 

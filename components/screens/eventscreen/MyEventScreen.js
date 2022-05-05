@@ -94,6 +94,8 @@ const MyEventScreen = ({
             attendees: attendees,
           });
         }
+      }).catch((error) => {
+        console.log(error);
       });
   };
 
