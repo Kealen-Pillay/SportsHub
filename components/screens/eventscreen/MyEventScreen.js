@@ -23,7 +23,6 @@ import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
 
-
 LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
@@ -64,7 +63,6 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
           }
         }
       });
-
     return querySize;
   };
 
