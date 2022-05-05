@@ -10,87 +10,60 @@ import {
   Image,
 } from "react-native";
 import React from "react";
+import { useState, useEffect } from "react";
 import NavGradient from "../../NavGradient";
-import SearchBar from "react-native-platform-searchbar";
-import { useState, useEffect, useMemo } from "react";
-import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
 import getDirections from "react-native-google-maps-directions";
-import * as Clipboard from "expo-clipboard";
-import Ionicons from "react-native-vector-icons/Ionicons";
-import Toast from "react-native-toast-message";
+import { useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
-import { LogBox } from "react-native";
-import { BlurView } from "expo-blur";
-import Bookmark from "../feedscreen/Bookmark";
+import Ionicons from "react-native-vector-icons/Ionicons";
 import { darkTheme, lightTheme } from "../../../theme/themes";
-import debounce from "lodash.debounce";
+import Bookmark from "../feedscreen/Bookmark";
+import { BlurView } from "expo-blur";
+import Toast from "react-native-toast-message";
+import { LogBox } from "react-native";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
 
-const FeedScreen = ({ darkModeEnabled }) => {
-  const [search, setSearch] = useState("");
+const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
   const [long, setLong] = useState("");
   const [lat, setLat] = useState("");
-  const [selectedSport, setSelectedSport] = useState([]);
+  const [isEmpty, setIsEmpty] = useState(false);
   const [currentEventID, setCurrentEventID] = useState("");
+
+  const isFocused = useIsFocused();
+  const currentUser = auth.currentUser?.email;
 
   useEffect(() => {
     setEvents([]);
     getEvents();
-    return () => {
-      debouncedResults.cancel();
-    };
-  }, [search, selectedSport]);
-
-  const debouncedResults = useMemo(() => {
-    return debounce(setSearch, 300);
-  }, []);
-
-  const handleDirections = () => {
-    const data = {
-      source: {},
-      destination: {
-        latitude: lat,
-        longitude: long,
-      },
-      params: [
-        {
-          key: "travelmode",
-          value: "driving",
-        },
-        {
-          key: "dir_action",
-          value: "navigate",
-        },
-      ],
-    };
-    getDirections(data);
-  };
+  }, [isFocused]);
 
   const getEvents = () => {
-    let query = firestore.collection("events");
-    if (selectedSport.length > 0) {
-      query = query.where("sport", "in", selectedSport);
-    }
-    query.get().then((querySnapShot) => {
-      querySnapShot.forEach((snapshot) => {
-        let data = snapshot.data();
+    let querySize = 0;
+    firestore
+      .collection("events")
+      .where("attendees", "array-contains", currentUser)
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((snapshot) => {
+          let data = snapshot.data();
+          setEvents((prev) => [...prev, data]);
+        });
         {
-          let name = data.eventName;
-          name = name.toLowerCase();
-          let id = data.eventID;
-          if (id.includes(search) || name.includes(search.toLowerCase())) {
-            setEvents((prev) => [...prev, data]);
+          if (querySnapShot.size === 0) {
+            setIsEmpty(true);
+          } else {
+            setIsEmpty(false);
           }
         }
       });
-    });
+    return querySize;
   };
 
   const handleAttend = (eventID) => {
@@ -119,6 +92,27 @@ const FeedScreen = ({ darkModeEnabled }) => {
       });
   };
 
+  const handleDirections = () => {
+    const data = {
+      source: {},
+      destination: {
+        latitude: lat,
+        longitude: long,
+      },
+      params: [
+        {
+          key: "travelmode",
+          value: "driving",
+        },
+        {
+          key: "dir_action",
+          value: "navigate",
+        },
+      ],
+    };
+
+    getDirections(data);
+  };
   const renderBall = (sport) => {
     switch (sport) {
       case "Basketball":
@@ -151,6 +145,10 @@ const FeedScreen = ({ darkModeEnabled }) => {
     setLong(lng);
   };
 
+  const handleCreateEvent = () => {
+    setNewEventShow(true);
+  };
+
   const copyToClipboard = () => {
     Clipboard.setString(currentEventID);
     Toast.show({
@@ -172,41 +170,51 @@ const FeedScreen = ({ darkModeEnabled }) => {
         },
       ]}
     >
-      <SearchBar
-        placeholder="Search Event Name or ID"
-        onChangeText={debouncedResults}
-        style={styles.searchBar}
-        placeholderTextColor={
-          darkModeEnabled ? darkTheme.text : lightTheme.text
-        }
-        theme={darkModeEnabled ? "dark" : "light"}
-        keyboardAppearance={darkModeEnabled ? "dark" : "light"}
-      />
-      <SelectableChips
-        initialChips={["Football", "Basketball", "Volleyball"]}
-        onChangeChips={(chips) => setSelectedSport(chips)}
-        alertRequired={false}
-        valueStyle={{
-          color: darkModeEnabled ? darkTheme.text : lightTheme.text,
-          fontSize: 19,
-        }}
-        chipStyle={{
-          borderColor: "black",
-          backgroundColor: darkModeEnabled
-            ? darkTheme.cardBackground
-            : lightTheme.cardBackground,
-          borderWidth: 2,
-          width: 110,
-          marginTop: 20,
-          marginBottom: 10,
-          height: 45,
-        }}
-        chipStyleSelected={{
-          backgroundColor: darkTheme.pink,
-          borderColor: "black",
-          borderWidth: 2,
-        }}
-      />
+      <View style={styles.titleContainer}>
+        <Text
+          style={[
+            styles.title,
+            { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+          ]}
+        >
+          My Events
+        </Text>
+        <TouchableOpacity
+          style={[
+            styles.createButton,
+            {
+              backgroundColor: darkModeEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+            },
+          ]}
+          onPress={handleCreateEvent}
+        >
+          <Ionicons
+            name={"add-outline"}
+            size={35}
+            style={[
+              styles.icon,
+              {
+                color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+              },
+            ]}
+          />
+        </TouchableOpacity>
+      </View>
+      {isEmpty && (
+        <View style={styles.emptyContainer}>
+          <Text
+            style={[
+              styles.noEventText,
+              { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+            ]}
+          >
+            You Have No Events
+          </Text>
+        </View>
+      )}
+
       {setModalVisible && (
         <Modal
           animationType="slide"
@@ -414,19 +422,76 @@ const FeedScreen = ({ darkModeEnabled }) => {
   );
 };
 
-export default FeedScreen;
+export default MyEventScreen;
 
 const styles = StyleSheet.create({
+  title: {
+    fontWeight: "bold",
+    fontSize: 50,
+    marginLeft: "5%",
+    marginRight: "13%",
+  },
   container: {
     flex: 1,
-    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
+  event: {
+    width: "80%",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
+    marginTop: 22,
   },
-  text: {
-    fontSize: 50,
+  ball: {
+    height: 50,
+    width: 50,
+    marginLeft: 15,
+    marginRight: 10,
   },
-  searchBar: {
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    marginTop: "5%",
+    marginBottom: "5%",
+    width: "95%",
+  },
+  createButton: {
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    borderColor: darkTheme.pink,
+    borderWidth: 2,
+  },
+  createText: {
+    fontWeight: "bold",
+    fontSize: 30,
+    bottom: 6,
+    right: 0.5,
+  },
+  noEventText: {
+    fontWeight: "bold",
+    fontSize: 30,
+    textAlign: "center",
+  },
+  icon: {
+    marginLeft: "5%",
+  },
+  emptyContainer: {
     width: "90%",
+    borderRadius: 15,
+    borderWidth: 2,
+    borderColor: darkTheme.pink,
+    justifyContent: "center",
+    alignItems: "center",
+    height: 50,
+    marginLeft: "5%",
+    marginTop: "60%",
   },
   scrollView: {
     width: "100%",
@@ -537,11 +602,5 @@ const styles = StyleSheet.create({
   buttonClose: {
     backgroundColor: darkTheme.pink,
     marginTop: "0%",
-  },
-  ball: {
-    height: 50,
-    width: 50,
-    marginLeft: 15,
-    marginRight: 10,
   },
 });

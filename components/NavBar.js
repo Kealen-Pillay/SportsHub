@@ -2,9 +2,13 @@ import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import FeedScreen from "./screens/feedscreen/FeedScreen";
-import NewEventScreen from "./screens/eventscreen/NewEventScreen";
+import MyEventScreen from "./screens/eventscreen/MyEventScreen";
 import ProfileScreen from "./screens/profilescreen/ProfileScreen";
 import { useState } from "react";
+import { LogBox } from "react-native";
+import MyEventsTab from "./screens/eventscreen/MyEventsTab";
+
+LogBox.ignoreLogs(["Setting a timer"]);
 
 const feedScreen = "Feed";
 const eventScreen = "Events";
@@ -14,6 +18,7 @@ const Tab = createBottomTabNavigator();
 
 const NavBar = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(true);
+  const [newEventShow, setNewEventShow] = useState(false);
 
   return (
     <Tab.Navigator
@@ -27,7 +32,6 @@ const NavBar = () => {
             iconName = focused ? "list" : "list-outline";
           } else if (routeName === feedScreen) {
             iconName = focused ? "map" : "map-outline";
-            
           } else if (routeName === profileScreen) {
             iconName = focused ? "person-circle" : "person-circle-outline";
           }
@@ -40,8 +44,8 @@ const NavBar = () => {
               style={{
                 justifyContent: "center",
                 alignItems: "center",
-                height: "135%",
-                top: "50%",
+                marginTop: 60,
+                height: "170%",
               }}
             />
           );
@@ -52,7 +56,7 @@ const NavBar = () => {
         headerShown: false,
         tabBarStyle: {
           position: "absolute",
-          bottom: 25,
+          bottom: 30,
           left: 10,
           right: 10,
           borderRadius: 15,
@@ -64,7 +68,13 @@ const NavBar = () => {
       })}
     >
       <Tab.Screen name={eventScreen}>
-        {() => <NewEventScreen darkModeEnabled={darkModeEnabled} />}
+        {() => (
+          <MyEventsTab
+            darkModeEnabled={darkModeEnabled}
+            newEventShow={newEventShow}
+            setNewEventShow={setNewEventShow}
+          />
+        )}
       </Tab.Screen>
       <Tab.Screen name={feedScreen}>
         {() => <FeedScreen darkModeEnabled={darkModeEnabled} />}
