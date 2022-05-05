@@ -30,7 +30,7 @@ LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
 
-const FeedScreen = ({ darkModeEnabled }) => {
+const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -46,7 +46,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
     return () => {
       debouncedResults.cancel();
     };
-  }, [search, selectedSport]);
+  }, [search, selectedSport, newEventShow, editEventShow]);
 
   const debouncedResults = useMemo(() => {
     return debounce(setSearch, 300);

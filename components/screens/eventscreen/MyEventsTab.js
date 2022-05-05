@@ -15,8 +15,6 @@ const MyEventsTab = ({
 
   const [editEventID, setEditEventID] = useState("");
 
-
-
   if (newEventShow) {
     return (
       <NewEventScreen

@@ -80,7 +80,7 @@ const NavBar = () => {
         )}
       </Tab.Screen>
       <Tab.Screen name={feedScreen}>
-        {() => <FeedScreen darkModeEnabled={darkModeEnabled} />}
+        {() => <FeedScreen darkModeEnabled={darkModeEnabled} newEventShow={newEventShow} editEventShow={editEventShow}/>}
       </Tab.Screen>
       <Tab.Screen name={profileScreen}>
         {() => <ProfileScreen setDarkModeEnabled={setDarkModeEnabled} />}
