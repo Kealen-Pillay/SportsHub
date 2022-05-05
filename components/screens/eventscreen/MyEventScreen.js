@@ -31,6 +31,7 @@ const MyEventScreen = ({
   darkModeEnabled,
   setNewEventShow,
   setEditEventShow,
+  setEditEventID,
 }) => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -416,7 +417,10 @@ const MyEventScreen = ({
                       {event.date} - {event.time}
                     </Text>
                   </View>
-                  <TouchableOpacity onPress={handleEditEvent}>
+                  <TouchableOpacity onPress={() => {
+                    handleEditEvent()
+                    setEditEventID(event.eventID)
+                  }}>
                     <Ionicons
                       name={"pencil-sharp"}
                       size={40}

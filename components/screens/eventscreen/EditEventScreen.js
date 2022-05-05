@@ -23,7 +23,7 @@ import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import { useState } from "react";
 
-const EditEventScreen = ({ setEditEventShow, darkModeEnabled }) => {
+const EditEventScreen = ({ setEditEventShow, darkModeEnabled, EditEventID }) => {
   const [eventName, setEventName] = useState("");
   const [sport, setSport] = useState("");
   const [location, setLocation] = useState("");
@@ -52,7 +52,7 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled }) => {
   const navigation = useNavigation();
   const GOOGLE_PLACES_API_KEY = "AIzaSyCM5iQ4ICJBVnHqP53EEgOo8qo6xRoLq14";
 
-  const handleEditEvent = () => {
+  const handleEditEvent = (eventID) => {
     if (
       eventName.length == 0 ||
       sport.length == 0 ||
@@ -66,15 +66,15 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled }) => {
         hideStatusBar: true,
       });
     } else {
-      updateEvent();
-      setNewEventShow(false);
+      updateEvent(eventID);
+      setEditEventShow(false);
     }
   };
   const handleBack = () => {
     setEditEventShow(false);
   };
-  const updateEvent = () => {
-    const eventID = uuid();
+  const updateEvent = (eventID) => {
+    console.log(eventID);
     firestore
       .collection("events")
       .doc(eventID)
@@ -89,7 +89,7 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled }) => {
       })
       .then(function (docRef) {
         showMessage({
-          message: "Event Created!",
+          message: "Event Updated!",
           type: "success",
           hideStatusBar: true,
         });
@@ -98,9 +98,9 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled }) => {
         navigation.navigate("Dashboard");
       })
       .catch(function (error) {
-        console.error("Error adding document: ", error);
+
         showMessage({
-          message: "ERROR adding event",
+          message: "ERROR updating event",
           type: "danger",
           hideStatusBar: true,
         });
@@ -341,7 +341,7 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled }) => {
           />
         ))}
 
-      <TouchableOpacity style={styles.button} onPress={handleEditEvent}>
+      <TouchableOpacity style={styles.button} onPress={() => handleEditEvent(EditEventID)}>
         <Text style={styles.buttonText}>Edit Event</Text>
       </TouchableOpacity>
       <TouchableOpacity

@@ -3,6 +3,7 @@ import React from "react";
 import MyEventScreen from "./MyEventScreen";
 import NewEventScreen from "../eventscreen/NewEventScreen";
 import EditEventScreen from "./EditEventScreen";
+import { useState } from "react";
 
 const MyEventsTab = ({
   newEventShow,
@@ -11,6 +12,11 @@ const MyEventsTab = ({
   editEventShow,
   setEditEventShow,
 }) => {
+
+  const [editEventID, setEditEventID] = useState("");
+
+
+
   if (newEventShow) {
     return (
       <NewEventScreen
@@ -23,6 +29,7 @@ const MyEventsTab = ({
       <EditEventScreen
         darkModeEnabled={darkModeEnabled}
         setEditEventShow={setEditEventShow}
+        editEventID={editEventID}
       />
     );
   } else {
@@ -31,6 +38,7 @@ const MyEventsTab = ({
         setNewEventShow={setNewEventShow}
         darkModeEnabled={darkModeEnabled}
         setEditEventShow={setEditEventShow}
+        setEditEventID={setEditEventID}
       />
     );
   }
