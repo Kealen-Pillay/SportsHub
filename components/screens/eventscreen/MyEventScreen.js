@@ -425,8 +425,8 @@ const styles = StyleSheet.create({
     height: 90,
     width: "90%",
     flexDirection: "row",
+    justifyContent: "center",
     alignItems: "center",
-    overflow: "hidden",
     borderColor: darkTheme.pink,
     borderRadius: 5,
   },
@@ -559,7 +559,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    width: "70%",
+    width: "60%",
   },
   blurContainer: {
     flex: 1,
