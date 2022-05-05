@@ -19,6 +19,7 @@ import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import Bookmark from "../feedscreen/Bookmark";
+import EditButton from "../eventscreen/EditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
@@ -70,6 +71,8 @@ const MyEventScreen = ({
       });
     return querySize;
   };
+
+ 
 
   const handleAttend = (eventID) => {
     firestore
@@ -419,16 +422,25 @@ const MyEventScreen = ({
                       {event.date} - {event.time}
                     </Text>
                   </View>
-                  <TouchableOpacity onPress={() => {
+                  {/* <TouchableOpacity onPress={() => {
                     handleEditEvent()
                     setEditEventID(event.eventID)
                   }}>
                     <Ionicons
-                      name={"pencil-sharp"}
+                      name={isEditable ? "pencil-sharp" : ""}
                       size={40}
                       color={darkModeEnabled ? darkTheme.text : lightTheme.text}
                     />
-                  </TouchableOpacity>
+
+
+                  </TouchableOpacity> */}
+
+                  <EditButton
+                    handleEditEvent={handleEditEvent}
+                    eventID={event.eventID}
+                    darkModeEnabled={darkModeEnabled}
+                    setEditEventID={setEditEventID}
+                    />
                   <Bookmark
                     handleAttend={handleAttend}
                     eventID={event.eventID}
