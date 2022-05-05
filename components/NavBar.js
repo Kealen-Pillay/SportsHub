@@ -5,10 +5,10 @@ import FeedScreen from "./screens/feedscreen/FeedScreen";
 import MyEventScreen from "./screens/eventscreen/MyEventScreen";
 import ProfileScreen from "./screens/profilescreen/ProfileScreen";
 import { useState } from "react";
-import { LogBox } from 'react-native';
+import { LogBox } from "react-native";
 import MyEventsTab from "./screens/eventscreen/MyEventsTab";
 
-LogBox.ignoreLogs(['Setting a timer']);
+LogBox.ignoreLogs(["Setting a timer"]);
 
 const feedScreen = "Feed";
 const eventScreen = "Events";
@@ -68,7 +68,13 @@ const NavBar = () => {
       })}
     >
       <Tab.Screen name={eventScreen}>
-        {() => <MyEventsTab darkModeEnabled={darkModeEnabled} newEventShow={newEventShow} setNewEventShow={setNewEventShow}/>}
+        {() => (
+          <MyEventsTab
+            darkModeEnabled={darkModeEnabled}
+            newEventShow={newEventShow}
+            setNewEventShow={setNewEventShow}
+          />
+        )}
       </Tab.Screen>
       <Tab.Screen name={feedScreen}>
         {() => <FeedScreen darkModeEnabled={darkModeEnabled} />}

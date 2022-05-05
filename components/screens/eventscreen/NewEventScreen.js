@@ -261,7 +261,6 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
             marginBottom: "5%",
             height: 50,
             borderWidth: 2,
-            borderColor: darkTheme.pink,
           },
           textInput: {
             height: 46,
@@ -384,7 +383,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 10,
     backgroundColor: "white",
     borderWidth: 2,
-    borderColor: darkTheme.pink,
     width: "90%",
     borderRadius: 10,
     marginBottom: "10%",
@@ -406,7 +404,6 @@ const styles = StyleSheet.create({
   },
   datePicker: {
     backgroundColor: "white",
-    borderColor: darkTheme.pink,
     borderWidth: 2,
     width: "90%",
     height: 50,
@@ -422,7 +419,6 @@ const styles = StyleSheet.create({
   },
   timePicker: {
     backgroundColor: "white",
-    borderColor: darkTheme.pink,
     borderWidth: 2,
     width: "90%",
     height: 50,
