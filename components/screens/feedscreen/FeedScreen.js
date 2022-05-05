@@ -429,7 +429,6 @@ const styles = StyleSheet.create({
     width: "90%",
   },
   eventContainer: {
-    borderColor: darkTheme.pink,
     borderWidth: 2,
     margin: 20,
     height: 90,
@@ -438,7 +437,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     overflow: "hidden",
     borderColor: darkTheme.pink,
-    borderWidth: 2,
     borderRadius: 5,
   },
   eventName: {

@@ -18,6 +18,9 @@ import { useIsFocused } from "@react-navigation/native";
 import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { darkTheme, lightTheme } from "../../../theme/themes";
+import Bookmark from "../feedscreen/Bookmark";
+import { BlurView } from "expo-blur";
+import Toast from "react-native-toast-message";
 
 const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [events, setEvents] = useState([]);
@@ -26,6 +29,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [long, setLong] = useState("");
   const [lat, setLat] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
+  const [currentEventID, setCurrentEventID] = useState("");
 
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
@@ -56,6 +60,32 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
       });
 
     return querySize;
+  };
+
+  const handleAttend = (eventID) => {
+    firestore
+      .collection("events")
+      .doc(eventID)
+      .get()
+      .then((documentSnapshot) => {
+        let attendees = documentSnapshot.data().attendees;
+        if (attendees.includes(auth.currentUser?.email)) {
+          for (let i = 0; i < attendees.length; i++) {
+            if (attendees[i] === auth.currentUser?.email) {
+              attendees.splice(i, 1);
+              break;
+            }
+          }
+          firestore.collection("events").doc(eventID).update({
+            attendees: attendees,
+          });
+        } else {
+          attendees = [...attendees, auth.currentUser?.email];
+          firestore.collection("events").doc(eventID).update({
+            attendees: attendees,
+          });
+        }
+      });
   };
 
   const handleDirections = () => {
@@ -180,7 +210,12 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
             setModalVisible(!modalVisible);
           }}
         >
-          <View style={styles.centeredView}>
+          <BlurView
+            intensity={40}
+            tint={darkModeEnabled ? "dark" : "light"}
+            style={styles.blurContainer}
+          >
+            <Toast />
             <View
               style={[
                 styles.modalView,
@@ -191,14 +226,22 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                 },
               ]}
             >
-              <Text
-                style={[
-                  styles.modalText,
-                  { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
-                ]}
-              >
-                {currentEvent.eventName}
-              </Text>
+              <View style={styles.modalTitleContainer}>
+                <Text
+                  style={[
+                    styles.modalText,
+                    {
+                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+                    },
+                  ]}
+                >
+                  {currentEvent.eventName}
+                </Text>
+                <Bookmark
+                  handleAttend={handleAttend}
+                  eventID={currentEvent.eventID}
+                />
+              </View>
               <View
                 style={[
                   styles.modalBodyContainer,
@@ -209,6 +252,37 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                   },
                 ]}
               >
+                <View style={styles.clipboardContainer}>
+                  <Text
+                    style={[
+                      styles.modalBody,
+                      {
+                        color: darkModeEnabled
+                          ? darkTheme.text
+                          : lightTheme.text,
+                      },
+                    ]}
+                  >
+                    Event ID: {currentEventID}
+                  </Text>
+                  <TouchableOpacity
+                    style={[
+                      styles.clipboard,
+                      {
+                        backgroundColor: darkModeEnabled
+                          ? darkTheme.background
+                          : lightTheme.background,
+                      },
+                    ]}
+                    onPress={() => copyToClipboard()}
+                  >
+                    <Ionicons
+                      name={"copy-outline"}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                      size={20}
+                    />
+                  </TouchableOpacity>
+                </View>
                 <Text
                   style={[
                     styles.modalBody,
@@ -251,7 +325,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                 </Text>
               </View>
               <Pressable
-                style={[styles.button, styles.maps]}
+                style={[styles.button, styles.buttonMap]}
                 onPress={handleDirections}
               >
                 <Text style={styles.modalButtonText}>Open Maps</Text>
@@ -263,7 +337,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
             </View>
-          </View>
+          </BlurView>
         </Modal>
       )}
       <ScrollView style={styles.scrollView}>
@@ -289,32 +363,35 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                 ]}
               >
                 {renderBall(event.sport)}
-                <View style={styles.infoContainer}>
-                  <Text
-                    style={[
-                      styles.eventName,
-                      {
-                        color: darkModeEnabled
-                          ? darkTheme.text
-                          : lightTheme.text,
-                      },
-                    ]}
-                  >
-                    {event.eventName}
-                  </Text>
-                  <Text
-                    style={[
-                      styles.eventDate,
-                      {
-                        color: darkModeEnabled
-                          ? darkTheme.text
-                          : lightTheme.text,
-                      },
-                    ]}
-                  >
-                    {event.date} - {event.time}
-                  </Text>
+                <View style={styles.attendContainer}>
+                  <View style={styles.infoContainer}>
+                    <Text
+                      style={[
+                        styles.eventName,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {event.eventName}
+                    </Text>
+                    <Text
+                      style={[
+                        styles.eventDate,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {event.date} - {event.time}
+                    </Text>
+                  </View>
                 </View>
+                <Bookmark handleAttend={handleAttend} eventID={event.eventID} />
               </View>
             </TouchableOpacity>
           );
@@ -350,18 +427,19 @@ const styles = StyleSheet.create({
     width: "80%",
   },
   eventContainer: {
-    borderColor: darkTheme.pink,
     borderWidth: 2,
     margin: 20,
-    borderRadius: 5,
     height: 90,
     width: "90%",
     flexDirection: "row",
     alignItems: "center",
+    overflow: "hidden",
+    borderColor: darkTheme.pink,
+    borderRadius: 5,
   },
   eventName: {
     fontWeight: "bold",
-    fontSize: 30,
+    fontSize: 28,
     paddingLeft: 10,
     paddingTop: 10,
   },
@@ -421,7 +499,7 @@ const styles = StyleSheet.create({
   },
   modalBodyContainer: {
     width: "100%",
-    alignItems: "center",
+    backgroundColor: darkTheme.background,
     borderRadius: 15,
   },
   maps: {
@@ -485,5 +563,23 @@ const styles = StyleSheet.create({
     height: 50,
     marginLeft: "5%",
     marginTop: "60%",
+  },
+  attendContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "70%",
+  },
+  blurContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalTitleContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
   },
 });
