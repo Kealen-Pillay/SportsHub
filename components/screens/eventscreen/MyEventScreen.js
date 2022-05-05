@@ -151,6 +151,16 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
     setNewEventShow(true);
   };
 
+  const copyToClipboard = () => {
+    Clipboard.setString(currentEventID);
+    Toast.show({
+      type: "success",
+      text1: "Event ID Copied!",
+      visibilityTime: 1000,
+      position: "top",
+    });
+  };
+
   return (
     <SafeAreaView
       style={[
@@ -437,59 +447,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 22,
   },
-  modalView: {
-    width: "95%",
-    height: "70%",
-    borderRadius: 20,
-    borderColor: darkTheme.pink,
-    borderWidth: 2,
-    padding: 35,
-    paddingTop: 20,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-  },
-  buttonClose: {
-    backgroundColor: darkTheme.pink,
-    marginTop: 0,
-    width: "70%",
-  },
-  modalButtonText: {
-    color: darkTheme.text,
-    fontWeight: "bold",
-    textAlign: "center",
-  },
-  modalText: {
-    fontWeight: "bold",
-    fontSize: 40,
-  },
-  modalBody: {
-    fontWeight: "bold",
-    margin: 20,
-    fontSize: 20,
-  },
-  modalBodyContainer: {
-    width: "100%",
-    backgroundColor: darkTheme.background,
-    borderRadius: 15,
-  },
-  buttonMap: {
-    backgroundColor: darkTheme.purple,
-    width: "70%",
-    marginTop: "10%",
-    marginBottom: "5%",
-  },
   ball: {
     height: 50,
     width: 50,
@@ -538,28 +495,6 @@ const styles = StyleSheet.create({
     marginLeft: "5%",
     marginTop: "60%",
   },
-  blurContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  modalTitleContainer: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 15,
-  },
-  clipboard: {
-    height: 20,
-    width: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  clipboardContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
   scrollView: {
     width: "100%",
     marginBottom: 55,
@@ -594,5 +529,80 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     paddingLeft: 10,
     paddingTop: 10,
+  },
+  blurContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  modalView: {
+    width: "95%",
+    height: "60%",
+    marginTop: 40,
+    borderRadius: 20,
+    borderColor: darkTheme.pink,
+    borderWidth: 2,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  modalTitleContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
+  },
+  modalText: {
+    fontWeight: "bold",
+    fontSize: 40,
+  },
+  modalBodyContainer: {
+    width: "100%",
+    backgroundColor: darkTheme.background,
+    borderRadius: 15,
+  },
+  clipboardContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  modalBody: {
+    fontWeight: "bold",
+    margin: 15,
+    fontSize: 15,
+  },
+  clipboard: {
+    height: 20,
+    width: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: "70%",
+  },
+  buttonMap: {
+    backgroundColor: darkTheme.purple,
+    width: "70%",
+    marginTop: "10%",
+    marginBottom: "5%",
+  },
+  modalButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  buttonClose: {
+    backgroundColor: darkTheme.pink,
+    marginTop: "0%",
   },
 });

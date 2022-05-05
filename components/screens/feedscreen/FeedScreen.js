@@ -486,34 +486,42 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
-  button: {
-    borderRadius: 20,
-    padding: 10,
-    elevation: 2,
-    width: "70%",
-  },
-  buttonClose: {
-    backgroundColor: darkTheme.pink,
-    marginTop: "0%",
-  },
-  modalButtonText: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
+  modalTitleContainer: {
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: 15,
   },
   modalText: {
     fontWeight: "bold",
     fontSize: 40,
+  },
+  modalBodyContainer: {
+    width: "100%",
+    backgroundColor: darkTheme.background,
+    borderRadius: 15,
+  },
+  clipboardContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
   modalBody: {
     fontWeight: "bold",
     margin: 15,
     fontSize: 15,
   },
-  modalBodyContainer: {
-    width: "100%",
-    backgroundColor: darkTheme.background,
-    borderRadius: 15,
+  clipboard: {
+    height: 20,
+    width: 20,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+    width: "70%",
   },
   buttonMap: {
     backgroundColor: darkTheme.purple,
@@ -521,29 +529,19 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     marginBottom: "5%",
   },
-
+  modalButtonText: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  buttonClose: {
+    backgroundColor: darkTheme.pink,
+    marginTop: "0%",
+  },
   ball: {
     height: 50,
     width: 50,
     marginLeft: 15,
     marginRight: 10,
-  },
-
-  clipboard: {
-    height: 20,
-    width: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  clipboardContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  modalTitleContainer: {
-    flexDirection: "row",
-    width: "100%",
-    justifyContent: "space-between",
-    alignItems: "center",
-    marginBottom: 15,
   },
 });
