@@ -39,7 +39,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
   const [lat, setLat] = useState("");
   const [selectedSport, setSelectedSport] = useState([]);
   const [currentEventID, setCurrentEventID] = useState("");
-  const [attendeesNum, setAttendeesNum] = useState(0);
+  const [attendeesArray, setAttendeesArray] = useState([]);
 
   useEffect(() => {
     setEvents([]);
@@ -97,22 +97,6 @@ const FeedScreen = ({ darkModeEnabled }) => {
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const getAttendees = (eventID) => {
-    firestore
-      .collection("events")
-      .doc(eventID)
-      .get()
-      .then((documentSnapshot) => {
-        let attendees = documentSnapshot.data().attendees;
-        setAttendeesNum(attendees.length);
-        console.log(currentEvent.eventName);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-    
   };
 
   const handleAttend = (eventID) => {
@@ -268,11 +252,31 @@ const FeedScreen = ({ darkModeEnabled }) => {
                 >
                   {currentEvent.eventName}
                 </Text>
-                <Text>{useRef().attendeesNum}</Text>
-                <Bookmark
-                  handleAttend={handleAttend}
-                  eventID={currentEvent.eventID}
-                />
+                <View style={styles.bookmarkAndAttendees}>
+                  <Bookmark
+                    handleAttend={handleAttend}
+                    eventID={currentEvent.eventID}
+                  />
+                  <View style={styles.attendeesContainer}>
+                    <Ionicons
+                      name={"people"}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                      size={20}
+                    />
+                    <Text
+                      style={[
+                        styles.attendeesText,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {attendeesArray.length}
+                    </Text>
+                  </View>
+                </View>
               </View>
               <View
                 style={[
@@ -384,8 +388,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
                 setModalVisible(true);
                 setCurrentEvent(event);
                 setCurrentEventID(event.eventID.slice(0, 8));
-                getAttendees(currentEvent.eventID);
-                
+                setAttendeesArray(event.attendees);
 
                 {
                   setLatLong(event.lat, event.long);
@@ -527,6 +530,16 @@ const styles = StyleSheet.create({
   modalText: {
     fontWeight: "bold",
     fontSize: 40,
+  },
+  bookmarkAndAttendees: {
+    alignItems: "center",
+  },
+  attendeesContainer: {
+    flexDirection: "row",
+  },
+  attendeesText: {
+    fontWeight: "bold",
+    fontSize: 20,
   },
   modalBodyContainer: {
     width: "100%",

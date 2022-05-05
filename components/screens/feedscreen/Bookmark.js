@@ -6,6 +6,7 @@ import { firestore } from "../../../firebase/firestore";
 import { auth } from "../../../firebase/firebase";
 
 const Bookmark = ({ handleAttend, eventID }) => {
+  
   const checkAttendance = (eventID) => {
     firestore
       .collection("events")
