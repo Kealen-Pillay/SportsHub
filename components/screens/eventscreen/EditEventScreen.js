@@ -23,7 +23,7 @@ import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import { useState } from "react";
 
-const EditEventScreen = ({ setEditEventShow, darkModeEnabled, EditEventID }) => {
+const EditEventScreen = ({ setEditEventShow, darkModeEnabled, editEventID }) => {
   const [eventName, setEventName] = useState("");
   const [sport, setSport] = useState("");
   const [location, setLocation] = useState("");
@@ -74,7 +74,6 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled, EditEventID }) => 
     setEditEventShow(false);
   };
   const updateEvent = (eventID) => {
-    console.log(eventID);
     firestore
       .collection("events")
       .doc(eventID)
@@ -168,6 +167,7 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled, EditEventID }) => 
     setLong(long);
     setLat(lat);
   };
+
   return (
     <KeyboardAvoidingView
       style={[
@@ -341,7 +341,7 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled, EditEventID }) => 
           />
         ))}
 
-      <TouchableOpacity style={styles.button} onPress={() => handleEditEvent(EditEventID)}>
+      <TouchableOpacity style={styles.button} onPress={() => handleEditEvent(editEventID)}>
         <Text style={styles.buttonText}>Edit Event</Text>
       </TouchableOpacity>
       <TouchableOpacity
