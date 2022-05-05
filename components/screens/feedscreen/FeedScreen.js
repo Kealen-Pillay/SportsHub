@@ -39,6 +39,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
   const [lat, setLat] = useState("");
   const [selectedSport, setSelectedSport] = useState([]);
   const [currentEventID, setCurrentEventID] = useState("");
+  // const [attendeesNum, setAttendeesNum] = useState(0);
 
   useEffect(() => {
     setEvents([]);
@@ -47,6 +48,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
       debouncedResults.cancel();
     };
   }, [search, selectedSport]);
+
 
   const debouncedResults = useMemo(() => {
     return debounce(setSearch, 300);
@@ -92,6 +94,20 @@ const FeedScreen = ({ darkModeEnabled }) => {
       });
     });
   };
+
+  // const getAttendees = (eventID) => {
+  //   firestore
+  //     .collection("events")
+  //     .doc(eventID)
+  //     .get()
+  //     .then((documentSnapshot) => {
+  //       let attendees = documentSnapshot.data().attendees;
+  //       setAttendeesNum(attendees.length);
+  //       console.log(eventID);
+  //     });
+  //   // console.log("attendeesNum: " + attendeesNum);
+  // };
+
 
   const handleAttend = (eventID) => {
     firestore
@@ -243,6 +259,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
                 >
                   {currentEvent.eventName}
                 </Text>
+                <Text>{currentEvent.attendees}</Text>
                 <Bookmark
                   handleAttend={handleAttend}
                   eventID={currentEvent.eventID}
@@ -338,7 +355,9 @@ const FeedScreen = ({ darkModeEnabled }) => {
               </Pressable>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
               >
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
@@ -356,6 +375,8 @@ const FeedScreen = ({ darkModeEnabled }) => {
                 setModalVisible(true);
                 setCurrentEvent(event);
                 setCurrentEventID(event.eventID.slice(0, 8));
+                // getAttendees(currentEvent.eventID);
+                
                 {
                   setLatLong(event.lat, event.long);
                 }
