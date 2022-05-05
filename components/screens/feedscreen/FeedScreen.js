@@ -39,7 +39,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
   const [lat, setLat] = useState("");
   const [selectedSport, setSelectedSport] = useState([]);
   const [currentEventID, setCurrentEventID] = useState("");
-  // const [attendeesNum, setAttendeesNum] = useState(0);
+  const [attendeesNum, setAttendeesNum] = useState(0);
 
   useEffect(() => {
     setEvents([]);
@@ -48,7 +48,6 @@ const FeedScreen = ({ darkModeEnabled }) => {
       debouncedResults.cancel();
     };
   }, [search, selectedSport]);
-
 
   const debouncedResults = useMemo(() => {
     return debounce(setSearch, 300);
@@ -80,34 +79,41 @@ const FeedScreen = ({ darkModeEnabled }) => {
     if (selectedSport.length > 0) {
       query = query.where("sport", "in", selectedSport);
     }
-    query.get().then((querySnapShot) => {
-      querySnapShot.forEach((snapshot) => {
-        let data = snapshot.data();
-        {
-          let name = data.eventName;
-          name = name.toLowerCase();
-          let id = data.eventID;
-          if (id.includes(search) || name.includes(search.toLowerCase())) {
-            setEvents((prev) => [...prev, data]);
+    query
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((snapshot) => {
+          let data = snapshot.data();
+          {
+            let name = data.eventName;
+            name = name.toLowerCase();
+            let id = data.eventID;
+            if (id.includes(search) || name.includes(search.toLowerCase())) {
+              setEvents((prev) => [...prev, data]);
+            }
           }
-        }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    });
   };
 
-  // const getAttendees = (eventID) => {
-  //   firestore
-  //     .collection("events")
-  //     .doc(eventID)
-  //     .get()
-  //     .then((documentSnapshot) => {
-  //       let attendees = documentSnapshot.data().attendees;
-  //       setAttendeesNum(attendees.length);
-  //       console.log(eventID);
-  //     });
-  //   // console.log("attendeesNum: " + attendeesNum);
-  // };
-
+  const getAttendees = (eventID) => {
+    firestore
+      .collection("events")
+      .doc(eventID)
+      .get()
+      .then((documentSnapshot) => {
+        let attendees = documentSnapshot.data().attendees;
+        setAttendeesNum(attendees.length);
+        console.log(currentEvent.eventName);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+    
+  };
 
   const handleAttend = (eventID) => {
     firestore
@@ -132,6 +138,9 @@ const FeedScreen = ({ darkModeEnabled }) => {
             attendees: attendees,
           });
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -259,7 +268,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
                 >
                   {currentEvent.eventName}
                 </Text>
-                <Text>{currentEvent.attendees}</Text>
+                <Text>{useRef().attendeesNum}</Text>
                 <Bookmark
                   handleAttend={handleAttend}
                   eventID={currentEvent.eventID}
@@ -375,8 +384,9 @@ const FeedScreen = ({ darkModeEnabled }) => {
                 setModalVisible(true);
                 setCurrentEvent(event);
                 setCurrentEventID(event.eventID.slice(0, 8));
-                // getAttendees(currentEvent.eventID);
+                getAttendees(currentEvent.eventID);
                 
+
                 {
                   setLatLong(event.lat, event.long);
                 }
