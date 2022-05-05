@@ -428,6 +428,10 @@ const styles = StyleSheet.create({
   searchBar: {
     width: "90%",
   },
+  scrollView: {
+    width: "100%",
+    marginBottom: 55,
+  },
   eventContainer: {
     borderWidth: 2,
     margin: 20,
@@ -439,15 +443,25 @@ const styles = StyleSheet.create({
     borderColor: darkTheme.pink,
     borderRadius: 5,
   },
+  attendContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "70%",
+  },
+  infoContainer: {
+    marginBottom: 10,
+  },
   eventName: {
     fontWeight: "bold",
     fontSize: 28,
     paddingLeft: 10,
     paddingTop: 10,
   },
-  scrollView: {
-    width: "100%",
-    marginBottom: 55,
+  eventDate: {
+    fontWeight: "bold",
+    paddingLeft: 10,
+    paddingTop: 10,
   },
   blurContainer: {
     flex: 1,
@@ -507,20 +521,14 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     marginBottom: "5%",
   },
-  eventDate: {
-    fontWeight: "bold",
-    paddingLeft: 10,
-    paddingTop: 10,
-  },
+
   ball: {
     height: 50,
     width: 50,
     marginLeft: 15,
     marginRight: 10,
   },
-  infoContainer: {
-    marginBottom: 10,
-  },
+
   clipboard: {
     height: 20,
     width: 20,
@@ -530,12 +538,6 @@ const styles = StyleSheet.create({
   clipboardContainer: {
     flexDirection: "row",
     alignItems: "center",
-  },
-  attendContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "70%",
   },
   modalTitleContainer: {
     flexDirection: "row",

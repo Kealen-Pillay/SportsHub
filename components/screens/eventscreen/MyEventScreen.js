@@ -21,6 +21,12 @@ import { darkTheme, lightTheme } from "../../../theme/themes";
 import Bookmark from "../feedscreen/Bookmark";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
+import { LogBox } from "react-native";
+
+
+LogBox.ignoreLogs(["Setting a timer"]);
+
+var counter = 0;
 
 const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [events, setEvents] = useState([]);
@@ -342,11 +348,14 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
       )}
       <ScrollView style={styles.scrollView}>
         {events.map((event) => {
+          counter++;
           return (
             <TouchableOpacity
+              key={counter}
               onPress={() => {
                 setModalVisible(true);
                 setCurrentEvent(event);
+                setCurrentEventID(event.eventID.slice(0, 8));
                 {
                   setLatLong(event.lat, event.long);
                 }
@@ -390,8 +399,11 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                       {event.date} - {event.time}
                     </Text>
                   </View>
+                  <Bookmark
+                    handleAttend={handleAttend}
+                    eventID={event.eventID}
+                  />
                 </View>
-                <Bookmark handleAttend={handleAttend} eventID={event.eventID} />
               </View>
             </TouchableOpacity>
           );
@@ -418,27 +430,6 @@ const styles = StyleSheet.create({
   },
   event: {
     width: "80%",
-  },
-  eventContainer: {
-    borderWidth: 2,
-    margin: 20,
-    height: 90,
-    width: "90%",
-    flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
-    borderColor: darkTheme.pink,
-    borderRadius: 5,
-  },
-  eventName: {
-    fontWeight: "bold",
-    fontSize: 28,
-    paddingLeft: 10,
-    paddingTop: 10,
-  },
-  scrollView: {
-    width: "100%",
-    marginBottom: 100,
   },
   centeredView: {
     flex: 1,
@@ -499,19 +490,11 @@ const styles = StyleSheet.create({
     marginTop: "10%",
     marginBottom: "5%",
   },
-  eventDate: {
-    fontWeight: "bold",
-    paddingLeft: 10,
-    paddingTop: 10,
-  },
   ball: {
     height: 50,
     width: 50,
     marginLeft: 15,
     marginRight: 10,
-  },
-  infoContainer: {
-    marginBottom: 10,
   },
   titleContainer: {
     flexDirection: "row",
@@ -555,12 +538,6 @@ const styles = StyleSheet.create({
     marginLeft: "5%",
     marginTop: "60%",
   },
-  attendContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    width: "60%",
-  },
   blurContainer: {
     flex: 1,
     justifyContent: "center",
@@ -582,5 +559,40 @@ const styles = StyleSheet.create({
   clipboardContainer: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  scrollView: {
+    width: "100%",
+    marginBottom: 55,
+  },
+  eventContainer: {
+    borderWidth: 2,
+    margin: 20,
+    height: 90,
+    width: "90%",
+    flexDirection: "row",
+    alignItems: "center",
+    overflow: "hidden",
+    borderColor: darkTheme.pink,
+    borderRadius: 5,
+  },
+  attendContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "70%",
+  },
+  infoContainer: {
+    marginBottom: 10,
+  },
+  eventName: {
+    fontWeight: "bold",
+    fontSize: 28,
+    paddingLeft: 10,
+    paddingTop: 10,
+  },
+  eventDate: {
+    fontWeight: "bold",
+    paddingLeft: 10,
+    paddingTop: 10,
   },
 });
