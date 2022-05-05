@@ -78,17 +78,14 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled }) => {
     firestore
       .collection("events")
       .doc(eventID)
-      .set({
+      .update({
         eventName: eventName,
-        eventID: eventID,
         date: dateText,
         time: timeText,
         sport: sport,
         location: location,
         long: long,
         lat: lat,
-        owner: auth.currentUser?.email,
-        attendees: [auth.currentUser?.email],
       })
       .then(function (docRef) {
         showMessage({
