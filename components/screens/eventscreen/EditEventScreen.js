@@ -50,7 +50,7 @@ const EditEventScreen = ({ setEditEventShow, darkModeEnabled }) => {
   ];
 
   const navigation = useNavigation();
-  const GOOGLE_PLACES_API_KEY = "AIzaSyDQVhiJCPkDE4AljpBO3fJINMQSLHsm0VU";
+  const GOOGLE_PLACES_API_KEY = "AIzaSyCM5iQ4ICJBVnHqP53EEgOo8qo6xRoLq14";
 
   const handleEditEvent = () => {
     if (
