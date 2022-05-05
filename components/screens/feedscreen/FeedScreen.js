@@ -12,7 +12,7 @@ import {
 import React from "react";
 import NavGradient from "../../NavGradient";
 import SearchBar from "react-native-platform-searchbar";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
 import getDirections from "react-native-google-maps-directions";
@@ -24,6 +24,7 @@ import { LogBox } from "react-native";
 import { BlurView } from "expo-blur";
 import Bookmark from "../feedscreen/Bookmark";
 import { darkTheme, lightTheme } from "../../../theme/themes";
+import debounce from "lodash.debounce";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -36,11 +37,19 @@ const FeedScreen = ({ darkModeEnabled }) => {
   const [currentEvent, setCurrentEvent] = useState({});
   const [long, setLong] = useState("");
   const [lat, setLat] = useState("");
+  const [selectedSport, setSelectedSport] = useState([]);
   const [currentEventID, setCurrentEventID] = useState("");
 
   useEffect(() => {
     setEvents([]);
     getEvents();
+    return () => {
+      debouncedResults.cancel();
+    };
+  }, [search, selectedSport]);
+
+  const debouncedResults = useMemo(() => {
+    return debounce(setSearch, 300);
   }, []);
 
   const handleDirections = () => {
@@ -65,15 +74,23 @@ const FeedScreen = ({ darkModeEnabled }) => {
   };
 
   const getEvents = () => {
-    firestore
-      .collection("events")
-      .get()
-      .then((querySnapShot) => {
-        querySnapShot.forEach((snapshot) => {
-          let data = snapshot.data();
-          setEvents((prev) => [...prev, data]);
-        });
+    let query = firestore.collection("events");
+    if (selectedSport.length > 0) {
+      query = query.where("sport", "in", selectedSport);
+    }
+    query.get().then((querySnapShot) => {
+      querySnapShot.forEach((snapshot) => {
+        let data = snapshot.data();
+        {
+          let name = data.eventName;
+          name = name.toLowerCase();
+          let id = data.eventID;
+          if (id.includes(search) || name.includes(search.toLowerCase())) {
+            setEvents((prev) => [...prev, data]);
+          }
+        }
       });
+    });
   };
 
   const handleAttend = (eventID) => {
@@ -156,15 +173,18 @@ const FeedScreen = ({ darkModeEnabled }) => {
       ]}
     >
       <SearchBar
-        placeholder="Search"
-        onChangeText={(text) => setSearch(text)}
-        value={search}
+        placeholder="Search Event Name or ID"
+        onChangeText={debouncedResults}
         style={styles.searchBar}
+        placeholderTextColor={
+          darkModeEnabled ? darkTheme.text : lightTheme.text
+        }
         theme={darkModeEnabled ? "dark" : "light"}
         keyboardAppearance={darkModeEnabled ? "dark" : "light"}
       />
       <SelectableChips
         initialChips={["Football", "Basketball", "Volleyball"]}
+        onChangeChips={(chips) => setSelectedSport(chips)}
         alertRequired={false}
         valueStyle={{
           color: darkModeEnabled ? darkTheme.text : lightTheme.text,
@@ -311,7 +331,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
                 </Text>
               </View>
               <Pressable
-                style={[styles.button, styles.maps]}
+                style={[styles.button, styles.buttonMap]}
                 onPress={handleDirections}
               >
                 <Text style={styles.modalButtonText}>Open Maps</Text>
@@ -412,11 +432,14 @@ const styles = StyleSheet.create({
     borderColor: darkTheme.pink,
     borderWidth: 2,
     margin: 20,
-    borderRadius: 5,
     height: 90,
     width: "90%",
     flexDirection: "row",
     alignItems: "center",
+    overflow: "hidden",
+    borderColor: darkTheme.pink,
+    borderWidth: 2,
+    borderRadius: 5,
   },
   eventName: {
     fontWeight: "bold",
@@ -426,7 +449,7 @@ const styles = StyleSheet.create({
   },
   scrollView: {
     width: "100%",
-    marginBottom: 100,
+    marginBottom: 55,
   },
   blurContainer: {
     flex: 1,
@@ -455,11 +478,11 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
+    width: "70%",
   },
   buttonClose: {
-    backgroundColor: darkTheme.background,
+    backgroundColor: darkTheme.pink,
     marginTop: "0%",
-    width: "70%",
   },
   modalButtonText: {
     color: "white",
@@ -480,7 +503,7 @@ const styles = StyleSheet.create({
     backgroundColor: darkTheme.background,
     borderRadius: 15,
   },
-  maps: {
+  buttonMap: {
     backgroundColor: darkTheme.purple,
     width: "70%",
     marginTop: "10%",
