@@ -27,7 +27,11 @@ LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
 
-const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
+const MyEventScreen = ({
+  darkModeEnabled,
+  setNewEventShow,
+  setEditEventShow,
+}) => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
@@ -113,6 +117,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
 
     getDirections(data);
   };
+
   const renderBall = (sport) => {
     switch (sport) {
       case "Basketball":
@@ -147,6 +152,10 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
 
   const handleCreateEvent = () => {
     setNewEventShow(true);
+  };
+
+  const handleEditEvent = () => {
+    setEditEventShow(true);
   };
 
   const copyToClipboard = () => {
@@ -407,6 +416,13 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                       {event.date} - {event.time}
                     </Text>
                   </View>
+                  <TouchableOpacity onPress={handleEditEvent}>
+                    <Ionicons
+                      name={"pencil-sharp"}
+                      size={40}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                    />
+                  </TouchableOpacity>
                   <Bookmark
                     handleAttend={handleAttend}
                     eventID={event.eventID}
