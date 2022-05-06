@@ -13,7 +13,6 @@ import { firestore } from "../../../firebase/firestore";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import { showMessage } from "react-native-flash-message";
 
-
 const RegisterScreen = () => {
   const starImgFilled = require("../../../images/star_filled.png");
   const starImgCorner = require("../../../images/star_corner.png");
@@ -97,7 +96,7 @@ const RegisterScreen = () => {
       });
     } else if (defaultRating == 0) {
       showMessage({
-        message:"Please select a rating!",
+        message: "Please select a rating!",
         type: "danger",
         hideStatusBar: true,
       });
@@ -107,7 +106,7 @@ const RegisterScreen = () => {
         .then((userCredentials) => {
           const user = userCredentials.user;
           showMessage({
-            message:"Account Created",
+            message: "Account Created",
             type: "success",
             hideStatusBar: true,
           });
@@ -149,7 +148,7 @@ const RegisterScreen = () => {
           placeholder="Username"
           value={username}
           onChangeText={(text) => setUsername(text)}
-          keyboardAppearance='dark'
+          keyboardAppearance="dark"
         />
         <TextInput
           style={styles.text}
@@ -157,7 +156,7 @@ const RegisterScreen = () => {
           value={email}
           onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
-          keyboardAppearance='dark'
+          keyboardAppearance="dark"
         />
         <TextInput
           style={styles.text}
@@ -165,7 +164,7 @@ const RegisterScreen = () => {
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
-          keyboardAppearance='dark'
+          keyboardAppearance="dark"
         />
         <TextInput
           style={styles.text}
@@ -173,7 +172,7 @@ const RegisterScreen = () => {
           value={confpassword}
           onChangeText={(text) => setConfpassword(text)}
           secureTextEntry
-          keyboardAppearance='dark'
+          keyboardAppearance="dark"
         />
       </View>
       <View>

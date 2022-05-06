@@ -26,8 +26,11 @@ import Bookmark from "../feedscreen/Bookmark";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import debounce from "lodash.debounce";
 
-LogBox.ignoreLogs(["Setting a timer", "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.", 
-"Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details."]);
+LogBox.ignoreLogs([
+  "Setting a timer",
+  "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
+  "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details.",
+]);
 
 var counter = 0;
 
@@ -40,6 +43,7 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
   const [lat, setLat] = useState("");
   const [selectedSport, setSelectedSport] = useState([]);
   const [currentEventID, setCurrentEventID] = useState("");
+  const [numAttendees, setNumAttendees] = useState(0);
 
   useEffect(() => {
     setEvents([]);
@@ -79,19 +83,24 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
     if (selectedSport.length > 0) {
       query = query.where("sport", "in", selectedSport);
     }
-    query.get().then((querySnapShot) => {
-      querySnapShot.forEach((snapshot) => {
-        let data = snapshot.data();
-        {
-          let name = data.eventName;
-          name = name.toLowerCase();
-          let id = data.eventID;
-          if (id.includes(search) || name.includes(search.toLowerCase())) {
-            setEvents((prev) => [...prev, data]);
+    query
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((snapshot) => {
+          let data = snapshot.data();
+          {
+            let name = data.eventName;
+            name = name.toLowerCase();
+            let id = data.eventID;
+            if (id.includes(search) || name.includes(search.toLowerCase())) {
+              setEvents((prev) => [...prev, data]);
+            }
           }
-        }
+        });
+      })
+      .catch((error) => {
+        console.log(error);
       });
-    });
   };
 
   const handleAttend = (eventID) => {
@@ -110,12 +119,16 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
           }
           firestore.collection("events").doc(eventID).update({
             attendees: attendees,
+            numAttendees: attendees.length,
           });
+          setNumAttendees(attendees.length);
         } else {
           attendees = [...attendees, auth.currentUser?.email];
           firestore.collection("events").doc(eventID).update({
             attendees: attendees,
+            numAttendees: attendees.length,
           });
+          setNumAttendees(attendees.length);
         }
       })
       .catch((error) => {
@@ -190,6 +203,19 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
         );
       default:
     }
+  };
+
+  const getNumAttendees = (eventID) => {
+    firestore
+      .collection("events")
+      .doc(eventID)
+      .get()
+      .then((documentSnapshot) => {
+        setNumAttendees(documentSnapshot.data().numAttendees);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const setLatLong = (lat, lng) => {
@@ -289,10 +315,31 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                 >
                   {currentEvent.eventName}
                 </Text>
-                <Bookmark
-                  handleAttend={handleAttend}
-                  eventID={currentEvent.eventID}
-                />
+                <View style={styles.bookmarkAndAttendees}>
+                  <Bookmark
+                    handleAttend={handleAttend}
+                    eventID={currentEvent.eventID}
+                  />
+                  <View style={styles.attendeesContainer}>
+                    <Ionicons
+                      name={"people"}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                      size={20}
+                    />
+                    <Text
+                      style={[
+                        styles.attendeesText,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {numAttendees}
+                    </Text>
+                  </View>
+                </View>
               </View>
               <View
                 style={[
@@ -384,7 +431,9 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
               </Pressable>
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
               >
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
@@ -402,6 +451,7 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                 setModalVisible(true);
                 setCurrentEvent(event);
                 setCurrentEventID(event.eventID.slice(0, 8));
+                getNumAttendees(event.eventID);
                 {
                   setLatLong(event.lat, event.long);
                 }
@@ -542,6 +592,16 @@ const styles = StyleSheet.create({
   modalText: {
     fontWeight: "bold",
     fontSize: 40,
+  },
+  bookmarkAndAttendees: {
+    alignItems: "center",
+  },
+  attendeesContainer: {
+    flexDirection: "row",
+  },
+  attendeesText: {
+    fontWeight: "bold",
+    fontSize: 20,
   },
   modalBodyContainer: {
     width: "100%",

@@ -94,6 +94,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
         lat: lat,
         owner: auth.currentUser?.email,
         attendees: [auth.currentUser?.email],
+        numAttendees: 1,
       })
       .then(function (docRef) {
         showMessage({

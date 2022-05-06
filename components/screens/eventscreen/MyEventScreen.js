@@ -41,6 +41,7 @@ const MyEventScreen = ({
   const [lat, setLat] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentEventID, setCurrentEventID] = useState("");
+  const [numAttendees, setNumAttendees] = useState(0);
 
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
@@ -72,7 +73,18 @@ const MyEventScreen = ({
     return querySize;
   };
 
- 
+  const getNumAttendees = (eventID) => {
+    firestore
+      .collection("events")
+      .doc(eventID)
+      .get()
+      .then((documentSnapshot) => {
+        setNumAttendees(documentSnapshot.data().numAttendees);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleAttend = (eventID) => {
     firestore
@@ -90,14 +102,19 @@ const MyEventScreen = ({
           }
           firestore.collection("events").doc(eventID).update({
             attendees: attendees,
+            numAttendees: attendees.length,
           });
+          setNumAttendees(attendees.length);
         } else {
           attendees = [...attendees, auth.currentUser?.email];
           firestore.collection("events").doc(eventID).update({
             attendees: attendees,
+            numAttendees: attendees.length,
           });
+          setNumAttendees(attendees.length);
         }
-      }).catch((error) => {
+      })
+      .catch((error) => {
         console.log(error);
       });
   };
@@ -308,10 +325,31 @@ const MyEventScreen = ({
                 >
                   {currentEvent.eventName}
                 </Text>
-                <Bookmark
-                  handleAttend={handleAttend}
-                  eventID={currentEvent.eventID}
-                />
+                <View style={styles.bookmarkAndAttendees}>
+                  <Bookmark
+                    handleAttend={handleAttend}
+                    eventID={currentEvent.eventID}
+                  />
+                  <View style={styles.attendeesContainer}>
+                    <Ionicons
+                      name={"people"}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                      size={20}
+                    />
+                    <Text
+                      style={[
+                        styles.attendeesText,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {numAttendees}
+                    </Text>
+                  </View>
+                </View>
               </View>
               <View
                 style={[
@@ -421,6 +459,7 @@ const MyEventScreen = ({
                 setModalVisible(true);
                 setCurrentEvent(event);
                 setCurrentEventID(event.eventID.slice(0, 8));
+                getNumAttendees(event.eventID);
                 {
                   setLatLong(event.lat, event.long);
                 }
@@ -464,25 +503,12 @@ const MyEventScreen = ({
                       {event.date} - {event.time}
                     </Text>
                   </View>
-                  {/* <TouchableOpacity onPress={() => {
-                    handleEditEvent()
-                    setEditEventID(event.eventID)
-                  }}>
-                    <Ionicons
-                      name={isEditable ? "pencil-sharp" : ""}
-                      size={40}
-                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
-                    />
-
-
-                  </TouchableOpacity> */}
-
                   <EditButton
                     handleEditEvent={handleEditEvent}
                     eventID={event.eventID}
                     darkModeEnabled={darkModeEnabled}
                     setEditEventID={setEditEventID}
-                    />
+                  />
                   <Bookmark
                     handleAttend={handleAttend}
                     eventID={event.eventID}
@@ -637,6 +663,16 @@ const styles = StyleSheet.create({
   modalText: {
     fontWeight: "bold",
     fontSize: 40,
+  },
+  bookmarkAndAttendees: {
+    alignItems: "center",
+  },
+  attendeesContainer: {
+    flexDirection: "row",
+  },
+  attendeesText: {
+    fontWeight: "bold",
+    fontSize: 20,
   },
   modalBodyContainer: {
     width: "100%",

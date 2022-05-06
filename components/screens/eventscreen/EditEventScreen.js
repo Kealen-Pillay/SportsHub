@@ -340,11 +340,11 @@ const EditEventScreen = ({
                   style={{
                     width: "100%",
                     backgroundColor: darkModeEnabled
-                ? darkTheme.cardBackground
-                : lightTheme.cardBackground,
+                      ? darkTheme.cardBackground
+                      : lightTheme.cardBackground,
                     marginTop: 10,
                   }}
-                  textColor={darkModeEnabled?darkTheme.text:lightTheme.text}
+                  textColor={darkModeEnabled ? darkTheme.text : lightTheme.text}
                   display={Platform.OS === "ios" ? "spinner" : "default"}
                   onChange={onChange}
                 />
