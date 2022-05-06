@@ -19,6 +19,7 @@ import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import Bookmark from "../feedscreen/Bookmark";
+import EditButton from "../eventscreen/EditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
@@ -27,7 +28,12 @@ LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
 
-const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
+const MyEventScreen = ({
+  darkModeEnabled,
+  setNewEventShow,
+  setEditEventShow,
+  setEditEventID,
+}) => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
@@ -35,6 +41,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
   const [lat, setLat] = useState("");
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentEventID, setCurrentEventID] = useState("");
+  const [numAttendees, setNumAttendees] = useState(0);
 
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
@@ -66,6 +73,19 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
     return querySize;
   };
 
+  const getNumAttendees = (eventID) => {
+    firestore
+      .collection("events")
+      .doc(eventID)
+      .get()
+      .then((documentSnapshot) => {
+        setNumAttendees(documentSnapshot.data().numAttendees);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleAttend = (eventID) => {
     firestore
       .collection("events")
@@ -82,13 +102,20 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
           }
           firestore.collection("events").doc(eventID).update({
             attendees: attendees,
+            numAttendees: attendees.length,
           });
+          setNumAttendees(attendees.length);
         } else {
           attendees = [...attendees, auth.currentUser?.email];
           firestore.collection("events").doc(eventID).update({
             attendees: attendees,
+            numAttendees: attendees.length,
           });
+          setNumAttendees(attendees.length);
         }
+      })
+      .catch((error) => {
+        console.log(error);
       });
   };
 
@@ -113,6 +140,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
 
     getDirections(data);
   };
+
   const renderBall = (sport) => {
     switch (sport) {
       case "Basketball":
@@ -136,6 +164,48 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
             source={require("../../../images/Football.png")}
           />
         );
+      case "Cricket":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Cricket.png")}
+          />
+        );
+      case "eSports":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Esports.png")}
+          />
+        );
+      case "Rugby":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Rugby.png")}
+          />
+        );
+      case "Sailing":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Sailing.png")}
+          />
+        );
+      case "Tennis":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Tennis.png")}
+          />
+        );
+      case "Waterpolo":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Waterpolo.png")}
+          />
+        );
       default:
     }
   };
@@ -147,6 +217,10 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
 
   const handleCreateEvent = () => {
     setNewEventShow(true);
+  };
+
+  const handleEditEvent = () => {
+    setEditEventShow(true);
   };
 
   const copyToClipboard = () => {
@@ -251,10 +325,31 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                 >
                   {currentEvent.eventName}
                 </Text>
-                <Bookmark
-                  handleAttend={handleAttend}
-                  eventID={currentEvent.eventID}
-                />
+                <View style={styles.bookmarkAndAttendees}>
+                  <Bookmark
+                    handleAttend={handleAttend}
+                    eventID={currentEvent.eventID}
+                  />
+                  <View style={styles.attendeesContainer}>
+                    <Ionicons
+                      name={"people"}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                      size={20}
+                    />
+                    <Text
+                      style={[
+                        styles.attendeesText,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {numAttendees}
+                    </Text>
+                  </View>
+                </View>
               </View>
               <View
                 style={[
@@ -364,6 +459,7 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                 setModalVisible(true);
                 setCurrentEvent(event);
                 setCurrentEventID(event.eventID.slice(0, 8));
+                getNumAttendees(event.eventID);
                 {
                   setLatLong(event.lat, event.long);
                 }
@@ -407,6 +503,12 @@ const MyEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
                       {event.date} - {event.time}
                     </Text>
                   </View>
+                  <EditButton
+                    handleEditEvent={handleEditEvent}
+                    eventID={event.eventID}
+                    darkModeEnabled={darkModeEnabled}
+                    setEditEventID={setEditEventID}
+                  />
                   <Bookmark
                     handleAttend={handleAttend}
                     eventID={event.eventID}
@@ -561,6 +663,16 @@ const styles = StyleSheet.create({
   modalText: {
     fontWeight: "bold",
     fontSize: 40,
+  },
+  bookmarkAndAttendees: {
+    alignItems: "center",
+  },
+  attendeesContainer: {
+    flexDirection: "row",
+  },
+  attendeesText: {
+    fontWeight: "bold",
+    fontSize: 20,
   },
   modalBodyContainer: {
     width: "100%",

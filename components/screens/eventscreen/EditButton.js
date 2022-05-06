@@ -1,48 +1,51 @@
 import { StyleSheet, TouchableOpacity } from "react-native";
 import React, { useState } from "react";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { darkTheme } from "../../../theme/themes";
+import { darkTheme, lightTheme } from "../../../theme/themes";
 import { firestore } from "../../../firebase/firestore";
 import { auth } from "../../../firebase/firebase";
 
-const Bookmark = ({ handleAttend, eventID }) => {
-  const checkAttendance = (eventID) => {
+const EditButton = ({
+  handleEditEvent,
+  eventID,
+  darkModeEnabled,
+  setEditEventID,
+}) => {
+  const checkOwner = (eventID) => {
     firestore
       .collection("events")
       .doc(eventID)
       .get()
       .then((documentSnapshot) => {
-        const attendees = documentSnapshot.data().attendees;
-        if (attendees.includes(auth.currentUser?.email)) {
-          setIsAttending(true);
-          return true;
+        const owner = documentSnapshot.data().owner;
+        if (owner == auth.currentUser?.email) {
+          setIsEditable(true);
         } else {
-          setIsAttending(false);
-          return false;
+          setIsEditable(false);
         }
       })
       .catch((error) => {
         console.log(error);
       });
   };
-  const [isAttending, setIsAttending] = useState(checkAttendance(eventID));
+  const [isEditable, setIsEditable] = useState(checkOwner(eventID));
   return (
     <TouchableOpacity
       onPress={() => {
-        handleAttend(eventID);
-        setIsAttending(!isAttending);
+        handleEditEvent();
+        setIsEditable(false);
+        setEditEventID(eventID);
       }}
     >
       <Ionicons
-        name={isAttending ? "bookmark" : "bookmark-outline"}
+        name={isEditable ? "pencil-sharp" : ""}
         size={40}
-        style={styles.bookmark}
-        color={darkTheme.pink}
+        color={darkModeEnabled ? darkTheme.text : lightTheme.text}
       />
     </TouchableOpacity>
   );
 };
 
-export default Bookmark;
+export default EditButton;
 
 const styles = StyleSheet.create({});

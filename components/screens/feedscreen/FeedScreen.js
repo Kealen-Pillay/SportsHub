@@ -26,11 +26,15 @@ import Bookmark from "../feedscreen/Bookmark";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import debounce from "lodash.debounce";
 
-LogBox.ignoreLogs(["Setting a timer"]);
+LogBox.ignoreLogs([
+  "Setting a timer",
+  "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
+  "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details.",
+]);
 
 var counter = 0;
 
-const FeedScreen = ({ darkModeEnabled }) => {
+const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
   const [search, setSearch] = useState("");
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
@@ -39,8 +43,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
   const [lat, setLat] = useState("");
   const [selectedSport, setSelectedSport] = useState([]);
   const [currentEventID, setCurrentEventID] = useState("");
-  const [attendeesArray, setAttendeesArray] = useState([]);
-  const [checkAttendance, setCheckAttendance] = useState(false);
+  const [numAttendees, setNumAttendees] = useState(0);
 
   useEffect(() => {
     setEvents([]);
@@ -48,7 +51,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
     return () => {
       debouncedResults.cancel();
     };
-  }, [search, selectedSport, checkAttendance]);
+  }, [search, selectedSport, newEventShow, editEventShow]);
 
   const debouncedResults = useMemo(() => {
     return debounce(setSearch, 300);
@@ -110,24 +113,22 @@ const FeedScreen = ({ darkModeEnabled }) => {
         if (attendees.includes(auth.currentUser?.email)) {
           for (let i = 0; i < attendees.length; i++) {
             if (attendees[i] === auth.currentUser?.email) {
-              //fix this
-              // setCheckAttendance(false);
-              // console.log("left");
               attendees.splice(i, 1);
               break;
             }
           }
           firestore.collection("events").doc(eventID).update({
             attendees: attendees,
+            numAttendees: attendees.length,
           });
+          setNumAttendees(attendees.length);
         } else {
-          // fix this
-          // setCheckAttendance(true);
-          // console.log("joined");
           attendees = [...attendees, auth.currentUser?.email];
           firestore.collection("events").doc(eventID).update({
             attendees: attendees,
+            numAttendees: attendees.length,
           });
+          setNumAttendees(attendees.length);
         }
       })
       .catch((error) => {
@@ -158,8 +159,63 @@ const FeedScreen = ({ darkModeEnabled }) => {
             source={require("../../../images/Football.png")}
           />
         );
+      case "Cricket":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Cricket.png")}
+          />
+        );
+      case "eSports":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Esports.png")}
+          />
+        );
+      case "Rugby":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Rugby.png")}
+          />
+        );
+      case "Sailing":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Sailing.png")}
+          />
+        );
+      case "Tennis":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Tennis.png")}
+          />
+        );
+      case "Waterpolo":
+        return (
+          <Image
+            style={styles.ball}
+            source={require("../../../images/Waterpolo.png")}
+          />
+        );
       default:
     }
+  };
+
+  const getNumAttendees = (eventID) => {
+    firestore
+      .collection("events")
+      .doc(eventID)
+      .get()
+      .then((documentSnapshot) => {
+        setNumAttendees(documentSnapshot.data().numAttendees);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const setLatLong = (lat, lng) => {
@@ -280,7 +336,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
                         },
                       ]}
                     >
-                      {attendeesArray.length}
+                      {numAttendees}
                     </Text>
                   </View>
                 </View>
@@ -395,7 +451,7 @@ const FeedScreen = ({ darkModeEnabled }) => {
                 setModalVisible(true);
                 setCurrentEvent(event);
                 setCurrentEventID(event.eventID.slice(0, 8));
-                setAttendeesArray(event.attendees);
+                getNumAttendees(event.eventID);
                 {
                   setLatLong(event.lat, event.long);
                 }
