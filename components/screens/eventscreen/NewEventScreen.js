@@ -211,6 +211,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
         value={eventName}
         onChangeText={(text) => setEventName(text)}
         placeholder="Event Name"
+        placeholderTextColor={"gray"}
       />
 
       <Dropdown
@@ -221,7 +222,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
         labelField="label"
         valueField="sport"
         placeholder="Sport"
-        placeholderStyle={{ color: "#BEBEBE", fontSize: 14 }}
+        placeholderStyle={{ color: "gray", fontSize: 14 }}
         selectedTextStyle={{ color: "black", fontSize: 13 }}
         searchPlaceholder="Search..."
         value={sport}
@@ -235,6 +236,7 @@ const NewEventScreen = ({ darkModeEnabled, setNewEventShow }) => {
         GooglePlacesDetailsQuery={{ fields: "geometry" }}
         fetchDetails={true}
         placeholder="Location"
+        textInputProps={{ placeholderTextColor: "gray" }}
         minLength={2}
         query={{
           key: GOOGLE_PLACES_API_KEY,

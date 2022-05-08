@@ -146,6 +146,7 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.text}
           placeholder="Username"
+          placeholderTextColor="gray"
           value={username}
           onChangeText={(text) => setUsername(text)}
           keyboardAppearance="dark"
@@ -153,6 +154,7 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.text}
           placeholder="Email"
+          placeholderTextColor="gray"
           value={email}
           onChangeText={(text) => setEmail(text)}
           keyboardType="email-address"
@@ -161,6 +163,7 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.text}
           placeholder="Password"
+          placeholderTextColor="gray"
           value={password}
           onChangeText={(text) => setPassword(text)}
           secureTextEntry
@@ -169,6 +172,7 @@ const RegisterScreen = () => {
         <TextInput
           style={styles.text}
           placeholder="Confirm Password"
+          placeholderTextColor="gray"
           value={confpassword}
           onChangeText={(text) => setConfpassword(text)}
           secureTextEntry
