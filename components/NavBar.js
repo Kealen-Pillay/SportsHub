@@ -6,12 +6,14 @@ import ProfileScreen from "./screens/profilescreen/ProfileScreen";
 import { useState } from "react";
 import { LogBox } from "react-native";
 import MyEventsTab from "./screens/eventscreen/MyEventsTab";
+import MyTeamsTab from "./screens/teamscreen/MyTeamsTab";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
 const feedScreen = "Feed";
 const eventScreen = "Events";
 const profileScreen = "Profile";
+const teamScreen = "Teams";
 
 const Tab = createBottomTabNavigator();
 
@@ -19,6 +21,8 @@ const NavBar = () => {
   const [darkModeEnabled, setDarkModeEnabled] = useState(true);
   const [newEventShow, setNewEventShow] = useState(false);
   const [editEventShow, setEditEventShow] = useState(false);
+  const [newTeamShow, setNewTeamShow] = useState(false);
+  const [editTeamShow, setEditTeamShow] = useState(false);
 
   return (
     <Tab.Navigator
@@ -84,6 +88,17 @@ const NavBar = () => {
             darkModeEnabled={darkModeEnabled}
             newEventShow={newEventShow}
             editEventShow={editEventShow}
+          />
+        )}
+      </Tab.Screen>
+      <Tab.Screen name={teamScreen}>
+        {() => (
+          <MyTeamsTab
+            darkModeEnabled={darkModeEnabled}
+            newTeamShow={newTeamShow}
+            setNewTeamShow={setNewTeamShow}
+            setEditTeamShow={setEditTeamShow}
+            editTeamShow={editTeamShow}
           />
         )}
       </Tab.Screen>

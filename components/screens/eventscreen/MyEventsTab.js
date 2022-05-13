@@ -18,7 +18,7 @@ const MyEventsTab = ({
     return (
       <NewEventScreen
         darkModeEnabled={darkModeEnabled}
-        setNewEventShow={setNewEventShow}
+        setNewTeamShow={setNewEventShow}
       />
     );
   } else if (editEventShow) {
