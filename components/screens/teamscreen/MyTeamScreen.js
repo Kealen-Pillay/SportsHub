@@ -13,7 +13,6 @@ import {
   import { useState, useEffect } from "react";
   import NavGradient from "../../NavGradient";
   import { firestore } from "../../../firebase/firestore";
-  import getDirections from "react-native-google-maps-directions";
   import { useIsFocused } from "@react-navigation/native";
   import { auth } from "../../../firebase/firebase";
   import Ionicons from "react-native-vector-icons/Ionicons";
@@ -37,8 +36,6 @@ import {
     const [teams, setTeams] = useState([]);
     const [modalVisible, setModalVisible] = useState(false);
     const [currentTeam, setCurrentTeam] = useState({});
-    // const [long, setLong] = useState("");
-    // const [lat, setLat] = useState("");
     const [isEmpty, setIsEmpty] = useState(false);
     const [currentTeamID, setCurrentTeamID] = useState("");
     const [numMembers, setNumMembers] = useState(0);
@@ -347,7 +344,7 @@ import {
                         },
                       ]}
                     >
-                      Teams ID: {currentTeamID}
+                      Team ID: {currentTeamID}
                     </Text>
                     <TouchableOpacity
                       style={[
