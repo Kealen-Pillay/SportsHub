@@ -17,7 +17,7 @@ import {
   import { auth } from "../../../firebase/firebase";
   import Ionicons from "react-native-vector-icons/Ionicons";
   import { darkTheme, lightTheme } from "../../../theme/themes";
-  import Bookmark from "../feedscreen/Bookmark";
+  import Bookmark2 from "./Bookmark2";
   import EditButton from "../eventscreen/EditButton";
   import { BlurView } from "expo-blur";
   import Toast from "react-native-toast-message";
@@ -298,7 +298,7 @@ import {
                     {currentTeam.name}
                   </Text>
                   <View style={styles.bookmarkAndAttendees}>
-                    <Bookmark
+                    <Bookmark2
                       handleAttend={handleAttend}
                       teamID={currentTeam.teamID}
                     />
@@ -444,7 +444,7 @@ import {
                       darkModeEnabled={darkModeEnabled}
                       setEditTeamID={setEditTeamID}
                     />
-                    <Bookmark
+                    <Bookmark2
                       handleAttend={handleAttend}
                       teamID={team.teamID}
                     />
