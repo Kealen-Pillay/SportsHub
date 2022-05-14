@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   StyleSheet,
   Text,
@@ -12,26 +12,30 @@ import {
 } from "react-native";
 import { firestore } from "../../../firebase/firestore";
 import "react-native-get-random-values";
-import { v4 as uuid } from "uuid";
 import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { Dropdown } from "react-native-element-dropdown";
 import { showMessage } from "react-native-flash-message";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
-import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
+import { useState } from "react";
 
-const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
-  const [teamName, setTeamName] = useState("");
-  const [sport, setSport] = useState("");
-  const [info, setInfo] = useState("");
-  
-  const starImgFilled = require("../../../images/star_filled.png");
-  const starImgCorner = require("../../../images/star_corner.png");
-  const [defaultRating, setdefaultRating] = useState(3);
-  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
+const EditTeamScreen = ({
+  setEditTeamShow,
+  darkModeEnabled,
+  editTeamID,
+  setEditTeamID,
+}) => {
+    const [teamName, setTeamName] = useState("");
+    const [sport, setSport] = useState("");
+    const [info, setInfo] = useState("");
+    
+    const starImgFilled = require("../../../images/star_filled.png");
+    const starImgCorner = require("../../../images/star_corner.png");
+    const [defaultRating, setdefaultRating] = useState(3);
+    const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
 
   const validSports = [
     { label: "Basketball", sport: "Basketball" },
@@ -47,13 +51,13 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
 
   const navigation = useNavigation();
 
-  const handlePublish = () => {
+  const handleEditTeam = (teamID) => {
     if (
-      teamName.length == 0 ||
-      sport.length == 0       
+        teamName.length == 0 ||
+        sport.length == 0 
     ) {
       showMessage({
-        message: "Please fill out name and sport fields before publishing",
+        message: "Please fill out the name and sport fields before updating a team!",
         type: "danger",
         hideStatusBar: true,
       });
@@ -64,31 +68,28 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
         hideStatusBar: true,
       });
     } else {
-      addTeam();
-      setNewTeamShow(false);
+      updateTeam(teamID);
+      setEditTeamShow(false);
     }
   };
   const handleBack = () => {
-    setNewTeamShow(false);
+    setEditTeamShow(false);
   };
-  const addTeam = () => {
-    const teamID = uuid();
+  const updateTeam = (teamID) => {
     firestore
       .collection("teams")
       .doc(teamID)
-      .set({
+      .update({
         teamName: teamName,
         teamID: teamID,
         sport: sport,
         info: info,
-        captain: auth.currentUser?.email,
-        members: [auth.currentUser?.email],
-        numMembers: 1,
         rating: defaultRating,
+        
       })
       .then(function (docRef) {
         showMessage({
-          message: "Team Created!",
+          message: "Team Updated!",
           type: "success",
           hideStatusBar: true,
         });
@@ -97,9 +98,32 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
         navigation.navigate("Dashboard");
       })
       .catch(function (error) {
-        console.error("Error adding document: ", error);
         showMessage({
-          message: "ERROR adding team",
+          message: "ERROR updating team",
+          type: "danger",
+          hideStatusBar: true,
+        });
+      });
+  };
+
+  const handleDeleteTeam = (teamID) => {
+    firestore
+      .collection("teams")
+      .doc(teamID)
+      .delete()
+      .then(() => {
+        showMessage({
+          message: "Team Deleted!",
+          type: "success",
+          hideStatusBar: true,
+        });
+        handleBack();
+        setEditTeamID("");
+      })
+      .catch((error) => {
+        setEditTeamID("");
+        showMessage({
+          message: "ERROR deleting team",
           type: "danger",
           hideStatusBar: true,
         });
@@ -154,7 +178,7 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
             { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
           ]}
         >
-          New Team
+          Edit Team
         </Text>
       </View>
 
@@ -194,17 +218,24 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
         placeholderTextColor={"gray"}
       />
 
-
-
-      <TouchableOpacity style={styles.button} onPress={handlePublish}>
-        <Text style={styles.buttonText}>Create Team</Text>
+      <TouchableOpacity
+        style={styles.button}
+        onPress={() => handleEditTeam(editTeamID)}
+      >
+        <Text style={styles.buttonText}>Edit Team</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        style={[styles.button, styles.deleteEventButton]}
+        onPress={() => handleDeleteTeam(editTeamID)}
+      >
+        <Text style={styles.buttonText}>Delete Team</Text>
       </TouchableOpacity>
       <NavGradient />
     </KeyboardAvoidingView>
   );
 };
 
-export default NewTeamScreen;
+export default EditTeamScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -304,6 +335,9 @@ const styles = StyleSheet.create({
   icon: {
     marginLeft: "2%",
     marginRight: "5%",
+  },
+  deleteEventButton: {
+    backgroundColor: "#e85454",
   },
   abilityText: {
     color: "black",

@@ -2,8 +2,7 @@ import { StyleSheet } from "react-native";
 import React from "react";
 import MyTeamScreen from "./MyTeamScreen";
 import NewTeamScreen from "./NewTeamScreen";
-// import NewEventScreen from "../eventscreen/NewEventScreen";
-// import EditEventScreen from "./EditEventScreen";
+import EditTeamScreen from "./EditTeamScreen";
 import { useState } from "react";
 
 const MyTeamsTab = ({
@@ -15,15 +14,6 @@ const MyTeamsTab = ({
 }) => {
   const [editTeamID, setEditTeamID] = useState("");
 
-//   return (
-//     <MyTeamScreen
-//       setNewTeamShow={setNewTeamShow}
-//       darkModeEnabled={darkModeEnabled}
-//       setEditTeamShow={setEditTeamShow}
-//       setEditTeamID={setEditTeamID}
-//     />
-//   );
-
   if (newTeamShow) {
     return (
       <NewTeamScreen
@@ -32,16 +22,16 @@ const MyTeamsTab = ({
       />
     );
   } 
-//   else if (editTeamShow) {
-//     return (
-//       <EditEventScreen
-//         darkModeEnabled={darkModeEnabled}
-//         setEditTeamShow={setEditTeamShow}
-//         editTeamID={editTeamID}
-//         setEditTeamID={setEditTeamID}
-//       />
-//     );
-//   } 
+  else if (editTeamShow) {
+    return (
+      <EditTeamScreen
+        darkModeEnabled={darkModeEnabled}
+        setEditTeamShow={setEditTeamShow}
+        editTeamID={editTeamID}
+        setEditTeamID={setEditTeamID}
+      />
+    );
+  } 
   else {
     return (
       <MyTeamScreen

@@ -18,7 +18,7 @@ import {
   import Ionicons from "react-native-vector-icons/Ionicons";
   import { darkTheme, lightTheme } from "../../../theme/themes";
   import Bookmark2 from "./Bookmark2";
-  import EditButton from "../eventscreen/EditButton";
+  import EditButton2 from "./EditButton2";
   import { BlurView } from "expo-blur";
   import Toast from "react-native-toast-message";
   import { LogBox } from "react-native";
@@ -295,7 +295,7 @@ import {
                       },
                     ]}
                   >
-                    {currentTeam.name}
+                    {currentTeam.teamName}
                   </Text>
                   <View style={styles.bookmarkAndAttendees}>
                     <Bookmark2
@@ -365,6 +365,19 @@ import {
                     </TouchableOpacity>
                   </View>
                   <Text
+                      style={[
+                        styles.modalBody,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      Captain: {currentTeam.captain}
+                    </Text>
+
+                  <Text
                     style={[
                       styles.modalBody,
                       {
@@ -374,6 +387,19 @@ import {
                   >
                     Sport: {currentTeam.sport}
                   </Text>
+
+                  <Text
+                      style={[
+                        styles.modalBody,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      Members: {currentTeam.members}
+                    </Text>
                   
                   <Text
                     style={[
@@ -438,7 +464,7 @@ import {
                       </Text>
                       
                     </View>
-                    <EditButton
+                    <EditButton2
                       handleEditTeam={handleEditTeam}
                       teamID={team.teamID}
                       darkModeEnabled={darkModeEnabled}

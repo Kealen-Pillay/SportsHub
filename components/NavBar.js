@@ -38,7 +38,10 @@ const NavBar = () => {
             iconName = focused ? "map" : "map-outline";
           } else if (routeName === profileScreen) {
             iconName = focused ? "person-circle" : "person-circle-outline";
+          }else if (routeName === teamScreen) {
+            iconName = focused ? "shirt" : "shirt-outline";
           }
+
 
           return (
             <Ionicons
