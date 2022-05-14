@@ -28,14 +28,14 @@ const EditTeamScreen = ({
   editTeamID,
   setEditTeamID,
 }) => {
-    const [teamName, setTeamName] = useState("");
-    const [sport, setSport] = useState("");
-    const [info, setInfo] = useState("");
-    
-    const starImgFilled = require("../../../images/star_filled.png");
-    const starImgCorner = require("../../../images/star_corner.png");
-    const [defaultRating, setdefaultRating] = useState(3);
-    const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
+  const [teamName, setTeamName] = useState("");
+  const [sport, setSport] = useState("");
+  const [info, setInfo] = useState("");
+
+  const starImgFilled = require("../../../images/star_filled.png");
+  const starImgCorner = require("../../../images/star_corner.png");
+  const [defaultRating, setdefaultRating] = useState(3);
+  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
 
   const validSports = [
     { label: "Basketball", sport: "Basketball" },
@@ -52,12 +52,10 @@ const EditTeamScreen = ({
   const navigation = useNavigation();
 
   const handleEditTeam = (teamID) => {
-    if (
-        teamName.length == 0 ||
-        sport.length == 0 
-    ) {
+    if (teamName.length == 0 || sport.length == 0) {
       showMessage({
-        message: "Please fill out the name and sport fields before updating a team!",
+        message:
+          "Please fill out the name and sport fields before updating a team!",
         type: "danger",
         hideStatusBar: true,
       });
@@ -85,7 +83,6 @@ const EditTeamScreen = ({
         sport: sport,
         info: info,
         rating: defaultRating,
-        
       })
       .then(function (docRef) {
         showMessage({
@@ -152,7 +149,6 @@ const EditTeamScreen = ({
     );
   };
 
-
   return (
     <KeyboardAvoidingView
       style={[
@@ -208,9 +204,9 @@ const EditTeamScreen = ({
         dropdownPosition={"bottom"}
       />
 
-    <RatingBox />
+      <RatingBox />
 
-    <TextInput
+      <TextInput
         style={styles.text}
         value={info}
         onChangeText={(text) => setInfo(text)}

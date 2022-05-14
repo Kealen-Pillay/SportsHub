@@ -21,8 +21,7 @@ const MyTeamsTab = ({
         setNewTeamShow={setNewTeamShow}
       />
     );
-  } 
-  else if (editTeamShow) {
+  } else if (editTeamShow) {
     return (
       <EditTeamScreen
         darkModeEnabled={darkModeEnabled}
@@ -31,15 +30,14 @@ const MyTeamsTab = ({
         setEditTeamID={setEditTeamID}
       />
     );
-  } 
-  else {
+  } else {
     return (
       <MyTeamScreen
-      setNewTeamShow={setNewTeamShow}
-      darkModeEnabled={darkModeEnabled}
-      setEditTeamShow={setEditTeamShow}
-      setEditTeamID={setEditTeamID}
-    />
+        setNewTeamShow={setNewTeamShow}
+        darkModeEnabled={darkModeEnabled}
+        setEditTeamShow={setEditTeamShow}
+        setEditTeamID={setEditTeamID}
+      />
     );
   }
 };

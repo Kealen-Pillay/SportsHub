@@ -5,7 +5,7 @@ import { darkTheme, lightTheme } from "../../../theme/themes";
 import { firestore } from "../../../firebase/firestore";
 import { auth } from "../../../firebase/firebase";
 
-const EditButton2 = ({
+const TeamEditButton = ({
   handleEditTeam,
   teamID,
   darkModeEnabled,
@@ -46,6 +46,6 @@ const EditButton2 = ({
   );
 };
 
-export default EditButton2;
+export default TeamEditButton;
 
 const styles = StyleSheet.create({});

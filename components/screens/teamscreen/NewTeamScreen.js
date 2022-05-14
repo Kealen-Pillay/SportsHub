@@ -27,7 +27,7 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
   const [teamName, setTeamName] = useState("");
   const [sport, setSport] = useState("");
   const [info, setInfo] = useState("");
-  
+
   const starImgFilled = require("../../../images/star_filled.png");
   const starImgCorner = require("../../../images/star_corner.png");
   const [defaultRating, setdefaultRating] = useState(3);
@@ -48,10 +48,7 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
   const navigation = useNavigation();
 
   const handlePublish = () => {
-    if (
-      teamName.length == 0 ||
-      sport.length == 0       
-    ) {
+    if (teamName.length == 0 || sport.length == 0) {
       showMessage({
         message: "Please fill out name and sport fields before publishing",
         type: "danger",
@@ -128,7 +125,6 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
     );
   };
 
-
   return (
     <KeyboardAvoidingView
       style={[
@@ -184,17 +180,15 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
         dropdownPosition={"bottom"}
       />
 
-    <RatingBox />
+      <RatingBox />
 
-    <TextInput
+      <TextInput
         style={styles.text}
         value={info}
         onChangeText={(text) => setInfo(text)}
         placeholder="Information"
         placeholderTextColor={"gray"}
       />
-
-
 
       <TouchableOpacity style={styles.button} onPress={handlePublish}>
         <Text style={styles.buttonText}>Create Team</Text>

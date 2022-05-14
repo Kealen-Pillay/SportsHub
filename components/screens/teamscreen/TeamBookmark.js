@@ -5,7 +5,7 @@ import { darkTheme } from "../../../theme/themes";
 import { firestore } from "../../../firebase/firestore";
 import { auth } from "../../../firebase/firebase";
 
-const Bookmark2 = ({ handleAttend, teamID }) => {
+const TeamBookmark = ({ handleAttend, teamID }) => {
   const checkAttendance = (teamID) => {
     firestore
       .collection("teams")
@@ -43,6 +43,6 @@ const Bookmark2 = ({ handleAttend, teamID }) => {
   );
 };
 
-export default Bookmark2;
+export default TeamBookmark;
 
 const styles = StyleSheet.create({});
