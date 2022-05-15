@@ -31,6 +31,7 @@ const ChatScreen = ({ darkModeEnabled }) => {
 
   useEffect(() => {
     // creates message object
+    getMessages();
     setMessages([
       {
         _id: 1,
@@ -45,6 +46,19 @@ const ChatScreen = ({ darkModeEnabled }) => {
     ]);
     getSenderInfo();
   }, []);
+
+  const getMessages = () => {
+    firestore
+      .collection("chat")
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((snapshot) => {
+          let data = snapshot.data();
+          console.log(data);
+        });
+      })
+      .catch((error) => console.log(error));
+  };
 
   const getSenderInfo = () => {
     firestore
@@ -66,23 +80,18 @@ const ChatScreen = ({ darkModeEnabled }) => {
   };
 
   const onSend = useCallback((messages = []) => {
-    
     setMessages((previousMessages) =>
       GiftedChat.append(previousMessages, messages)
     );
 
     const { _id, createdAt, text, user } = messages[0];
 
-    firestore
-      .collection("teams")
-      .doc("69d84fb1-2a51-4d5c-ad46-187d6f8f3784")
-      .collection("chats") // navigate to nested chat collection and add message object to document
-      .add({
-        _id,
-        createdAt,
-        text,
-        user,
-      });
+    firestore.collection("chat").add({
+      _id,
+      createdAt,
+      text,
+      user,
+    });
   }, []);
 
   const customtInputToolbar = (props) => {
