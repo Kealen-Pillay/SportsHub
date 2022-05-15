@@ -77,8 +77,15 @@ const ChatScreen = ({ darkModeEnabled }) => {
         text,
         user,
       }=messages[0]
-      firestore.collection("teams").doc("TEAM ID GOES HERE").collection("chat")// navigate to nested chat collection and add message object to document
-    
+      firestore.collection("teams")
+      .doc("69d84fb1-2a51-4d5c-ad46-187d6f8f3784")
+      .collection("chats")// navigate to nested chat collection and add message object to document
+    .add({
+      _id,
+      createdAt,
+      text,
+      user,
+    })
   }, []);
 
   const customtInputToolbar = (props) => {
