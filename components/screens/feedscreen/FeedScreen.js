@@ -247,7 +247,7 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
       <SearchBar
         placeholder="Search Event Name or ID"
         height={60}
-        inputStyle={{paddingLeft: 50}}
+        inputStyle={{ paddingLeft: 50 }}
         onChangeText={debouncedResults}
         style={styles.searchBar}
         placeholderTextColor={
@@ -256,31 +256,33 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
         theme={darkModeEnabled ? "dark" : "light"}
         keyboardAppearance={darkModeEnabled ? "dark" : "light"}
       />
-      <SelectableChips
-        initialChips={["Football", "Basketball", "Volleyball"]}
-        onChangeChips={(chips) => setSelectedSport(chips)}
-        alertRequired={false}
-        valueStyle={{
-          color: darkModeEnabled ? darkTheme.text : lightTheme.text,
-          fontSize: 19,
-        }}
-        chipStyle={{
-          borderColor: "black",
-          backgroundColor: darkModeEnabled
-            ? darkTheme.cardBackground
-            : lightTheme.cardBackground,
-          borderWidth: 2,
-          width: 110,
-          marginTop: 20,
-          marginBottom: 10,
-          height: 45,
-        }}
-        chipStyleSelected={{
-          backgroundColor: darkTheme.pink,
-          borderColor: "black",
-          borderWidth: 2,
-        }}
-      />
+      <ScrollView horizontal={true} style={styles.filterBar}>
+        <SelectableChips
+          initialChips={["Football", "Basketball", "Volleyball", "Tennis", "Sailing", "Esports", "Rugby", "Cricket", "Waterpolo"]}
+          onChangeChips={(chips) => setSelectedSport(chips)}
+          alertRequired={false}
+          valueStyle={{
+            color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+            fontSize: 19,
+          }}
+          chipStyle={{
+            borderColor: "black",
+            backgroundColor: darkModeEnabled
+              ? darkTheme.cardBackground
+              : lightTheme.cardBackground,
+            borderWidth: 2,
+            width: 110,
+            marginTop: 20,
+            marginBottom: 10,
+            height: 45,
+          }}
+          chipStyleSelected={{
+            backgroundColor: darkTheme.pink,
+            borderColor: "black",
+            borderWidth: 2,
+          }}
+        />
+      </ScrollView>
       {setModalVisible && (
         <Modal
           animationType="slide"
@@ -652,4 +654,7 @@ const styles = StyleSheet.create({
     marginLeft: 15,
     marginRight: 10,
   },
+  filterBar: {
+    height: "13%"
+  }
 });
