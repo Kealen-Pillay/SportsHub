@@ -529,8 +529,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   searchBar: {
-    margin: "10%",
-    width: "67%",     
+    width: "82%",     
   },
   scrollView: {
     width: "100%",

@@ -246,6 +246,8 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
     >
       <SearchBar
         placeholder="Search Event Name or ID"
+        height={60}
+        inputStyle={{paddingLeft: 50}}
         onChangeText={debouncedResults}
         style={styles.searchBar}
         placeholderTextColor={
@@ -522,8 +524,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   searchBar: {
-    width: "80%",
-    margin: "10%",
+    width: "90%",
   },
   scrollView: {
     width: "100%",
