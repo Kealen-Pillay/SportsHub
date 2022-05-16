@@ -7,8 +7,7 @@ import { firestore } from "../../../firebase/firestore";
 import { showMessage } from "react-native-flash-message";
 import { auth } from "../../../firebase/firebase";
 
-export default function UploadImage({ darkModeEnabled }) {
-  const [image, setImage] = useState();
+export default function UploadImage({ darkModeEnabled, image, setImage }) {
 
   useEffect(() => {}, []);
 
@@ -21,14 +20,14 @@ export default function UploadImage({ darkModeEnabled }) {
     });
 
     if (!_image.cancelled) {
-      setImage(_image.uri);
       firestore
         .collection("users")
         .doc(auth.currentUser?.email)
         .update(
           {
-            profileimg: image,
-          }
+            profileimg: _image.uri,
+          },
+          setImage(_image.uri)
         )
         .then(() => {
           showMessage({
@@ -40,7 +39,6 @@ export default function UploadImage({ darkModeEnabled }) {
         .catch((error) => console.log(error));
     }
   };
-
 
   return (
     <View

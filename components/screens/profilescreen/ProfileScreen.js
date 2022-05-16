@@ -23,8 +23,20 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
   const [username, setUsername] = useState("");
   const starImgFilled = require("../../../images/star_filled.png");
   const starImgCorner = require("../../../images/star_corner.png");
-
   const navigation = useNavigation();
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    firestore
+      .collection("users")
+      .doc(auth.currentUser?.email)
+      .get()
+      .then((documentSnapshot) => {
+        let data = documentSnapshot.data();
+        setImage(data.profileimg);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const RatingBox = () => {
     return (
@@ -113,7 +125,11 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
           ]}
         >
           <View style={styles.imageContainer}>
-            <UploadImage darkModeEnabled={isEnabled} />
+            <UploadImage
+              darkModeEnabled={isEnabled}
+              image={image}
+              setImage={setImage}
+            />
             <Text
               style={[
                 styles.usernameText,
