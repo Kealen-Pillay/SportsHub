@@ -14,14 +14,13 @@ import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 
 /**
+ * 
  * TO DO:
- *
- * -make team id's human readable so easier to reference
- * -add nested collection called "chat" or similar in a team document when it is first created
- * -finish message add to db in onSend()
- * -useLayoutEffect to display message in most recent createdAt order
- * -Link chatroom page to team page
+ * 
+ * read and display avatars
  */
+
+
 
 const ChatScreen = ({ darkModeEnabled }) => {
   const [messages, setMessages] = useState([]);
@@ -29,10 +28,11 @@ const ChatScreen = ({ darkModeEnabled }) => {
   const [senderAvatar, setSenderAvatar] = useState(null);
 
   useEffect(() => {
+    getSenderInfo();
     const unsubscribe = firestore
       .collection("chat")
-      .limit(20)
       .orderBy("createdAt", "desc")
+      .limit(20)
       .onSnapshot((snapshot) =>
         setMessages(
           snapshot.docs.map((doc) => ({
@@ -66,10 +66,6 @@ const ChatScreen = ({ darkModeEnabled }) => {
   };
 
   const onSend = useCallback((messages = []) => {
-    setMessages((previousMessages) =>
-      GiftedChat.append(previousMessages, messages)
-    );
-
     const { _id, createdAt, text, user } = messages[0];
 
     firestore.collection("chat").add({
@@ -123,7 +119,7 @@ const ChatScreen = ({ darkModeEnabled }) => {
           onSend={(messages) => onSend(messages)}
           renderInputToolbar={(props) => customtInputToolbar(props)}
           user={{
-            // _id: uuid(), uncommenting this makes all bubbles same color
+            _id: auth.currentUser?.email,
             user: { senderName },
             avatar: { senderAvatar },
           }}
@@ -156,7 +152,7 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   chatContainer: {
-    marginTop: "5%",
+    marginBottom: "40%",
     height: "80%",
     justifyContent: "flex-end",
     width: "95%",

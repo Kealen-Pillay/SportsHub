@@ -26,11 +26,11 @@ import Bookmark from "../feedscreen/Bookmark";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import debounce from "lodash.debounce";
 
-// LogBox.ignoreLogs([
-//   "Setting a timer",
-//   "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
-//   "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details.",
-// ]);
+LogBox.ignoreLogs([
+  "Setting a timer",
+  "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
+  "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details.",
+]);
 
 var counter = 0;
 
