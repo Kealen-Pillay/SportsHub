@@ -523,7 +523,7 @@ const styles = StyleSheet.create({
   },
   searchBar: {
     width: "80%",
-    margin: 40,
+    margin: "10%",
   },
   scrollView: {
     width: "100%",
