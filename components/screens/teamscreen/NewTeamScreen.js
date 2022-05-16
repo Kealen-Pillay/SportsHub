@@ -5,18 +5,14 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  Modal,
   View,
-  Pressable,
   Image,
 } from "react-native";
 import { firestore } from "../../../firebase/firestore";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { Dropdown } from "react-native-element-dropdown";
 import { showMessage } from "react-native-flash-message";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -289,7 +285,6 @@ const styles = StyleSheet.create({
   starImgStyle: {
     width: 35,
     height: 35,
-    resizeMode: "cover",
   },
   infoText: {
     height: "20%",
