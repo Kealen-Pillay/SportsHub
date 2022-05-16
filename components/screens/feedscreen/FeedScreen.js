@@ -668,6 +668,5 @@ const styles = StyleSheet.create({
   filterBar: {
     height: "13%",
     width: "90%",
-    // flex:1,
   },
 });

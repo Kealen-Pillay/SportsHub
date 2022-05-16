@@ -278,31 +278,43 @@ const TeamFeedScreen = ({
           />
         </TouchableOpacity>
       </View>
-      <SelectableChips
-        initialChips={["Football", "Basketball", "Volleyball"]}
-        onChangeChips={(chips) => setSelectedSport(chips)}
-        alertRequired={false}
-        valueStyle={{
-          color: darkModeEnabled ? darkTheme.text : lightTheme.text,
-          fontSize: 19,
-        }}
-        chipStyle={{
-          borderColor: "black",
-          backgroundColor: darkModeEnabled
-            ? darkTheme.cardBackground
-            : lightTheme.cardBackground,
-          borderWidth: 2,
-          width: 110,
-          marginTop: 20,
-          marginBottom: 10,
-          height: 45,
-        }}
-        chipStyleSelected={{
-          backgroundColor: darkTheme.pink,
-          borderColor: "black",
-          borderWidth: 2,
-        }}
-      />
+      <ScrollView horizontal={true} style={styles.filterBar}>
+        <SelectableChips
+          initialChips={[
+            "Football",
+            "Basketball",
+            "Volleyball",
+            "Tennis",
+            "Sailing",
+            "Esports",
+            "Rugby",
+            "Cricket",
+            "Waterpolo",
+          ]}
+          onChangeChips={(chips) => setSelectedSport(chips)}
+          alertRequired={false}
+          valueStyle={{
+            color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+            fontSize: 19,
+          }}
+          chipStyle={{
+            borderColor: "black",
+            backgroundColor: darkModeEnabled
+              ? darkTheme.cardBackground
+              : lightTheme.cardBackground,
+            borderWidth: 2,
+            width: 110,
+            marginTop: 20,
+            marginBottom: 10,
+            height: 45,
+          }}
+          chipStyleSelected={{
+            backgroundColor: darkTheme.pink,
+            borderColor: "black",
+            borderWidth: 2,
+          }}
+        />
+      </ScrollView>
 
       {setModalVisible && (
         <Modal
@@ -340,7 +352,7 @@ const TeamFeedScreen = ({
                 >
                   {currentTeam.teamName}
                 </Text>
-                <View style={styles.bookmarkAndAttendees}>
+                <View style={styles.titleIcons}>
                   <TeamBookmark
                     handleAttend={handleAttend}
                     teamID={currentTeam.teamID}
@@ -481,7 +493,7 @@ const TeamFeedScreen = ({
             >
               <View
                 style={[
-                  styles.eventContainer,
+                  styles.teamContainer,
                   {
                     backgroundColor: darkModeEnabled
                       ? darkTheme.cardBackground
@@ -494,7 +506,7 @@ const TeamFeedScreen = ({
                   <View style={styles.infoContainer}>
                     <Text
                       style={[
-                        styles.eventName,
+                        styles.teamName,
                         {
                           color: darkModeEnabled
                             ? darkTheme.text
@@ -534,8 +546,9 @@ const styles = StyleSheet.create({
   scrollView: {
     width: "100%",
     marginBottom: 55,
+    height: "100%"
   },
-  eventContainer: {
+  teamContainer: {
     borderWidth: 2,
     margin: 20,
     height: 90,
@@ -555,14 +568,9 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginBottom: 10,
   },
-  eventName: {
+  teamName: {
     fontWeight: "bold",
     fontSize: 28,
-    paddingLeft: 10,
-    paddingTop: 10,
-  },
-  eventDate: {
-    fontWeight: "bold",
     paddingLeft: 10,
     paddingTop: 10,
   },
@@ -600,7 +608,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 40,
   },
-  bookmarkAndAttendees: {
+  titleIcons: {
     alignItems: "center",
   },
   attendeesContainer: {
@@ -674,5 +682,9 @@ const styles = StyleSheet.create({
   },
   icon: {
     marginLeft: "5%"
-  }
+  },
+  filterBar: {
+    height: "13%",
+    width: "90%",
+  },
 });

@@ -179,17 +179,14 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
         }}
         dropdownPosition={"bottom"}
       />
-
       <RatingBox />
-
       <TextInput
-        style={styles.text}
+        style={[styles.text, styles.infoText]}
         value={info}
         onChangeText={(text) => setInfo(text)}
         placeholder="Information"
         placeholderTextColor={"gray"}
       />
-
       <TouchableOpacity style={styles.button} onPress={handlePublish}>
         <Text style={styles.buttonText}>Create Team</Text>
       </TouchableOpacity>
@@ -240,32 +237,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 25,
   },
-  datePicker: {
-    backgroundColor: "white",
-    borderWidth: 2,
-    width: "90%",
-    height: 50,
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "flex-start",
-    paddingLeft: 10,
-    marginTop: "5%",
-    marginBottom: "10%",
-  },
-  pickerText: {
-    color: "black",
-  },
-  timePicker: {
-    backgroundColor: "white",
-    borderWidth: 2,
-    width: "90%",
-    height: 50,
-    borderRadius: 15,
-    marginBottom: "5%",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    paddingLeft: 10,
-  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -308,9 +279,8 @@ const styles = StyleSheet.create({
   customRatingBar: {
     flexDirection: "row",
     backgroundColor: "white",
-    width: "80%",
-    marginTop: 20,
-    marginBottom: 10,
+    width: "90%",
+    marginBottom: "10%",
     borderRadius: 5,
     height: 50,
     justifyContent: "space-between",
@@ -321,4 +291,7 @@ const styles = StyleSheet.create({
     height: 35,
     resizeMode: "cover",
   },
+  infoText: {
+    height: "20%",
+  }
 });
