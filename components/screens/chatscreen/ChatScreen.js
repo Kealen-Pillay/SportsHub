@@ -29,23 +29,32 @@ const ChatScreen = ({ darkModeEnabled }) => {
   const [senderName, setSenderName] = useState(null);
   const [senderAvatar, setSenderAvatar] = useState(null);
 
+
   useEffect(() => {
-    // creates message object
-    getMessages();
-    setMessages([
-      {
-        _id: 1,
-        text: "Hello developer",
-        createdAt: new Date(),
-        user: {
-          _id: 2,
-          name: "React Native",
-          avatar: "https://placeimg.com/140/140/any",
-        },
-      },
-    ]);
-    getSenderInfo();
+
+    const unsubscribe = 
+      firestore
+      .collection("chat")
+      .limit(20)
+      .orderBy('createdAt', 'desc')
+      .onSnapshot
+      (snapshot => setMessages(
+        snapshot.docs.map(doc => ({
+          _id: doc.data._id,
+          createdAt: doc.data().createdAt.toDate(),
+          text: doc.data().text,
+          user: doc.data().user,
+        }))
+
+      ))
+      return unsubscribe;
+
+
   }, []);
+
+
+
+
 
   const getMessages = () => {
     firestore
