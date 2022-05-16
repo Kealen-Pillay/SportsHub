@@ -128,7 +128,7 @@ const RegisterScreen = () => {
       .collection("users")
       .add({
         username: username,
-        email: email,
+        email: email.toLowerCase(),
         rating: defaultRating,
         profileimg: "",
       })
