@@ -1,11 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import * as ImagePicker from "expo-image-picker";
 import { darkTheme, lightTheme } from "../../../theme/themes";
+import { firestore } from "../../../firebase/firestore";
+import { showMessage } from "react-native-flash-message";
+import { auth } from "../../../firebase/firebase";
 
 export default function UploadImage({ darkModeEnabled }) {
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState();
+
+  useEffect(() => {}, []);
 
   const addImage = async () => {
     let _image = await ImagePicker.launchImageLibraryAsync({
@@ -17,8 +22,25 @@ export default function UploadImage({ darkModeEnabled }) {
 
     if (!_image.cancelled) {
       setImage(_image.uri);
+      firestore
+        .collection("users")
+        .doc(auth.currentUser?.email)
+        .update(
+          {
+            profileimg: image,
+          }
+        )
+        .then(() => {
+          showMessage({
+            message: "Profile Image Uploaded!",
+            type: "success",
+            hideStatusBar: true,
+          });
+        })
+        .catch((error) => console.log(error));
     }
   };
+
 
   return (
     <View

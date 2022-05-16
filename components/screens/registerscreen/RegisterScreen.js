@@ -124,16 +124,18 @@ const RegisterScreen = () => {
   };
 
   const addUser = () => {
+    const userId = email.toLowerCase();
     firestore
       .collection("users")
-      .add({
+      .doc(userId)
+      .set({
         username: username,
-        email: email.toLowerCase(),
+        email: userId,
         rating: defaultRating,
         profileimg: "",
       })
-      .then(function (docRef) {})
-      .catch(function (error) {});
+      .then(() => {})
+      .catch((error) => console.log(error));
   };
 
   return (
