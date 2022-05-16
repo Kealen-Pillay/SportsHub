@@ -258,7 +258,17 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
       />
       <ScrollView horizontal={true} style={styles.filterBar}>
         <SelectableChips
-          initialChips={["Football", "Basketball", "Volleyball", "Tennis", "Sailing", "Esports", "Rugby", "Cricket", "Waterpolo"]}
+          initialChips={[
+            "Football",
+            "Basketball",
+            "Volleyball",
+            "Tennis",
+            "Sailing",
+            "Esports",
+            "Rugby",
+            "Cricket",
+            "Waterpolo",
+          ]}
           onChangeChips={(chips) => setSelectedSport(chips)}
           alertRequired={false}
           valueStyle={{
@@ -531,6 +541,7 @@ const styles = StyleSheet.create({
   scrollView: {
     width: "100%",
     marginBottom: 55,
+    height: "100%"
   },
   eventContainer: {
     borderWidth: 2,
@@ -655,6 +666,8 @@ const styles = StyleSheet.create({
     marginRight: 10,
   },
   filterBar: {
-    height: "13%"
-  }
+    height: "13%",
+    width: "90%",
+    // flex:1,
+  },
 });
