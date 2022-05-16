@@ -11,7 +11,6 @@ import NavGradient from "../../NavGradient";
 import { useState, useCallback, useEffect } from "react";
 import { GiftedChat, InputToolbar } from "react-native-gifted-chat";
 import { auth } from "../../../firebase/firebase";
-import { v4 as uuid } from "uuid";
 import { firestore } from "../../../firebase/firestore";
 
 /**
@@ -29,45 +28,23 @@ const ChatScreen = ({ darkModeEnabled }) => {
   const [senderName, setSenderName] = useState(null);
   const [senderAvatar, setSenderAvatar] = useState(null);
 
-
   useEffect(() => {
-
-    const unsubscribe = 
-      firestore
+    const unsubscribe = firestore
       .collection("chat")
       .limit(20)
-      .orderBy('createdAt', 'desc')
-      .onSnapshot
-      (snapshot => setMessages(
-        snapshot.docs.map(doc => ({
-          _id: doc.data._id,
-          createdAt: doc.data().createdAt.toDate(),
-          text: doc.data().text,
-          user: doc.data().user,
-        }))
-
-      ))
-      return unsubscribe;
-
-
+      .orderBy("createdAt", "desc")
+      .onSnapshot((snapshot) =>
+        setMessages(
+          snapshot.docs.map((doc) => ({
+            _id: doc.data._id,
+            createdAt: doc.data().createdAt.toDate(),
+            text: doc.data().text,
+            user: doc.data().user,
+          }))
+        )
+      );
+    return unsubscribe;
   }, []);
-
-
-
-
-
-  const getMessages = () => {
-    firestore
-      .collection("chat")
-      .get()
-      .then((querySnapShot) => {
-        querySnapShot.forEach((snapshot) => {
-          let data = snapshot.data();
-          console.log(data);
-        });
-      })
-      .catch((error) => console.log(error));
-  };
 
   const getSenderInfo = () => {
     firestore
