@@ -22,9 +22,12 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
     firestore
       .collection("users")
       .doc(auth.currentUser?.email)
-      .update({
-        profileimg: avatar,
-      })
+      .update(
+        {
+          profileimg: avatar,
+        },
+        setImage(avatar)
+      )
       .then(() => {
         Toast.show({
           type: "success",
@@ -49,7 +52,7 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
         },
       ]}
     >
-      {image && <Image source={{ image }} style={styles.profileImage} />}
+      <Image source={image} style={styles.profileImage} />
 
       <View
         style={[
@@ -109,9 +112,10 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                 },
               ]}
             >
+              
               <View style={styles.avatarContainer}>
                 <TouchableOpacity
-                  onPress={() => addImage("../../../images/Basketball.png")}
+                  onPress={() => addImage(require("../../../images/Basketball.png"))}
                 >
                   <Image
                     style={styles.avatar}
@@ -119,7 +123,7 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage("../../../images/Esports.png")}
+                  onPress={() => addImage(require("../../../images/Esports.png"))}
                 >
                   <Image
                     style={styles.avatar}
@@ -127,7 +131,7 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage("../../../images/Waterpolo.png")}
+                  onPress={() => addImage(require("../../../images/Waterpolo.png"))}
                 >
                   <Image
                     style={styles.avatar}

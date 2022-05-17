@@ -34,7 +34,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
       .get()
       .then((documentSnapshot) => {
         let data = documentSnapshot.data();
-        console.log(data.profileimg);
+        setImage(data.profileimg);
       })
       .catch((error) => console.log(error));
   }, []);
