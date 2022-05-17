@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Image,
 } from "react-native";
@@ -15,6 +14,7 @@ import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 import UploadImage from "./UploadImage";
 import NavGradient from "../../NavGradient";
+import Toast from "react-native-toast-message";
 
 const ProfileScreen = ({ setDarkModeEnabled }) => {
   const [isEnabled, setIsEnabled] = useState(true);
@@ -23,8 +23,20 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
   const [username, setUsername] = useState("");
   const starImgFilled = require("../../../images/star_filled.png");
   const starImgCorner = require("../../../images/star_corner.png");
-
   const navigation = useNavigation();
+  const [image, setImage] = useState(null);
+
+  useEffect(() => {
+    firestore
+      .collection("users")
+      .doc(auth.currentUser?.email)
+      .get()
+      .then((documentSnapshot) => {
+        let data = documentSnapshot.data();
+        setImage(data.profileimg);
+      })
+      .catch((error) => console.log(error));
+  }, []);
 
   const RatingBox = () => {
     return (
@@ -91,7 +103,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
   };
 
   return (
-    <KeyboardAvoidingView
+    <View
       style={[
         styles.container,
         {
@@ -113,7 +125,11 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
           ]}
         >
           <View style={styles.imageContainer}>
-            <UploadImage darkModeEnabled={isEnabled} />
+            <UploadImage
+              darkModeEnabled={isEnabled}
+              image={image}
+              setImage={setImage}
+            />
             <Text
               style={[
                 styles.usernameText,
@@ -124,6 +140,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
             </Text>
           </View>
         </Card>
+        <Toast />
       </View>
       <View style={styles.ratingCardContainer}>
         <Card
@@ -183,7 +200,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
         </TouchableOpacity>
       </View>
       <NavGradient />
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 

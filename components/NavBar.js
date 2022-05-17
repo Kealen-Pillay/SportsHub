@@ -25,6 +25,7 @@ const NavBar = () => {
   const [editEventShow, setEditEventShow] = useState(false);
   const [newTeamShow, setNewTeamShow] = useState(false);
   const [editTeamShow, setEditTeamShow] = useState(false);
+  const [teamFeedShow, setTeamFeedShow] = useState(false);
 
   return (
     <Tab.Navigator
@@ -45,6 +46,7 @@ const NavBar = () => {
           } else if (routeName === chatScreen) {
             iconName = focused ? "chatbubble" : "chatbubble-outline";
           }
+
 
           return (
             <Ionicons
@@ -111,6 +113,8 @@ const NavBar = () => {
             setNewTeamShow={setNewTeamShow}
             setEditTeamShow={setEditTeamShow}
             editTeamShow={editTeamShow}
+            setTeamFeedShow={setTeamFeedShow}
+            teamFeedShow={teamFeedShow}
           />
         )}
       </Tab.Screen>

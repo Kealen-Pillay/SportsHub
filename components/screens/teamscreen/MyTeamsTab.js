@@ -3,6 +3,7 @@ import React from "react";
 import MyTeamScreen from "./MyTeamScreen";
 import NewTeamScreen from "./NewTeamScreen";
 import EditTeamScreen from "./EditTeamScreen";
+import TeamFeedScreen from "./TeamFeedScreen";
 import { useState } from "react";
 
 const MyTeamsTab = ({
@@ -11,6 +12,8 @@ const MyTeamsTab = ({
   darkModeEnabled,
   editTeamShow,
   setEditTeamShow,
+  setTeamFeedShow,
+  teamFeedShow,
 }) => {
   const [editTeamID, setEditTeamID] = useState("");
 
@@ -30,6 +33,15 @@ const MyTeamsTab = ({
         setEditTeamID={setEditTeamID}
       />
     );
+  } else if (teamFeedShow) {
+    return (
+      <TeamFeedScreen
+      newTeamShow={newTeamShow}
+      darkModeEnabled={darkModeEnabled}
+      editTeamShow={editTeamShow}
+      setTeamFeedShow={setTeamFeedShow}
+      />
+    );
   } else {
     return (
       <MyTeamScreen
@@ -37,6 +49,7 @@ const MyTeamsTab = ({
         darkModeEnabled={darkModeEnabled}
         setEditTeamShow={setEditTeamShow}
         setEditTeamID={setEditTeamID}
+        setTeamFeedShow={setTeamFeedShow}
       />
     );
   }

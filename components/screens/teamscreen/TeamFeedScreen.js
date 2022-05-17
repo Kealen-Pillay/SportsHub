@@ -10,74 +10,77 @@ import {
   Image,
 } from "react-native";
 import React from "react";
-import { useState, useEffect } from "react";
 import NavGradient from "../../NavGradient";
+import SearchBar from "react-native-platform-searchbar";
+import { useState, useEffect, useMemo } from "react";
+import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
-import { useIsFocused } from "@react-navigation/native";
-import { auth } from "../../../firebase/firebase";
+import * as Clipboard from "expo-clipboard";
 import Ionicons from "react-native-vector-icons/Ionicons";
-import { darkTheme, lightTheme } from "../../../theme/themes";
-import TeamBookmark from "./TeamBookmark";
-import TeamEditButton from "./TeamEditButton";
-import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
+import { auth } from "../../../firebase/firebase";
 import { LogBox } from "react-native";
+import { BlurView } from "expo-blur";
+import TeamBookmark from "./TeamBookmark";
+import { darkTheme, lightTheme } from "../../../theme/themes";
+import debounce from "lodash.debounce";
 
-LogBox.ignoreLogs(["Setting a timer"]);
+LogBox.ignoreLogs([
+  "Setting a timer",
+  "Warning: Can't perform a React state update on an unmounted component. This is a no-op, but it indicates a memory leak in your application. To fix, cancel all subscriptions and asynchronous tasks in a useEffect cleanup function.",
+  "Warning: componentWillReceiveProps has been renamed, and is not recommended for use. See https://reactjs.org/link/unsafe-component-lifecycles for details.",
+]);
 
 var counter = 0;
 
-const MyTeamScreen = ({
+const TeamFeedScreen = ({
   darkModeEnabled,
-  setNewTeamShow,
+  newTeamShow,
+  editTeamShow,
   setEditTeamShow,
-  setEditTeamID,
   setTeamFeedShow,
 }) => {
+  const [search, setSearch] = useState("");
   const [teams, setTeams] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentTeam, setCurrentTeam] = useState({});
-  const [isEmpty, setIsEmpty] = useState(false);
+
+  const [selectedSport, setSelectedSport] = useState([]);
   const [currentTeamID, setCurrentTeamID] = useState("");
   const [numMembers, setNumMembers] = useState(0);
-
-  const isFocused = useIsFocused();
-  const currentUser = auth.currentUser?.email;
+  const [membersList, setMembersList] = useState([]);
 
   useEffect(() => {
     setTeams([]);
     getTeams();
-  }, [isFocused]);
+    return () => {
+      debouncedResults.cancel();
+    };
+  }, [search, selectedSport, newTeamShow, editTeamShow]);
+
+  const debouncedResults = useMemo(() => {
+    return debounce(setSearch, 300);
+  }, []);
 
   const getTeams = () => {
-    let querySize = 0;
-    firestore
-      .collection("teams")
-      .where("members", "array-contains", currentUser)
+    let query = firestore.collection("teams");
+    if (selectedSport.length > 0) {
+      query = query.where("sport", "in", selectedSport);
+    }
+    query
       .get()
       .then((querySnapShot) => {
         querySnapShot.forEach((snapshot) => {
           let data = snapshot.data();
-          setTeams((prev) => [...prev, data]);
-        });
-        {
-          if (querySnapShot.size === 0) {
-            setIsEmpty(true);
-          } else {
-            setIsEmpty(false);
+          {
+            let name = data.teamName;
+            name = name.toLowerCase();
+            let id = data.teamID;
+            if (id.includes(search) || name.includes(search.toLowerCase())) {
+              setTeams((prev) => [...prev, data]);
+            }
           }
-        }
-      });
-    return querySize;
-  };
-
-  const getNumMembers = (teamID) => {
-    firestore
-      .collection("teams")
-      .doc(teamID)
-      .get()
-      .then((documentSnapshot) => {
-        setNumMembers(documentSnapshot.data().numMembers);
+        });
       })
       .catch((error) => {
         console.log(error);
@@ -103,6 +106,7 @@ const MyTeamScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
+          setMembersList(members);
         } else {
           members = [...members, auth.currentUser?.email];
           firestore.collection("teams").doc(teamID).update({
@@ -110,11 +114,16 @@ const MyTeamScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
+          setMembersList(members);
         }
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleBack = () => {
+    setTeamFeedShow(false);
   };
 
   const renderBall = (sport) => {
@@ -186,16 +195,30 @@ const MyTeamScreen = ({
     }
   };
 
-  const handleCreateTeam = () => {
-    setNewTeamShow(true);
+  const getNumMembers = (teamID) => {
+    firestore
+      .collection("teams")
+      .doc(teamID)
+      .get()
+      .then((documentSnapshot) => {
+        setNumMembers(documentSnapshot.data().numMembers);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
-  const handleEditTeam = () => {
-    setEditTeamShow(true);
-  };
-
-  const handleTeamFeed = () => {
-    setTeamFeedShow(true);
+  const getMembersList = (teamID) => {
+    firestore
+      .collection("teams")
+      .doc(teamID)
+      .get()
+      .then((documentSnapshot) => {
+        setMembersList(documentSnapshot.data().members);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const copyToClipboard = () => {
@@ -219,74 +242,79 @@ const MyTeamScreen = ({
         },
       ]}
     >
-      <View style={styles.titleContainer}>
-        <Text
+      <View style={styles.headerContainer}>
+        <SearchBar
+          placeholder="Search Team Name or ID"
+          height={60}
+          inputStyle={{paddingLeft: 50}}
+          onChangeText={debouncedResults}
+          style={styles.searchBar}
+          placeholderTextColor={
+            darkModeEnabled ? darkTheme.text : lightTheme.text
+          }
+          theme={darkModeEnabled ? "dark" : "light"}
+          keyboardAppearance={darkModeEnabled ? "dark" : "light"}
+        />
+        <TouchableOpacity
           style={[
-            styles.title,
-            { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
+            styles.myTeamsButton, 
+            {
+              backgroundColor: darkModeEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+            },
           ]}
+          onPress={handleBack}
         >
-          My Teams
-        </Text>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity
+          <Ionicons
+            name={"list-circle-outline"}
+            size={30}
             style={[
-              styles.feedButton,
+              styles.icon,
               {
-                backgroundColor: darkModeEnabled
-                  ? darkTheme.cardBackground
-                  : lightTheme.cardBackground,
+                color: darkModeEnabled ? darkTheme.text : lightTheme.text,
               },
             ]}
-            onPress={handleTeamFeed}
-          >
-            <Ionicons
-              name={"earth"}
-              size={30}
-              style={[
-                {
-                  color: darkModeEnabled ? darkTheme.text : lightTheme.text,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={[
-              styles.createButton,
-              {
-                backgroundColor: darkModeEnabled
-                  ? darkTheme.cardBackground
-                  : lightTheme.cardBackground,
-              },
-            ]}
-            onPress={handleCreateTeam}
-          >
-            <Ionicons
-              name={"add-outline"}
-              size={35}
-              style={[
-                styles.icon,
-                {
-                  color: darkModeEnabled ? darkTheme.text : lightTheme.text,
-                },
-              ]}
-            />
-          </TouchableOpacity>
-        </View>
+          />
+        </TouchableOpacity>
       </View>
-      {isEmpty && (
-        <View style={styles.emptyContainer}>
-          <Text
-            style={[
-              styles.noEventText,
-              { color: darkModeEnabled ? darkTheme.text : lightTheme.text },
-            ]}
-          >
-            You Have No Teams
-          </Text>
-        </View>
-      )}
+      <ScrollView horizontal={true} style={styles.filterBar}>
+        <SelectableChips
+          initialChips={[
+            "Football",
+            "Basketball",
+            "Volleyball",
+            "Tennis",
+            "Sailing",
+            "Esports",
+            "Rugby",
+            "Cricket",
+            "Waterpolo",
+          ]}
+          onChangeChips={(chips) => setSelectedSport(chips)}
+          alertRequired={false}
+          valueStyle={{
+            color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+            fontSize: 19,
+          }}
+          chipStyle={{
+            borderColor: "black",
+            backgroundColor: darkModeEnabled
+              ? darkTheme.cardBackground
+              : lightTheme.cardBackground,
+            borderWidth: 2,
+            width: 110,
+            marginTop: 20,
+            marginBottom: 10,
+            height: 45,
+          }}
+          chipStyleSelected={{
+            backgroundColor: darkTheme.pink,
+            borderColor: "black",
+            borderWidth: 2,
+          }}
+        />
+      </ScrollView>
 
       {setModalVisible && (
         <Modal
@@ -324,7 +352,7 @@ const MyTeamScreen = ({
                 >
                   {currentTeam.teamName}
                 </Text>
-                <View style={styles.bookmarkAndAttendees}>
+                <View style={styles.titleIcons}>
                   <TeamBookmark
                     handleAttend={handleAttend}
                     teamID={currentTeam.teamID}
@@ -391,6 +419,7 @@ const MyTeamScreen = ({
                     />
                   </TouchableOpacity>
                 </View>
+
                 <Text
                   style={[
                     styles.modalBody,
@@ -421,7 +450,7 @@ const MyTeamScreen = ({
                     },
                   ]}
                 >
-                  Members: {currentTeam.members}
+                  Members: {membersList}
                 </Text>
 
                 <Text
@@ -438,7 +467,9 @@ const MyTeamScreen = ({
 
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => setModalVisible(!modalVisible)}
+                onPress={() => {
+                  setModalVisible(!modalVisible);
+                }}
               >
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
@@ -457,11 +488,12 @@ const MyTeamScreen = ({
                 setCurrentTeam(team);
                 setCurrentTeamID(team.teamID.slice(0, 8));
                 getNumMembers(team.teamID);
+                getMembersList(team.teamID);
               }}
             >
               <View
                 style={[
-                  styles.eventContainer,
+                  styles.teamContainer,
                   {
                     backgroundColor: darkModeEnabled
                       ? darkTheme.cardBackground
@@ -474,7 +506,7 @@ const MyTeamScreen = ({
                   <View style={styles.infoContainer}>
                     <Text
                       style={[
-                        styles.eventName,
+                        styles.teamName,
                         {
                           color: darkModeEnabled
                             ? darkTheme.text
@@ -485,16 +517,7 @@ const MyTeamScreen = ({
                       {team.teamName}
                     </Text>
                   </View>
-                  <TeamEditButton
-                    handleEditTeam={handleEditTeam}
-                    teamID={team.teamID}
-                    darkModeEnabled={darkModeEnabled}
-                    setEditTeamID={setEditTeamID}
-                  />
-                  <TeamBookmark
-                    handleAttend={handleAttend}
-                    teamID={team.teamID}
-                  />
+                  <TeamBookmark handleAttend={handleAttend} teamID={team.teamID} />
                 </View>
               </View>
             </TouchableOpacity>
@@ -506,79 +529,26 @@ const MyTeamScreen = ({
   );
 };
 
-export default MyTeamScreen;
+export default TeamFeedScreen;
 
 const styles = StyleSheet.create({
-  title: {
-    fontWeight: "bold",
-    fontSize: 50,
-    marginLeft: "5%",
-    marginRight: "10%",
-  },
   container: {
     flex: 1,
-    alignItems: "flex-start",
-    justifyContent: "center",
-  },
-  event: {
-    width: "80%",
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
+    justifyContent: "flex-start",
     alignItems: "center",
-    marginTop: 22,
   },
-  ball: {
-    height: 50,
-    width: 50,
-    marginLeft: 15,
-    marginRight: 10,
+  text: {
+    fontSize: 50,
   },
-  titleContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
-    marginTop: "5%",
-    marginBottom: "5%",
-    width: "95%",
-  },
-  createButton: {
-    height: 50,
-    width: 50,
-    justifyContent: "center",
-    alignItems: "center",
-    borderRadius: 50,
-    borderColor: darkTheme.pink,
-    borderWidth: 2,
-  },
-  createText: {
-    fontWeight: "bold",
-    fontSize: 30,
-    bottom: 6,
-    right: 0.5,
-  },
-  noEventText: {
-    fontWeight: "bold",
-    fontSize: 30,
-    textAlign: "center",
-  },
-  emptyContainer: {
-    width: "90%",
-    borderRadius: 15,
-    borderWidth: 2,
-    borderColor: darkTheme.pink,
-    justifyContent: "center",
-    alignItems: "center",
-    height: 50,
-    marginLeft: "5%",
-    marginTop: "60%",
+  searchBar: {
+    width: "82%",     
   },
   scrollView: {
     width: "100%",
     marginBottom: 55,
+    height: "100%"
   },
-  eventContainer: {
+  teamContainer: {
     borderWidth: 2,
     margin: 20,
     height: 90,
@@ -598,14 +568,9 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginBottom: 10,
   },
-  eventName: {
+  teamName: {
     fontWeight: "bold",
     fontSize: 28,
-    paddingLeft: 10,
-    paddingTop: 10,
-  },
-  eventDate: {
-    fontWeight: "bold",
     paddingLeft: 10,
     paddingTop: 10,
   },
@@ -643,7 +608,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 40,
   },
-  bookmarkAndAttendees: {
+  titleIcons: {
     alignItems: "center",
   },
   attendeesContainer: {
@@ -694,7 +659,19 @@ const styles = StyleSheet.create({
     backgroundColor: darkTheme.pink,
     marginTop: "20%",
   },
-  feedButton: {
+  ball: {
+    height: 50,
+    width: 50,
+    marginLeft: 15,
+    marginRight: 10,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    width: "90%",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  myTeamsButton: {
     height: 50,
     width: 50,
     justifyContent: "center",
@@ -703,10 +680,11 @@ const styles = StyleSheet.create({
     borderColor: darkTheme.pink,
     borderWidth: 2,
   },
-  buttonContainer: {
-    width: "30%",
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "space-between",
+  icon: {
+    marginLeft: "5%"
+  },
+  filterBar: {
+    height: "13%",
+    width: "90%",
   },
 });

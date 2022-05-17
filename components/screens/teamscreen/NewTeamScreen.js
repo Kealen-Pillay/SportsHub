@@ -5,18 +5,14 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  Modal,
   View,
-  Pressable,
   Image,
 } from "react-native";
 import { firestore } from "../../../firebase/firestore";
 import "react-native-get-random-values";
 import { v4 as uuid } from "uuid";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { Dropdown } from "react-native-element-dropdown";
 import { showMessage } from "react-native-flash-message";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
@@ -179,17 +175,14 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
         }}
         dropdownPosition={"bottom"}
       />
-
       <RatingBox />
-
       <TextInput
-        style={styles.text}
+        style={[styles.text, styles.infoText]}
         value={info}
         onChangeText={(text) => setInfo(text)}
         placeholder="Information"
         placeholderTextColor={"gray"}
       />
-
       <TouchableOpacity style={styles.button} onPress={handlePublish}>
         <Text style={styles.buttonText}>Create Team</Text>
       </TouchableOpacity>
@@ -240,32 +233,6 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     fontSize: 25,
   },
-  datePicker: {
-    backgroundColor: "white",
-    borderWidth: 2,
-    width: "90%",
-    height: 50,
-    borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "flex-start",
-    paddingLeft: 10,
-    marginTop: "5%",
-    marginBottom: "10%",
-  },
-  pickerText: {
-    color: "black",
-  },
-  timePicker: {
-    backgroundColor: "white",
-    borderWidth: 2,
-    width: "90%",
-    height: 50,
-    borderRadius: 15,
-    marginBottom: "5%",
-    justifyContent: "center",
-    alignItems: "flex-start",
-    paddingLeft: 10,
-  },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -308,9 +275,8 @@ const styles = StyleSheet.create({
   customRatingBar: {
     flexDirection: "row",
     backgroundColor: "white",
-    width: "80%",
-    marginTop: 20,
-    marginBottom: 10,
+    width: "90%",
+    marginBottom: "10%",
     borderRadius: 5,
     height: 50,
     justifyContent: "space-between",
@@ -319,6 +285,8 @@ const styles = StyleSheet.create({
   starImgStyle: {
     width: 35,
     height: 35,
-    resizeMode: "cover",
   },
+  infoText: {
+    height: "20%",
+  }
 });
