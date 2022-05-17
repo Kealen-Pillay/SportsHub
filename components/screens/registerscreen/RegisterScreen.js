@@ -22,7 +22,7 @@ const RegisterScreen = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confpassword, setConfpassword] = useState("");
-  const [newUser, setNewUser] = useState(true);
+
 
   const navigation = useNavigation();
 
@@ -34,6 +34,21 @@ const RegisterScreen = () => {
     });
     return unsubscribe;
   }, []);
+
+  const getUsers = () => {
+    let exists = false;
+    firestore
+      .collection("users")
+      .where("email", "==", email)
+      .get()
+      .then((querySnapShot) => {
+        if (querySnapShot.size != 0) {
+          exists = true;
+        }
+      });
+
+    return exists;
+  };
 
   const RatingBox = () => {
     return (
@@ -101,21 +116,26 @@ const RegisterScreen = () => {
         hideStatusBar: true,
       });
     } else {
-      auth
-        .createUserWithEmailAndPassword(email, password)
-        .then((userCredentials) => {
-          const user = userCredentials.user;
-          showMessage({
-            message: "Account Created",
-            type: "success",
-            hideStatusBar: true,
+      if (getUsers() == false) {
+        auth
+          .createUserWithEmailAndPassword(email, password)
+          .then((userCredentials) => {
+            const user = userCredentials.user;
+            showMessage({
+              message: "Account Created",
+              type: "success",
+              hideStatusBar: true,
+            });
+          })
+          .catch((error) => {
+            showMessage({
+              message: "Email already exists!",
+              type: "danger",
+              hideStatusBar: true,
+            });
           });
-        })
-        .catch((error) => {
-          setNewUser(false);
-          alert(error.message);
-        });
-      if (newUser == true) addUser();
+        addUser();
+      }
     }
   };
 
