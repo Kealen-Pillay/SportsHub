@@ -13,7 +13,7 @@ import { useState } from "react";
 import { BlurView } from "expo-blur";
 import { firestore } from "../../../firebase/firestore";
 import { auth } from "../../../firebase/firebase";
-import Toast from "react-native-toast-message";
+import { showMessage } from "react-native-flash-message";
 
 export default function UploadImage({ darkModeEnabled, image, setImage }) {
   const [modalVisible, setModalVisible] = useState(false);
@@ -29,11 +29,10 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
         setImage(avatar)
       )
       .then(() => {
-        Toast.show({
+        showMessage({
+          message: "Profile Picture Updated!",
           type: "success",
-          text1: "Profile Image Uploaded!",
-          visibilityTime: 1000,
-          position: "top",
+          hideStatusBar: true,
         });
         setModalVisible(false);
       })
