@@ -685,6 +685,6 @@ const styles = StyleSheet.create({
   },
   filterBar: {
     height: "13%",
-    width: "90%",
+    width: "95%",
   },
 });
