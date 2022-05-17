@@ -53,7 +53,6 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
       ]}
     >
       <Image source={image} style={styles.profileImage} />
-
       <View
         style={[
           styles.uploadButtonContainer,
@@ -87,7 +86,6 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
           />
         </TouchableOpacity>
       </View>
-
       {setModalVisible && (
         <Modal
           animationType="slide"
@@ -112,10 +110,11 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                 },
               ]}
             >
-              
               <View style={styles.avatarContainer}>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../avatar-icons/apple.png"))}
+                  onPress={() =>
+                    addImage(require("../../../avatar-icons/apple.png"))
+                  }
                 >
                   <Image
                     style={styles.avatar}
@@ -123,7 +122,9 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../avatar-icons/banana.png"))}
+                  onPress={() =>
+                    addImage(require("../../../avatar-icons/banana.png"))
+                  }
                 >
                   <Image
                     style={styles.avatar}
@@ -131,15 +132,21 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../avatar-icons/blueberry.png"))}
+                  onPress={() =>
+                    addImage(require("../../../avatar-icons/blueberry.png"))
+                  }
                 >
                   <Image
                     style={styles.avatar}
                     source={require("../../../avatar-icons/blueberry.png")}
                   />
                 </TouchableOpacity>
+              </View>
+              <View style={styles.avatarContainer}>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../avatar-icons/bubblegum.png"))}
+                  onPress={() =>
+                    addImage(require("../../../avatar-icons/bubblegum.png"))
+                  }
                 >
                   <Image
                     style={styles.avatar}
@@ -147,7 +154,9 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../avatar-icons/cherry.png"))}
+                  onPress={() =>
+                    addImage(require("../../../avatar-icons/cherry.png"))
+                  }
                 >
                   <Image
                     style={styles.avatar}
@@ -155,15 +164,21 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../avatar-icons/grape.png"))}
+                  onPress={() =>
+                    addImage(require("../../../avatar-icons/grape.png"))
+                  }
                 >
                   <Image
                     style={styles.avatar}
                     source={require("../../../avatar-icons/grape.png")}
                   />
                 </TouchableOpacity>
+              </View>
+              <View style={styles.avatarContainer}>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../avatar-icons/mango.png"))}
+                  onPress={() =>
+                    addImage(require("../../../avatar-icons/mango.png"))
+                  }
                 >
                   <Image
                     style={styles.avatar}
@@ -171,7 +186,9 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../avatar-icons/peach.png"))}
+                  onPress={() =>
+                    addImage(require("../../../avatar-icons/peach.png"))
+                  }
                 >
                   <Image
                     style={styles.avatar}
@@ -179,7 +196,9 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../avatar-icons/plum.png"))}
+                  onPress={() =>
+                    addImage(require("../../../avatar-icons/plum.png"))
+                  }
                 >
                   <Image
                     style={styles.avatar}
@@ -271,7 +290,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     width: "100%",
-    marginBottom: "10%",
+    marginBottom: "15%",
   },
   profileImage: {
     width: 130,
