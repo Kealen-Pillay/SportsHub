@@ -34,7 +34,7 @@ const TeamBookmark = ({ handleAttend, teamID }) => {
       }}
     >
       <Ionicons
-        name={isAttending ? "personjj" : "person-add-outline"}
+        name={isAttending ? "person" : "person-add-outline"}
         size={40}
         style={styles.bookmark}
         color={darkTheme.pink}
