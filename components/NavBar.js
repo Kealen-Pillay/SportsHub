@@ -7,6 +7,7 @@ import { useState } from "react";
 import { LogBox } from "react-native";
 import MyEventsTab from "./screens/eventscreen/MyEventsTab";
 import MyTeamsTab from "./screens/teamscreen/MyTeamsTab";
+import ChatScreen from "./screens/chatscreen/ChatScreen";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -14,6 +15,7 @@ const feedScreen = "Feed";
 const eventScreen = "Events";
 const profileScreen = "Profile";
 const teamScreen = "Teams";
+const chatScreen = "Chat";
 
 const Tab = createBottomTabNavigator();
 
@@ -39,8 +41,10 @@ const NavBar = () => {
             iconName = focused ? "map" : "map-outline";
           } else if (routeName === profileScreen) {
             iconName = focused ? "person-circle" : "person-circle-outline";
-          }else if (routeName === teamScreen) {
+          } else if (routeName === teamScreen) {
             iconName = focused ? "shirt" : "shirt-outline";
+          } else if (routeName === chatScreen) {
+            iconName = focused ? "chatbubble" : "chatbubble-outline";
           }
 
 
@@ -84,6 +88,12 @@ const NavBar = () => {
             setEditEventShow={setEditEventShow}
             editEventShow={editEventShow}
           />
+        )}
+      </Tab.Screen>
+      <Tab.Screen name={chatScreen}>
+        {() => (
+          <ChatScreen 
+          darkModeEnabled={darkModeEnabled}/>
         )}
       </Tab.Screen>
       <Tab.Screen name={feedScreen}>
