@@ -115,27 +115,75 @@ export default function UploadImage({ darkModeEnabled, image, setImage }) {
               
               <View style={styles.avatarContainer}>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../images/Basketball.png"))}
+                  onPress={() => addImage(require("../../../avatar-icons/apple.png"))}
                 >
                   <Image
                     style={styles.avatar}
-                    source={require("../../../images/Basketball.png")}
+                    source={require("../../../avatar-icons/apple.png")}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../images/Esports.png"))}
+                  onPress={() => addImage(require("../../../avatar-icons/banana.png"))}
                 >
                   <Image
                     style={styles.avatar}
-                    source={require("../../../images/Esports.png")}
+                    source={require("../../../avatar-icons/banana.png")}
                   />
                 </TouchableOpacity>
                 <TouchableOpacity
-                  onPress={() => addImage(require("../../../images/Waterpolo.png"))}
+                  onPress={() => addImage(require("../../../avatar-icons/blueberry.png"))}
                 >
                   <Image
                     style={styles.avatar}
-                    source={require("../../../images/Waterpolo.png")}
+                    source={require("../../../avatar-icons/blueberry.png")}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => addImage(require("../../../avatar-icons/bubblegum.png"))}
+                >
+                  <Image
+                    style={styles.avatar}
+                    source={require("../../../avatar-icons/bubblegum.png")}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => addImage(require("../../../avatar-icons/cherry.png"))}
+                >
+                  <Image
+                    style={styles.avatar}
+                    source={require("../../../avatar-icons/cherry.png")}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => addImage(require("../../../avatar-icons/grape.png"))}
+                >
+                  <Image
+                    style={styles.avatar}
+                    source={require("../../../avatar-icons/grape.png")}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => addImage(require("../../../avatar-icons/mango.png"))}
+                >
+                  <Image
+                    style={styles.avatar}
+                    source={require("../../../avatar-icons/mango.png")}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => addImage(require("../../../avatar-icons/peach.png"))}
+                >
+                  <Image
+                    style={styles.avatar}
+                    source={require("../../../avatar-icons/peach.png")}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity
+                  onPress={() => addImage(require("../../../avatar-icons/plum.png"))}
+                >
+                  <Image
+                    style={styles.avatar}
+                    source={require("../../../avatar-icons/plum.png")}
                   />
                 </TouchableOpacity>
               </View>
