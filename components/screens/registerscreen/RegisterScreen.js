@@ -132,7 +132,7 @@ const RegisterScreen = () => {
         username: username,
         email: userId,
         rating: defaultRating,
-        profileimg: "",
+        profileimg: null,
       })
       .then(() => {})
       .catch((error) => console.log(error));
