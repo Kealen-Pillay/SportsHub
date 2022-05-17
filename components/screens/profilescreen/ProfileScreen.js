@@ -15,6 +15,7 @@ import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 import UploadImage from "./UploadImage";
 import NavGradient from "../../NavGradient";
+import Toast from "react-native-toast-message";
 
 const ProfileScreen = ({ setDarkModeEnabled }) => {
   const [isEnabled, setIsEnabled] = useState(true);
@@ -33,7 +34,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
       .get()
       .then((documentSnapshot) => {
         let data = documentSnapshot.data();
-        setImage(data.profileimg);
+        console.log(data.profileimg);
       })
       .catch((error) => console.log(error));
   }, []);
@@ -103,7 +104,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
   };
 
   return (
-    <KeyboardAvoidingView
+    <View
       style={[
         styles.container,
         {
@@ -140,6 +141,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
             </Text>
           </View>
         </Card>
+        <Toast />
       </View>
       <View style={styles.ratingCardContainer}>
         <Card
@@ -199,7 +201,7 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
         </TouchableOpacity>
       </View>
       <NavGradient />
-    </KeyboardAvoidingView>
+    </View>
   );
 };
 
