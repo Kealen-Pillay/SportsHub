@@ -225,11 +225,12 @@ const styles = StyleSheet.create({
     elevation: 2,
     height: 130,
     width: 130,
-    position: "relative",
     borderRadius: 999,
     overflow: "hidden",
     borderWidth: 2,
     marginTop: 10,
+    justifyContent: "center",
+    alignItems: "center"
   },
   uploadButtonContainer: {
     opacity: 0.7,
