@@ -15,14 +15,13 @@ import SearchBar from "react-native-platform-searchbar";
 import { useState, useEffect, useMemo } from "react";
 import SelectableChips from "react-native-chip/SelectableChips";
 import { firestore } from "../../../firebase/firestore";
-import getDirections from "react-native-google-maps-directions";
 import * as Clipboard from "expo-clipboard";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import Toast from "react-native-toast-message";
 import { auth } from "../../../firebase/firebase";
 import { LogBox } from "react-native";
 import { BlurView } from "expo-blur";
-import Bookmark from "../feedscreen/Bookmark";
+import TeamBookmark from "./TeamBookmark";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import debounce from "lodash.debounce";
 
@@ -34,52 +33,37 @@ LogBox.ignoreLogs([
 
 var counter = 0;
 
-const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
+const TeamFeedScreen = ({
+  darkModeEnabled,
+  newTeamShow,
+  editTeamShow,
+  setEditTeamShow,
+  setTeamFeedShow,
+}) => {
   const [search, setSearch] = useState("");
-  const [events, setEvents] = useState([]);
+  const [teams, setTeams] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
-  const [currentEvent, setCurrentEvent] = useState({});
-  const [long, setLong] = useState("");
-  const [lat, setLat] = useState("");
+  const [currentTeam, setCurrentTeam] = useState({});
+
   const [selectedSport, setSelectedSport] = useState([]);
-  const [currentEventID, setCurrentEventID] = useState("");
-  const [numAttendees, setNumAttendees] = useState(0);
+  const [currentTeamID, setCurrentTeamID] = useState("");
+  const [numMembers, setNumMembers] = useState(0);
+  const [membersList, setMembersList] = useState([]);
 
   useEffect(() => {
-    setEvents([]);
-    getEvents();
+    setTeams([]);
+    getTeams();
     return () => {
       debouncedResults.cancel();
     };
-  }, [search, selectedSport, newEventShow, editEventShow]);
+  }, [search, selectedSport, newTeamShow, editTeamShow]);
 
   const debouncedResults = useMemo(() => {
     return debounce(setSearch, 300);
   }, []);
 
-  const handleDirections = () => {
-    const data = {
-      source: {},
-      destination: {
-        latitude: lat,
-        longitude: long,
-      },
-      params: [
-        {
-          key: "travelmode",
-          value: "driving",
-        },
-        {
-          key: "dir_action",
-          value: "navigate",
-        },
-      ],
-    };
-    getDirections(data);
-  };
-
-  const getEvents = () => {
-    let query = firestore.collection("events");
+  const getTeams = () => {
+    let query = firestore.collection("teams");
     if (selectedSport.length > 0) {
       query = query.where("sport", "in", selectedSport);
     }
@@ -89,11 +73,11 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
         querySnapShot.forEach((snapshot) => {
           let data = snapshot.data();
           {
-            let name = data.eventName;
+            let name = data.teamName;
             name = name.toLowerCase();
-            let id = data.eventID;
+            let id = data.teamID;
             if (id.includes(search) || name.includes(search.toLowerCase())) {
-              setEvents((prev) => [...prev, data]);
+              setTeams((prev) => [...prev, data]);
             }
           }
         });
@@ -103,37 +87,43 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
       });
   };
 
-  const handleAttend = (eventID) => {
+  const handleAttend = (teamID) => {
     firestore
-      .collection("events")
-      .doc(eventID)
+      .collection("teams")
+      .doc(teamID)
       .get()
       .then((documentSnapshot) => {
-        let attendees = documentSnapshot.data().attendees;
-        if (attendees.includes(auth.currentUser?.email)) {
-          for (let i = 0; i < attendees.length; i++) {
-            if (attendees[i] === auth.currentUser?.email) {
-              attendees.splice(i, 1);
+        let members = documentSnapshot.data().members;
+        if (members.includes(auth.currentUser?.email)) {
+          for (let i = 0; i < members.length; i++) {
+            if (members[i] === auth.currentUser?.email) {
+              members.splice(i, 1);
               break;
             }
           }
-          firestore.collection("events").doc(eventID).update({
-            attendees: attendees,
-            numAttendees: attendees.length,
+          firestore.collection("teams").doc(teamID).update({
+            members: members,
+            numMembers: members.length,
           });
-          setNumAttendees(attendees.length);
+          setNumMembers(members.length);
+          setMembersList(members);
         } else {
-          attendees = [...attendees, auth.currentUser?.email];
-          firestore.collection("events").doc(eventID).update({
-            attendees: attendees,
-            numAttendees: attendees.length,
+          members = [...members, auth.currentUser?.email];
+          firestore.collection("teams").doc(teamID).update({
+            members: members,
+            numMembers: members.length,
           });
-          setNumAttendees(attendees.length);
+          setNumMembers(members.length);
+          setMembersList(members);
         }
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleBack = () => {
+    setTeamFeedShow(false);
   };
 
   const renderBall = (sport) => {
@@ -205,29 +195,37 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
     }
   };
 
-  const getNumAttendees = (eventID) => {
+  const getNumMembers = (teamID) => {
     firestore
-      .collection("events")
-      .doc(eventID)
+      .collection("teams")
+      .doc(teamID)
       .get()
       .then((documentSnapshot) => {
-        setNumAttendees(documentSnapshot.data().numAttendees);
+        setNumMembers(documentSnapshot.data().numMembers);
       })
       .catch((error) => {
         console.log(error);
       });
   };
 
-  const setLatLong = (lat, lng) => {
-    setLat(lat);
-    setLong(lng);
+  const getMembersList = (teamID) => {
+    firestore
+      .collection("teams")
+      .doc(teamID)
+      .get()
+      .then((documentSnapshot) => {
+        setMembersList(documentSnapshot.data().members);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
   };
 
   const copyToClipboard = () => {
-    Clipboard.setString(currentEventID);
+    Clipboard.setString(currentTeamID);
     Toast.show({
       type: "success",
-      text1: "Event ID Copied!",
+      text1: "Team ID Copied!",
       visibilityTime: 1000,
       position: "top",
     });
@@ -244,18 +242,42 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
         },
       ]}
     >
-      <SearchBar
-        placeholder="Search Event Name or ID"
-        height={60}
-        inputStyle={{ paddingLeft: 50 }}
-        onChangeText={debouncedResults}
-        style={styles.searchBar}
-        placeholderTextColor={
-          darkModeEnabled ? darkTheme.text : lightTheme.text
-        }
-        theme={darkModeEnabled ? "dark" : "light"}
-        keyboardAppearance={darkModeEnabled ? "dark" : "light"}
-      />
+      <View style={styles.headerContainer}>
+        <SearchBar
+          placeholder="Search Team Name or ID"
+          height={60}
+          inputStyle={{paddingLeft: 50}}
+          onChangeText={debouncedResults}
+          style={styles.searchBar}
+          placeholderTextColor={
+            darkModeEnabled ? darkTheme.text : lightTheme.text
+          }
+          theme={darkModeEnabled ? "dark" : "light"}
+          keyboardAppearance={darkModeEnabled ? "dark" : "light"}
+        />
+        <TouchableOpacity
+          style={[
+            styles.myTeamsButton, 
+            {
+              backgroundColor: darkModeEnabled
+                ? darkTheme.cardBackground
+                : lightTheme.cardBackground,
+            },
+          ]}
+          onPress={handleBack}
+        >
+          <Ionicons
+            name={"list-circle-outline"}
+            size={30}
+            style={[
+              styles.icon,
+              {
+                color: darkModeEnabled ? darkTheme.text : lightTheme.text,
+              },
+            ]}
+          />
+        </TouchableOpacity>
+      </View>
       <ScrollView horizontal={true} style={styles.filterBar}>
         <SelectableChips
           initialChips={[
@@ -293,6 +315,7 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
           }}
         />
       </ScrollView>
+
       {setModalVisible && (
         <Modal
           animationType="slide"
@@ -327,12 +350,12 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                     },
                   ]}
                 >
-                  {currentEvent.eventName}
+                  {currentTeam.teamName}
                 </Text>
-                <View style={styles.bookmarkAndAttendees}>
-                  <Bookmark
+                <View style={styles.titleIcons}>
+                  <TeamBookmark
                     handleAttend={handleAttend}
-                    eventID={currentEvent.eventID}
+                    teamID={currentTeam.teamID}
                   />
                   <View style={styles.attendeesContainer}>
                     <Ionicons
@@ -350,7 +373,7 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                         },
                       ]}
                     >
-                      {numAttendees}
+                      {numMembers}
                     </Text>
                   </View>
                 </View>
@@ -376,7 +399,7 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                       },
                     ]}
                   >
-                    Event ID: {currentEventID}
+                    Team ID: {currentTeamID}
                   </Text>
                   <TouchableOpacity
                     style={[
@@ -396,6 +419,7 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                     />
                   </TouchableOpacity>
                 </View>
+
                 <Text
                   style={[
                     styles.modalBody,
@@ -404,8 +428,9 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                     },
                   ]}
                 >
-                  Sport: {currentEvent.sport}
+                  Captain: {currentTeam.captain}
                 </Text>
+
                 <Text
                   style={[
                     styles.modalBody,
@@ -414,8 +439,9 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                     },
                   ]}
                 >
-                  Time: {currentEvent.time}
+                  Sport: {currentTeam.sport}
                 </Text>
+
                 <Text
                   style={[
                     styles.modalBody,
@@ -424,8 +450,9 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                     },
                   ]}
                 >
-                  Date: {currentEvent.date}
+                  Members: {membersList}
                 </Text>
+
                 <Text
                   style={[
                     styles.modalBody,
@@ -434,15 +461,10 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                     },
                   ]}
                 >
-                  Location: {currentEvent.location}
+                  Information: {currentTeam.info}
                 </Text>
               </View>
-              <Pressable
-                style={[styles.button, styles.buttonMap]}
-                onPress={handleDirections}
-              >
-                <Text style={styles.modalButtonText}>Open Maps</Text>
-              </Pressable>
+
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => {
@@ -456,24 +478,22 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
         </Modal>
       )}
       <ScrollView style={styles.scrollView}>
-        {events.map((event) => {
+        {teams.map((team) => {
           counter++;
           return (
             <TouchableOpacity
               key={counter}
               onPress={() => {
                 setModalVisible(true);
-                setCurrentEvent(event);
-                setCurrentEventID(event.eventID.slice(0, 8));
-                getNumAttendees(event.eventID);
-                {
-                  setLatLong(event.lat, event.long);
-                }
+                setCurrentTeam(team);
+                setCurrentTeamID(team.teamID.slice(0, 8));
+                getNumMembers(team.teamID);
+                getMembersList(team.teamID);
               }}
             >
               <View
                 style={[
-                  styles.eventContainer,
+                  styles.teamContainer,
                   {
                     backgroundColor: darkModeEnabled
                       ? darkTheme.cardBackground
@@ -481,12 +501,12 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                   },
                 ]}
               >
-                {renderBall(event.sport)}
+                {renderBall(team.sport)}
                 <View style={styles.attendContainer}>
                   <View style={styles.infoContainer}>
                     <Text
                       style={[
-                        styles.eventName,
+                        styles.teamName,
                         {
                           color: darkModeEnabled
                             ? darkTheme.text
@@ -494,25 +514,10 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
                         },
                       ]}
                     >
-                      {event.eventName}
-                    </Text>
-                    <Text
-                      style={[
-                        styles.eventDate,
-                        {
-                          color: darkModeEnabled
-                            ? darkTheme.text
-                            : lightTheme.text,
-                        },
-                      ]}
-                    >
-                      {event.date} - {event.time}
+                      {team.teamName}
                     </Text>
                   </View>
-                  <Bookmark
-                    handleAttend={handleAttend}
-                    eventID={event.eventID}
-                  />
+                  <TeamBookmark handleAttend={handleAttend} teamID={team.teamID} />
                 </View>
               </View>
             </TouchableOpacity>
@@ -524,7 +529,7 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
   );
 };
 
-export default FeedScreen;
+export default TeamFeedScreen;
 
 const styles = StyleSheet.create({
   container: {
@@ -536,14 +541,14 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   searchBar: {
-    width: "90%",
+    width: "82%",     
   },
   scrollView: {
     width: "100%",
     marginBottom: 55,
     height: "100%"
   },
-  eventContainer: {
+  teamContainer: {
     borderWidth: 2,
     margin: 20,
     height: 90,
@@ -563,14 +568,9 @@ const styles = StyleSheet.create({
   infoContainer: {
     marginBottom: 10,
   },
-  eventName: {
+  teamName: {
     fontWeight: "bold",
     fontSize: 28,
-    paddingLeft: 10,
-    paddingTop: 10,
-  },
-  eventDate: {
-    fontWeight: "bold",
     paddingLeft: 10,
     paddingTop: 10,
   },
@@ -608,7 +608,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 40,
   },
-  bookmarkAndAttendees: {
+  titleIcons: {
     alignItems: "center",
   },
   attendeesContainer: {
@@ -657,13 +657,31 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "0%",
+    marginTop: "20%",
   },
   ball: {
     height: 50,
     width: 50,
     marginLeft: 15,
     marginRight: 10,
+  },
+  headerContainer: {
+    flexDirection: "row",
+    width: "90%",
+    justifyContent: "space-between",
+    alignItems: "center"
+  },
+  myTeamsButton: {
+    height: 50,
+    width: 50,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 50,
+    borderColor: darkTheme.pink,
+    borderWidth: 2,
+  },
+  icon: {
+    marginLeft: "5%"
   },
   filterBar: {
     height: "13%",
