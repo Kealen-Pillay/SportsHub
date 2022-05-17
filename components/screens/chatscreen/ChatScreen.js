@@ -14,13 +14,6 @@ import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 import { v4 as uuid } from "uuid";
 
-/**
- *
- * TO DO:
- *
- * read and display avatars
- */
-
 const ChatScreen = ({ darkModeEnabled }) => {
   const [messages, setMessages] = useState([]);
   const [senderName, setSenderName] = useState(null);
@@ -66,7 +59,6 @@ const ChatScreen = ({ darkModeEnabled }) => {
 
   const onSend = useCallback((messages = []) => {
     const { _id, createdAt, text, user } = messages[0];
-
     firestore.collection("chat").add({
       _id,
       createdAt,
@@ -89,7 +81,6 @@ const ChatScreen = ({ darkModeEnabled }) => {
       />
     );
   };
-
   return (
     <SafeAreaView
       style={[
@@ -111,7 +102,6 @@ const ChatScreen = ({ darkModeEnabled }) => {
           Public Chat
         </Text>
       </View>
-
       <View style={styles.chatContainer}>
         <GiftedChat
           _id={uuid()}
@@ -125,7 +115,6 @@ const ChatScreen = ({ darkModeEnabled }) => {
             avatar: senderAvatar,
           }}
         />
-
         {Platform.OS === "android" && <KeyboardAvoidingView />}
       </View>
 
@@ -153,9 +142,8 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   chatContainer: {
-    marginBottom: "40%",
     height: "80%",
-    justifyContent: "flex-end",
     width: "95%",
+    marginTop: "5%",
   },
 });
