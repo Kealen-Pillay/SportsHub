@@ -12,15 +12,14 @@ import { useState, useCallback, useEffect } from "react";
 import { GiftedChat, InputToolbar } from "react-native-gifted-chat";
 import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
+import { v4 as uuid } from "uuid";
 
 /**
- * 
+ *
  * TO DO:
- * 
+ *
  * read and display avatars
  */
-
-
 
 const ChatScreen = ({ darkModeEnabled }) => {
   const [messages, setMessages] = useState([]);
@@ -36,7 +35,7 @@ const ChatScreen = ({ darkModeEnabled }) => {
       .onSnapshot((snapshot) =>
         setMessages(
           snapshot.docs.map((doc) => ({
-            _id: doc.data._id,
+            _id: doc.data()._id,
             createdAt: doc.data().createdAt.toDate(),
             text: doc.data().text,
             user: doc.data().user,
@@ -115,13 +114,15 @@ const ChatScreen = ({ darkModeEnabled }) => {
 
       <View style={styles.chatContainer}>
         <GiftedChat
+          _id={uuid()}
           messages={messages}
+          showAvatarForEveryMessage={true}
           onSend={(messages) => onSend(messages)}
           renderInputToolbar={(props) => customtInputToolbar(props)}
           user={{
-            _id: auth.currentUser?.email,
-            user: { senderName },
-            avatar: { senderAvatar },
+            _id: auth?.currentUser?.email,
+            user: senderName,
+            avatar: senderAvatar,
           }}
         />
 
