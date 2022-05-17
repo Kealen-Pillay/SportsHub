@@ -2,7 +2,6 @@ import {
   StyleSheet,
   Text,
   View,
-  KeyboardAvoidingView,
   TouchableOpacity,
   Image,
 } from "react-native";
