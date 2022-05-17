@@ -46,12 +46,10 @@ const ChatScreen = ({ darkModeEnabled }) => {
       .then((querySnapShot) => {
         querySnapShot.forEach((snapshot) => {
           let data = snapshot.data();
-          {
-            let senderName = data.username;
-            let senderAvatar = data.profileimg;
-            setSenderName(senderName);
-            setSenderAvatar(senderAvatar);
-          }
+          let senderName = data.username;
+          let senderAvatar = data.profileimg;
+          setSenderName(senderName);
+          setSenderAvatar(senderAvatar);
         });
       })
       .catch((error) => console.log(error));
