@@ -117,7 +117,6 @@ const ChatScreen = ({ darkModeEnabled }) => {
         />
         {Platform.OS === "android" && <KeyboardAvoidingView />}
       </View>
-
       <NavGradient />
     </SafeAreaView>
   );
@@ -139,7 +138,7 @@ const styles = StyleSheet.create({
   },
   title: {
     fontWeight: "bold",
-    fontSize: 50,
+    fontSize: 45,
   },
   chatContainer: {
     height: "80%",
