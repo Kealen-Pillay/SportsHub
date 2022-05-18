@@ -107,6 +107,7 @@ const ChatScreen = ({ darkModeEnabled }) => {
       <View style={styles.chatContainer}>
         <GiftedChat
           _id={uuid()}
+          renderUsernameOnMessage={true}
           messages={messages}
           showAvatarForEveryMessage={true}
           onSend={(messages) => onSend(messages)}
