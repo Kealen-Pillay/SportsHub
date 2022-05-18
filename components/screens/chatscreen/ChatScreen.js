@@ -34,7 +34,7 @@ const ChatScreen = ({ darkModeEnabled }) => {
             user: {
               _id: doc.data().user._id,
               name: doc.data().user.user,
-              avatar: doc.data().user.avatar,
+              avatar: doc.data().user.data,
             },
           }))
         )
