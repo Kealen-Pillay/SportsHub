@@ -233,6 +233,10 @@ const MyEventScreen = ({
     });
   };
 
+  const handleCalender = () => {
+
+  };
+
   return (
     <SafeAreaView
       style={[
@@ -433,18 +437,31 @@ const MyEventScreen = ({
                   Location: {currentEvent.location}
                 </Text>
               </View>
+
               <Pressable
                 style={[styles.button, styles.buttonMap]}
                 onPress={handleDirections}
               >
                 <Text style={styles.modalButtonText}>Open Maps</Text>
               </Pressable>
+
+              <Pressable
+                style={[styles.button, styles.buttonCalender]}
+                onPress={handleCalender}
+              >
+                <Text style={styles.modalButtonText}>Add to Calender</Text>
+              </Pressable>
+           
+
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
               >
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
+
+             
+
             </View>
           </BlurView>
         </Modal>
@@ -637,7 +654,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "95%",
-    height: "60%",
+    height: "65%",
     marginTop: 40,
     borderRadius: 20,
     borderColor: darkTheme.pink,
@@ -700,11 +717,18 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: "70%",
   },
+  buttonCalender: {
+    backgroundColor: darkTheme.purple,
+    marginBottom: "2%",
+    marginTop: "2%",
+  },
   buttonMap: {
     backgroundColor: darkTheme.purple,
     width: "70%",
-    marginTop: "10%",
-    marginBottom: "5%",
+    marginTop: "2%",
+    marginBottom: "2%",
+    justifyContent: 'flex-end',
+    left:0,
   },
   modalButtonText: {
     color: "white",
