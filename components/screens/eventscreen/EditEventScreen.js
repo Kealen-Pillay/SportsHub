@@ -68,7 +68,7 @@ const EditEventScreen = ({
         let data = documentSnapshot.data();
         setEventName(data.eventName);
         setSport(data.sport);
-        setLocation(data.location); //not showing in field
+        setLocation(data.location);
         setDateText(data.date);
         setTimeText(data.time);
       })
@@ -105,35 +105,66 @@ const EditEventScreen = ({
     setEditEventShow(false);
   };
   const updateEvent = (eventID) => {
-    firestore
-      .collection("events")
-      .doc(eventID)
-      .update({
-        eventName: eventName,
-        date: dateText,
-        time: timeText,
-        sport: sport,
-        location: location,
-        long: long,
-        lat: lat,
-      })
-      .then(function (docRef) {
-        showMessage({
-          message: "Event Updated!",
-          type: "success",
-          hideStatusBar: true,
+    if (lat === "" && long === "") {
+      firestore
+        .collection("events")
+        .doc(eventID)
+        .update({
+          eventName: eventName,
+          date: dateText,
+          time: timeText,
+          sport: sport,
+          long: long,
+          lat: lat,
+        })
+        .then(function (docRef) {
+          showMessage({
+            message: "Event Updated!",
+            type: "success",
+            hideStatusBar: true,
+          });
+        })
+        .then(() => {
+          navigation.navigate("Dashboard");
+        })
+        .catch(function (error) {
+          showMessage({
+            message: "ERROR updating event",
+            type: "danger",
+            hideStatusBar: true,
+          });
         });
-      })
-      .then(() => {
-        navigation.navigate("Dashboard");
-      })
-      .catch(function (error) {
-        showMessage({
-          message: "ERROR updating event",
-          type: "danger",
-          hideStatusBar: true,
+    } else {
+      firestore
+        .collection("events")
+        .doc(eventID)
+        .update({
+          eventName: eventName,
+          date: dateText,
+          time: timeText,
+          sport: sport,
+          location: location,
+          long: long,
+          lat: lat,
+        })
+        .then(function (docRef) {
+          showMessage({
+            message: "Event Updated!",
+            type: "success",
+            hideStatusBar: true,
+          });
+        })
+        .then(() => {
+          navigation.navigate("Dashboard");
+        })
+        .catch(function (error) {
+          showMessage({
+            message: "ERROR updating event",
+            type: "danger",
+            hideStatusBar: true,
+          });
         });
-      });
+    }
   };
 
   const handleDeleteEvent = (eventID) => {
@@ -279,8 +310,8 @@ const EditEventScreen = ({
       <GooglePlacesAutocomplete
         GooglePlacesDetailsQuery={{ fields: "geometry" }}
         fetchDetails={true}
-        placeholder="Location"
-        textInputProps={{ placeholderTextColor: "gray" }}
+        placeholder={location}
+        textInputProps={{ placeholderTextColor: "black" }}
         minLength={2}
         query={{
           key: GOOGLE_PLACES_API_KEY,
