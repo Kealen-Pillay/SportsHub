@@ -49,6 +49,7 @@ const TeamFeedScreen = ({
   const [currentTeamID, setCurrentTeamID] = useState("");
   const [numMembers, setNumMembers] = useState(0);
   const [membersList, setMembersList] = useState([]);
+  const [members, setMembers] = useState([]);
 
   useEffect(() => {
     setTeams([]);
@@ -72,13 +73,12 @@ const TeamFeedScreen = ({
       .then((querySnapShot) => {
         querySnapShot.forEach((snapshot) => {
           let data = snapshot.data();
-          {
-            let name = data.teamName;
-            name = name.toLowerCase();
-            let id = data.teamID;
-            if (id.includes(search) || name.includes(search.toLowerCase())) {
-              setTeams((prev) => [...prev, data]);
-            }
+
+          let name = data.teamName;
+          name = name.toLowerCase();
+          let id = data.teamID;
+          if (id.includes(search) || name.includes(search.toLowerCase())) {
+            setTeams((prev) => [...prev, data]);
           }
         });
       })
@@ -120,6 +120,28 @@ const TeamFeedScreen = ({
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const getMembers = () => {
+    setMembers([]);
+    firestore
+      .collection("users")
+      .get()
+      .then((querySnapShot) => {
+        querySnapShot.forEach((snapshot) => {
+          let data = snapshot.data();
+          for (var i = 0; i < membersList.length; i++) {
+            if (membersList[i] === data.email) {
+              setMembers((prev) => [
+                ...prev,
+                { name: data.username, img: data.profileimg },
+              ]);
+              break;
+            }
+          }
+        });
+      })
+      .catch((error) => console.log(error));
   };
 
   const handleBack = () => {
@@ -246,7 +268,7 @@ const TeamFeedScreen = ({
         <SearchBar
           placeholder="Search Team Name or ID"
           height={60}
-          inputStyle={{paddingLeft: 50}}
+          inputStyle={{ paddingLeft: 50 }}
           onChangeText={debouncedResults}
           style={styles.searchBar}
           placeholderTextColor={
@@ -257,7 +279,7 @@ const TeamFeedScreen = ({
         />
         <TouchableOpacity
           style={[
-            styles.myTeamsButton, 
+            styles.myTeamsButton,
             {
               backgroundColor: darkModeEnabled
                 ? darkTheme.cardBackground
@@ -450,8 +472,32 @@ const TeamFeedScreen = ({
                     },
                   ]}
                 >
-                  Members: {membersList}
+                  Members:
                 </Text>
+                <ScrollView>
+                  {members.map((member) => {
+                    return (
+                      <View style={styles.membersContainer}>
+                        <Image
+                          source={member.img}
+                          style={styles.avatarDisplay}
+                        />
+                        <Text
+                          style={[
+                            styles.memberName,
+                            {
+                              color: darkModeEnabled
+                                ? darkTheme.text
+                                : lightTheme.text,
+                            },
+                          ]}
+                        >
+                          {member.name}
+                        </Text>
+                      </View>
+                    );
+                  })}
+                </ScrollView>
 
                 <Text
                   style={[
@@ -485,6 +531,7 @@ const TeamFeedScreen = ({
               key={counter}
               onPress={() => {
                 setModalVisible(true);
+                getMembers();
                 setCurrentTeam(team);
                 setCurrentTeamID(team.teamID.slice(0, 8));
                 getNumMembers(team.teamID);
@@ -517,7 +564,10 @@ const TeamFeedScreen = ({
                       {team.teamName}
                     </Text>
                   </View>
-                  <TeamBookmark handleAttend={handleAttend} teamID={team.teamID} />
+                  <TeamBookmark
+                    handleAttend={handleAttend}
+                    teamID={team.teamID}
+                  />
                 </View>
               </View>
             </TouchableOpacity>
@@ -541,12 +591,12 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   searchBar: {
-    width: "82%",     
+    width: "82%",
   },
   scrollView: {
     width: "100%",
     marginBottom: 55,
-    height: "100%"
+    height: "100%",
   },
   teamContainer: {
     borderWidth: 2,
@@ -669,7 +719,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "90%",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   myTeamsButton: {
     height: 50,
@@ -681,10 +731,25 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   icon: {
-    marginLeft: "5%"
+    marginLeft: "5%",
   },
   filterBar: {
     height: "13%",
     width: "90%",
+  },
+  avatarDisplay: {
+    height: 30,
+    width: 30,
+    marginLeft: "5%",
+    marginBottom: "3%",
+  },
+  membersContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  memberName: {
+    fontWeight: "bold",
+    fontSize: 12,
+    marginLeft: "5%",
   },
 });
