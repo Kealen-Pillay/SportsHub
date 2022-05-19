@@ -19,7 +19,7 @@ import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EditEventScreen = ({
   setEditEventShow,
@@ -54,6 +54,28 @@ const EditEventScreen = ({
 
   const navigation = useNavigation();
   const GOOGLE_PLACES_API_KEY = "AIzaSyCM5iQ4ICJBVnHqP53EEgOo8qo6xRoLq14";
+
+  useEffect(() => {
+    getEventInfo();
+  }, []);
+
+  const getEventInfo = () => {
+    firestore
+      .collection("events")
+      .doc(editEventID)
+      .get()
+      .then((documentSnapshot) => {
+        let data = documentSnapshot.data();
+        setEventName(data.eventName);
+        setSport(data.sport);
+        setLocation(data.location); //not showing in field
+        setDateText(data.date);
+        setTimeText(data.time);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleEditEvent = (eventID) => {
     if (
