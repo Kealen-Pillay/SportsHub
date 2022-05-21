@@ -40,6 +40,7 @@ const MyTeamScreen = ({
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentTeamID, setCurrentTeamID] = useState("");
   const [numMembers, setNumMembers] = useState(0);
+  const [memberList, setMemberList] = useState([]);
 
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
@@ -84,6 +85,19 @@ const MyTeamScreen = ({
       });
   };
 
+  const getMemberList= (teamID) => {
+    firestore
+    .collection("teams")
+    .doc(teamID)
+    .get()
+    .then((documentSnapshot) => {
+      setMemberList(documentSnapshot.data().members);
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+  }
+
   const handleAttend = (teamID) => {
     firestore
       .collection("teams")
@@ -103,6 +117,7 @@ const MyTeamScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
+          setMemberList(members);
         } else {
           members = [...members, auth.currentUser?.email];
           firestore.collection("teams").doc(teamID).update({
@@ -110,6 +125,7 @@ const MyTeamScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
+          setMemberList(members);
         }
       })
       .catch((error) => {
@@ -421,7 +437,8 @@ const MyTeamScreen = ({
                     },
                   ]}
                 >
-                  Members: {currentTeam.members}
+                  {/* Members: {currentTeam.members} */}
+                  Members: {memberList}
                 </Text>
 
                 <Text
@@ -457,6 +474,7 @@ const MyTeamScreen = ({
                 setCurrentTeam(team);
                 setCurrentTeamID(team.teamID.slice(0, 8));
                 getNumMembers(team.teamID);
+                getMemberList(team.teamID);
               }}
             >
               <View
