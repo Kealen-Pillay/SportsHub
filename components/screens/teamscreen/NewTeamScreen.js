@@ -288,5 +288,5 @@ const styles = StyleSheet.create({
   },
   infoText: {
     height: "20%",
-  }
+  },
 });

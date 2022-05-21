@@ -439,15 +439,17 @@ const MyTeamScreen = ({
                 >
                   Members:
                 </Text>
-                <ScrollView style={styles.memberScrollView}>
-                  {memberList.map((member) => {
-                    return (
-                      <View style={styles.membersContainer}>
-                        <Text style={styles.memberName}>{member}</Text>
-                      </View>
-                    );
-                  })}
-                </ScrollView>
+                <View>
+                  <ScrollView>
+                    {memberList.map((member) => {
+                      return (
+                        <View>
+                          <Text style={styles.memberName}>{member}</Text>
+                        </View>
+                      );
+                    })}
+                  </ScrollView>
+                </View>
                 <Text
                   style={[
                     styles.modalBody,
@@ -735,17 +737,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
-  membersContainer: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
   memberName: {
     fontWeight: "bold",
     fontSize: 12,
     marginLeft: "5%",
     color: darkTheme.pink,
-  },
-  memberScrollView: {
-    height: "15%",
   },
 });
