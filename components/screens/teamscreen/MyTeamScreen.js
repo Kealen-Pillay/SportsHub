@@ -85,19 +85,18 @@ const MyTeamScreen = ({
       });
   };
 
-  const getMemberList= (teamID) => {
+  const getMemberList = (teamID) => {
     firestore
-    .collection("teams")
-    .doc(teamID)
-    .get()
-    .then((documentSnapshot) => {
-      setMemberList(documentSnapshot.data().members);
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  }
-
+      .collection("teams")
+      .doc(teamID)
+      .get()
+      .then((documentSnapshot) => {
+        setMemberList(documentSnapshot.data().members);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
 
   const handleAttend = (teamID) => {
     firestore
@@ -439,21 +438,27 @@ const MyTeamScreen = ({
                   ]}
                 >
                   Members:
-
-                  {/* Members: {memberList} */}
-                  <ScrollView>
+                </Text>
+                <ScrollView>
                   {memberList.map((member) => {
                     return (
                       <View style={styles.membersContainer}>
-                        <Text>
+                        <Text
+                          style={[
+                            styles.memberName,
+                            {
+                              color: darkModeEnabled
+                                ? darkTheme.text
+                                : lightTheme.text,
+                            },
+                          ]}
+                        >
                           {member}
                         </Text>
                       </View>
-                      
                     );
                   })}
                 </ScrollView>
-                </Text>
 
                 <Text
                   style={[
@@ -689,6 +694,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: darkTheme.background,
     borderRadius: 15,
+    height: "70%",
   },
   clipboardContainer: {
     flexDirection: "row",
