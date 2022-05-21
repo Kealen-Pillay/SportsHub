@@ -98,6 +98,7 @@ const MyTeamScreen = ({
     });
   }
 
+
   const handleAttend = (teamID) => {
     firestore
       .collection("teams")
@@ -437,8 +438,21 @@ const MyTeamScreen = ({
                     },
                   ]}
                 >
-                  {/* Members: {currentTeam.members} */}
-                  Members: {memberList}
+                  Members:
+
+                  {/* Members: {memberList} */}
+                  <ScrollView>
+                  {memberList.map((member) => {
+                    return (
+                      <View style={styles.membersContainer}>
+                        <Text>
+                          {member}
+                        </Text>
+                      </View>
+                      
+                    );
+                  })}
+                </ScrollView>
                 </Text>
 
                 <Text
@@ -726,5 +740,14 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  membersContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  memberName: {
+    fontWeight: "bold",
+    fontSize: 12,
+    marginLeft: "5%",
   },
 });
