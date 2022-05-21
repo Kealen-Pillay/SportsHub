@@ -179,6 +179,7 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
       <TextInput
         style={[styles.text, styles.infoText]}
         value={info}
+        multiline ={true}
         onChangeText={(text) => setInfo(text)}
         placeholder="Information"
         placeholderTextColor={"gray"}
@@ -288,5 +289,7 @@ const styles = StyleSheet.create({
   },
   infoText: {
     height: "20%",
+    textAlignVertical: "top",
+    paddingVertical: 10,
   },
 });

@@ -207,8 +207,9 @@ const EditTeamScreen = ({
       <RatingBox />
 
       <TextInput
-        style={styles.text}
+        style={[styles.text, styles.infoText]}
         value={info}
+        multiline ={true}
         onChangeText={(text) => setInfo(text)}
         placeholder="Information"
         placeholderTextColor={"gray"}
@@ -356,5 +357,10 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     resizeMode: "cover",
+  },
+  infoText: {
+    height: "20%",
+    textAlignVertical: "top",
+    paddingVertical: 10,
   },
 });
