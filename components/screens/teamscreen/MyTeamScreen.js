@@ -439,27 +439,15 @@ const MyTeamScreen = ({
                 >
                   Members:
                 </Text>
-                <ScrollView>
+                <ScrollView style={styles.memberScrollView}>
                   {memberList.map((member) => {
                     return (
                       <View style={styles.membersContainer}>
-                        <Text
-                          style={[
-                            styles.memberName,
-                            {
-                              color: darkModeEnabled
-                                ? darkTheme.text
-                                : lightTheme.text,
-                            },
-                          ]}
-                        >
-                          {member}
-                        </Text>
+                        <Text style={styles.memberName}>{member}</Text>
                       </View>
                     );
                   })}
                 </ScrollView>
-
                 <Text
                   style={[
                     styles.modalBody,
@@ -730,7 +718,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "20%",
+    marginTop: "10%",
   },
   feedButton: {
     height: 50,
@@ -755,5 +743,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 12,
     marginLeft: "5%",
+    color: darkTheme.pink,
+  },
+  memberScrollView: {
+    height: "15%",
   },
 });

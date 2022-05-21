@@ -48,8 +48,7 @@ const TeamFeedScreen = ({
   const [selectedSport, setSelectedSport] = useState([]);
   const [currentTeamID, setCurrentTeamID] = useState("");
   const [numMembers, setNumMembers] = useState(0);
-  const [membersList, setMembersList] = useState([]);
-  const [members, setMembers] = useState([]);
+  const [memberList, setMemberList] = useState([]);
 
   useEffect(() => {
     setTeams([]);
@@ -106,7 +105,7 @@ const TeamFeedScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
-          setMembersList(members);
+          setMemberList(members);
         } else {
           members = [...members, auth.currentUser?.email];
           firestore.collection("teams").doc(teamID).update({
@@ -114,34 +113,12 @@ const TeamFeedScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
-          setMembersList(members);
+          setMemberList(members);
         }
       })
       .catch((error) => {
         console.log(error);
       });
-  };
-
-  const getMembers = () => {
-    setMembers([]);
-    firestore
-      .collection("users")
-      .get()
-      .then((querySnapShot) => {
-        querySnapShot.forEach((snapshot) => {
-          let data = snapshot.data();
-          for (var i = 0; i < membersList.length; i++) {
-            if (membersList[i] === data.email) {
-              setMembers((prev) => [
-                ...prev,
-                { name: data.username, img: data.profileimg },
-              ]);
-              break;
-            }
-          }
-        });
-      })
-      .catch((error) => console.log(error));
   };
 
   const handleBack = () => {
@@ -236,7 +213,7 @@ const TeamFeedScreen = ({
       .doc(teamID)
       .get()
       .then((documentSnapshot) => {
-        setMembersList(documentSnapshot.data().members);
+        setMemberList(documentSnapshot.data().members);
       })
       .catch((error) => {
         console.log(error);
@@ -374,7 +351,7 @@ const TeamFeedScreen = ({
                 >
                   {currentTeam.teamName}
                 </Text>
-                <View style={styles.titleIcons}>
+                <View style={styles.bookmarkAndAttendees}>
                   <TeamBookmark
                     handleAttend={handleAttend}
                     teamID={currentTeam.teamID}
@@ -441,7 +418,6 @@ const TeamFeedScreen = ({
                     />
                   </TouchableOpacity>
                 </View>
-
                 <Text
                   style={[
                     styles.modalBody,
@@ -474,26 +450,11 @@ const TeamFeedScreen = ({
                 >
                   Members:
                 </Text>
-                <ScrollView>
-                  {members.map((member) => {
+                <ScrollView style={styles.membersScrollView}>
+                  {memberList.map((member) => {
                     return (
                       <View style={styles.membersContainer}>
-                        <Image
-                          source={member.img}
-                          style={styles.avatarDisplay}
-                        />
-                        <Text
-                          style={[
-                            styles.memberName,
-                            {
-                              color: darkModeEnabled
-                                ? darkTheme.text
-                                : lightTheme.text,
-                            },
-                          ]}
-                        >
-                          {member.name}
-                        </Text>
+                        <Text style={styles.memberName}>{member}</Text>
                       </View>
                     );
                   })}
@@ -513,9 +474,7 @@ const TeamFeedScreen = ({
 
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
+                onPress={() => setModalVisible(!modalVisible)}
               >
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
@@ -531,7 +490,6 @@ const TeamFeedScreen = ({
               key={counter}
               onPress={() => {
                 setModalVisible(true);
-                getMembers();
                 setCurrentTeam(team);
                 setCurrentTeamID(team.teamID.slice(0, 8));
                 getNumMembers(team.teamID);
@@ -707,7 +665,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "20%",
+    marginTop: "10%",
   },
   ball: {
     height: 50,
@@ -751,5 +709,9 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 12,
     marginLeft: "5%",
+    color: darkTheme.pink,
+  },
+  membersScrollView: {
+    height: "15%",
   },
 });
