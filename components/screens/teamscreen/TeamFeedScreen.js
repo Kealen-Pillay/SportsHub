@@ -439,7 +439,6 @@ const TeamFeedScreen = ({
                 >
                   Sport: {currentTeam.sport}
                 </Text>
-
                 <Text
                   style={[
                     styles.modalBody,
@@ -450,16 +449,17 @@ const TeamFeedScreen = ({
                 >
                   Members:
                 </Text>
-                <ScrollView style={styles.membersScrollView}>
-                  {memberList.map((member) => {
-                    return (
-                      <View style={styles.membersContainer}>
-                        <Text style={styles.memberName}>{member}</Text>
-                      </View>
-                    );
-                  })}
-                </ScrollView>
-
+                <View>
+                  <ScrollView>
+                    {memberList.map((member) => {
+                      return (
+                        <View>
+                          <Text style={styles.memberName}>{member}</Text>
+                        </View>
+                      );
+                    })}
+                  </ScrollView>
+                </View>
                 <Text
                   style={[
                     styles.modalBody,
@@ -468,10 +468,25 @@ const TeamFeedScreen = ({
                     },
                   ]}
                 >
-                  Information: {currentTeam.info}
+                  Information:
                 </Text>
+                <View style={styles.infoScrollView}>
+                  <ScrollView>
+                    <Text
+                      style={[
+                        styles.infoText,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {currentTeam.info}
+                    </Text>
+                  </ScrollView>
+                </View>
               </View>
-
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -712,6 +727,15 @@ const styles = StyleSheet.create({
     color: darkTheme.pink,
   },
   membersScrollView: {
+    height: "15%",
+  },
+  infoText: {
+    fontWeight: "bold",
+    fontSize: 12,
+    marginLeft: "5%",
+    marginRight: "5%"
+  },
+  infoScrollView: {
     height: "15%",
   },
 });

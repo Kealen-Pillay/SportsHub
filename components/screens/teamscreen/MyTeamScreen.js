@@ -428,7 +428,6 @@ const MyTeamScreen = ({
                 >
                   Sport: {currentTeam.sport}
                 </Text>
-
                 <Text
                   style={[
                     styles.modalBody,
@@ -458,10 +457,25 @@ const MyTeamScreen = ({
                     },
                   ]}
                 >
-                  Information: {currentTeam.info}
+                  Information:
                 </Text>
+                <View style={styles.infoScrollView}>
+                  <ScrollView>
+                    <Text
+                      style={[
+                        styles.infoText,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {currentTeam.info}
+                    </Text>
+                  </ScrollView>
+                </View>
               </View>
-
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -742,5 +756,13 @@ const styles = StyleSheet.create({
     fontSize: 12,
     marginLeft: "5%",
     color: darkTheme.pink,
+  },
+  infoText: {
+    fontWeight: "bold",
+    fontSize: 12,
+    marginLeft: "5%",
+  },
+  infoScrollView: {
+    height: "15%",
   },
 });
