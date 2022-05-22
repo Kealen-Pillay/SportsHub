@@ -733,7 +733,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 12,
     marginLeft: "5%",
-    marginRight: "5%"
+    marginRight: "5%",
   },
   infoScrollView: {
     height: "15%",

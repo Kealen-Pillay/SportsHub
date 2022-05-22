@@ -36,10 +36,10 @@ const MyTeamsTab = ({
   } else if (teamFeedShow) {
     return (
       <TeamFeedScreen
-      newTeamShow={newTeamShow}
-      darkModeEnabled={darkModeEnabled}
-      editTeamShow={editTeamShow}
-      setTeamFeedShow={setTeamFeedShow}
+        newTeamShow={newTeamShow}
+        darkModeEnabled={darkModeEnabled}
+        editTeamShow={editTeamShow}
+        setTeamFeedShow={setTeamFeedShow}
       />
     );
   } else {

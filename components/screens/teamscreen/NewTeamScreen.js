@@ -179,7 +179,8 @@ const NewTeamScreen = ({ darkModeEnabled, setNewTeamShow }) => {
       <TextInput
         style={[styles.text, styles.infoText]}
         value={info}
-        multiline ={true}
+        multiline={true}
+        blurOnSubmit={true}
         onChangeText={(text) => setInfo(text)}
         placeholder="Information"
         placeholderTextColor={"gray"}
