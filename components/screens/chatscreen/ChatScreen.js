@@ -31,7 +31,11 @@ const ChatScreen = ({ darkModeEnabled }) => {
             _id: doc.data()._id,
             createdAt: doc.data().createdAt.toDate(),
             text: doc.data().text,
-            user: doc.data().user,
+            user: {
+              _id: doc.data().user._id,
+              name: doc.data().user.user,
+              avatar: doc.data().user.data,
+            },
           }))
         )
       );
@@ -103,6 +107,7 @@ const ChatScreen = ({ darkModeEnabled }) => {
       <View style={styles.chatContainer}>
         <GiftedChat
           _id={uuid()}
+          renderUsernameOnMessage={true}
           messages={messages}
           showAvatarForEveryMessage={true}
           onSend={(messages) => onSend(messages)}
