@@ -32,12 +32,12 @@ LogBox.ignoreLogs([
 ]);
 
 var counter = 0;
+var memberCounter = 0;
 
 const TeamFeedScreen = ({
   darkModeEnabled,
   newTeamShow,
   editTeamShow,
-  setEditTeamShow,
   setTeamFeedShow,
 }) => {
   const [search, setSearch] = useState("");
@@ -452,8 +452,9 @@ const TeamFeedScreen = ({
                 <View>
                   <ScrollView>
                     {memberList.map((member) => {
+                      memberCounter++;
                       return (
-                        <View>
+                        <View key={memberCounter}>
                           <Text style={styles.memberName}>{member}</Text>
                         </View>
                       );

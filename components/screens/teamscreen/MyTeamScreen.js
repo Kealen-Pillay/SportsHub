@@ -26,6 +26,7 @@ import { LogBox } from "react-native";
 LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
+var memberCounter = 0;
 
 const MyTeamScreen = ({
   darkModeEnabled,
@@ -441,8 +442,9 @@ const MyTeamScreen = ({
                 <View>
                   <ScrollView>
                     {memberList.map((member) => {
+                      memberCounter++;
                       return (
-                        <View>
+                        <View key={memberCounter}>
                           <Text style={styles.memberName}>{member}</Text>
                         </View>
                       );
