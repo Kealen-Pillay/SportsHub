@@ -7,7 +7,12 @@ import {
   Modal,
   TouchableOpacity,
   Pressable,
+  TextInput,
+  Linking,
   Image,
+  PermissionsAndroid,
+  Platform,
+  Alert,
 } from "react-native";
 import React from "react";
 import { useState, useEffect } from "react";
@@ -23,7 +28,10 @@ import EditButton from "../eventscreen/EditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
-
+//import RNCalendarEvents from "react-native-calendar-events";
+import * as AddCalendarEvent from "react-native-add-calendar-event";
+import moment from 'moment';
+import { PlatformColor } from "react-native";
 LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
@@ -33,7 +41,7 @@ const MyEventScreen = ({
   setNewEventShow,
   setEditEventShow,
   setEditEventID,
-}) => {
+  }) => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
@@ -42,6 +50,12 @@ const MyEventScreen = ({
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentEventID, setCurrentEventID] = useState("");
   const [numAttendees, setNumAttendees] = useState(0);
+
+  const [eventTitle, setEventTitle] = useState('');
+  const [eventLocation, setEventLocation] = useState('');
+  const [date, setDate] = useState(new Date());
+  const [open, setOpen] = useState(false);
+  const [dateValue, setdateValue] = useState('');
 
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
@@ -233,9 +247,119 @@ const MyEventScreen = ({
     });
   };
 
-  const handleCalender = () => {
+    
+const utcDateToString = (momentInUTC) => {
+  let s = moment.utc(momentInUTC)
+            .format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+  return s;
+};
+
+const checkCal = () => {        //Opens the calendar on device
+  if (Platform.OS == 'ios') {
+    Linking.openURL("calshow:");
+  } else if(Platform.OS == 'android') {
+    Linking.openURL('content://com.android.calendar/time/');
+    const eventConfig = {
+      currentEvent,
+      startDate: utcDateToString(startDateUTC),
+      endDate: utcDateToString(moment.utc(startDateUTC).add(1, 'hours')),
+      notes: 'event',
+      navigationBarIOS: {
+        tintColor: 'orange',
+        backgroundColor: 'green',
+        titleColor: 'blue',
+      },
+    };
+
+  } 
+}
+
+const TIME_NOW_IN_UTC = moment.utc();
+
+  const addToCalendar = () => { // Adds event on the calendar
+    const eventConfig = {
+      currentEvent,
+      eventTitle: currentEvent.eventName,
+      startDate: currentEvent.date,
+      eventLocation: currentEvent.location,
+      notes: 'event',
+      navigationBarIOS: {
+        tintColor: 'orange',
+        backgroundColor: 'green',
+        titleColor: 'blue',
+      },
+    };
+
+    AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+    .then((eventInfo) => {
+      alert('eventInfo -> ' + JSON.stringify(eventInfo));
+    })
+    .catch((error) => {
+      // handle error such as when user rejected permissions
+      alert('Error -> ' + error);
+      console.log(error);
+    });
 
   };
+
+
+
+  //In progress
+  //const handleCalender = () => {
+
+   //RNCalendarEvents.findCalendars();
+  //  RNCalendarEvents.checkPermissions((readOnly = false));
+    // RNCalendarEvents.requestPermissions((readOnly = false));
+ 
+
+    // write_calender = PermissionsAndroid.WRITE_CALENDAR
+    // read_calender = PermissionsAndroid.READ_CALENDAR
+    // if (granted === PermissionsAndroid.check(write_calender) && 
+    // granted === PermissionsAndroid.check(read_calender)) {
+    //   console.log('You can use the CALENDAR');
+    // } else {
+    //   console.log('CALENDAR permission denied');
+    // }
+
+   
+    // Error identified: 'react-native link' required to link calendar feature
+    // 'react-native link' feature not working, 'react-native' is not being recognized
+    // Check 'Calendar' document on google drive
+  //     RNCalendarEvents.checkPermissions((readOnly = false)).then((res) => {
+  //       console.log('Permission Response', res)
+  //     }).catch((error) => {
+  //       alert("Permission denied");
+  //       console.log(error);
+  //     })
+
+  //    const createEvent = () => {
+  //     const newDate = new Date(date);
+  //     newDate.setHours(newDate.getHours() + 2);
+  //     RNCalendarEvents.saveEvent(eventTitle, {
+  //       calendarId: '1',
+  //       startDate: date.toISOString(),
+  //       endDate: newDate.toISOString(),
+  //       location: eventLocation
+  //     }).then((value) => {
+  //       console.log('Event ID --> ', value);
+  //     }).catch((error) => {
+  //       console.log(' error: ',error);
+  //     })
+  //  }
+
+  //  const fetchEvent = (currentEventID) => {
+  //    RNCalendarEvents.findEventById(currentEventID).then((data) => {
+  //      console.log("Event Data --> ", data);
+  //    })
+  //  }
+
+  //  const deleteEvent = (currentEventID) => {
+  //   RNCalendarEvents.removeEvent(currentEventID).then((val)=>{
+  //     console.log(val);
+  //   })
+  //  }
+   
+  //}
 
   return (
     <SafeAreaView
@@ -447,7 +571,10 @@ const MyEventScreen = ({
 
               <Pressable
                 style={[styles.button, styles.buttonCalender]}
-                onPress={handleCalender}
+                onPress={() => {
+                  checkCal();
+                  addToCalendar();
+                }}
               >
                 <Text style={styles.modalButtonText}>Add to Calender</Text>
               </Pressable>
@@ -539,6 +666,7 @@ const MyEventScreen = ({
       <NavGradient />
     </SafeAreaView>
   );
+
 };
 
 export default MyEventScreen;
