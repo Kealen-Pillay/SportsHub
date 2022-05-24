@@ -737,7 +737,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "10%",
+    marginTop: "7%",
   },
   feedButton: {
     height: 50,
