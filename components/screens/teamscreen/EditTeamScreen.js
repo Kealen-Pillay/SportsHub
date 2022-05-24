@@ -16,7 +16,7 @@ import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EditTeamScreen = ({
   setEditTeamShow,
@@ -46,7 +46,27 @@ const EditTeamScreen = ({
   ];
 
   const navigation = useNavigation();
+  useEffect(() => {
+    getTeamInfo();
+  }, []);
 
+  const getTeamInfo = () => {
+    firestore
+      .collection("teams")
+      .doc(editTeamID)
+      .get()
+      .then((documentSnapshot) => {
+        let data = documentSnapshot.data();
+        setTeamName(data.teamName);
+        setSport(data.sport);
+        setdefaultRating(data.rating);
+        setInfo(data.info);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
   const handleEditTeam = (teamID) => {
     if (teamName.length == 0 || sport.length == 0) {
       showMessage({
