@@ -24,6 +24,7 @@ import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import Bookmark from "../feedscreen/Bookmark";
+import * as Clipboard from "expo-clipboard";
 import EditButton from "../eventscreen/EditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
