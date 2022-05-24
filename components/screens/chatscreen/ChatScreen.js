@@ -96,7 +96,7 @@ const ChatScreen = ({ darkModeEnabled }) => {
         }}
         textStyle={{
           left: {
-            color: "white",
+            color: "#ffffff",
           },
         }}
       />
