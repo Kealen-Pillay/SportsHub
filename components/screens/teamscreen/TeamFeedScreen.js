@@ -646,6 +646,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: darkTheme.background,
     borderRadius: 15,
+    height: "70%"
   },
   clipboardContainer: {
     flexDirection: "row",
@@ -681,7 +682,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "10%",
+    marginTop: "7%",
   },
   ball: {
     height: 50,
