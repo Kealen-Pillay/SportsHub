@@ -344,9 +344,8 @@ const styles = StyleSheet.create({
   customRatingBar: {
     flexDirection: "row",
     backgroundColor: "white",
-    width: "80%",
-    marginTop: 20,
-    marginBottom: 10,
+    width: "90%",
+    marginBottom: "10%",
     borderRadius: 5,
     height: 50,
     justifyContent: "space-between",
