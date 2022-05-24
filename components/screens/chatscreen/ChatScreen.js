@@ -80,9 +80,6 @@ const ChatScreen = ({ darkModeEnabled }) => {
     );
   };
 
-
-
-
   const customBubble = (props) => {
     return (
       <Bubble
@@ -95,20 +92,16 @@ const ChatScreen = ({ darkModeEnabled }) => {
           left: {
             backgroundColor: darkTheme.purple,
             borderRadius: 10,
-
-            
           },
         }}
         textStyle={{
           left: {
             color: "white",
-          }
+          },
         }}
       />
     );
   };
-
-
 
   return (
     <SafeAreaView
@@ -138,7 +131,7 @@ const ChatScreen = ({ darkModeEnabled }) => {
           showAvatarForEveryMessage={true}
           onSend={(messages) => onSend(messages)}
           renderInputToolbar={(props) => customtInputToolbar(props)}
-          renderBubble = {(props) => customBubble(props)}
+          renderBubble={(props) => customBubble(props)}
           user={{
             _id: auth?.currentUser?.email,
             user: senderName,
