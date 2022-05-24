@@ -22,6 +22,7 @@ import TeamEditButton from "./TeamEditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
+import * as Clipboard from "expo-clipboard";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
