@@ -39,8 +39,9 @@
     "native-base": "^3.4.3",
     "react": "17.0.1",
     "react-dom": "17.0.1",
-    "react-native": "0.64.3",
+    "react-native": "^0.64.3",
     "react-native-add-calendar-event": "^4.0.0",
+    "react-native-calendar-events": "^2.2.0",
     "react-native-chip": "^2.1.8",
     "react-native-element-dropdown": "^1.8.10",
     "react-native-flash-message": "^0.2.1",
@@ -56,7 +57,8 @@
     "react-native-safe-area-context": "3.3.2",
     "react-native-screens": "~3.10.1",
     "react-native-toast-message": "^2.1.5",
-    "react-native-web": "0.17.1"
+    "react-native-web": "0.17.1",
+    "expo-calendar": "~10.1.0"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",

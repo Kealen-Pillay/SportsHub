@@ -29,10 +29,16 @@ import EditButton from "../eventscreen/EditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
-//import RNCalendarEvents from "react-native-calendar-events";
-import * as AddCalendarEvent from "react-native-add-calendar-event";
+import * as Calendar from 'expo-calendar';
+//Import library for AddCalendarEvent
+import
+  * as AddCalendarEvent
+from 'react-native-add-calendar-event';
 import moment from 'moment';
 import { PlatformColor } from "react-native";
+import RNCalendarEvents from 'react-native-calendar-events';
+import _ from 'lodash';
+ 
 LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
@@ -51,12 +57,13 @@ const MyEventScreen = ({
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentEventID, setCurrentEventID] = useState("");
   const [numAttendees, setNumAttendees] = useState(0);
+  const [status, requestPermission] = Calendar.useCalendarPermissions();
 
-  const [eventTitle, setEventTitle] = useState('');
-  const [eventLocation, setEventLocation] = useState('');
-  const [date, setDate] = useState(new Date());
-  const [open, setOpen] = useState(false);
-  const [dateValue, setdateValue] = useState('');
+  // const [eventTitle, setEventTitle] = useState('');
+  // const [eventLocation, setEventLocation] = useState('');
+  // const [date, setDate] = useState(new Date());
+  // const [open, setOpen] = useState(false);
+  // const [dateValue, setdateValue] = useState('');
 
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
@@ -64,6 +71,14 @@ const MyEventScreen = ({
   useEffect(() => {
     setEvents([]);
     getEvents();
+    (async () => {
+      const { status } = await Calendar.requestCalendarPermissionsAsync();
+      if (status === 'granted') {
+        const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
+        console.log('Here are all your calendars:');
+        console.log({ calendars });
+      }
+    })();
   }, [isFocused]);
 
   const getEvents = () => {
@@ -247,51 +262,132 @@ const MyEventScreen = ({
       position: "top",
     });
   };
-
-    
-const utcDateToString = (momentInUTC) => {
-  let s = moment.utc(momentInUTC)
-            .format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-  return s;
-};
+ 
 
 const checkCal = () => {        //Opens the calendar on device
   if (Platform.OS == 'ios') {
     Linking.openURL("calshow:");
+   // addToCalendar();
   } else if(Platform.OS == 'android') {
     Linking.openURL('content://com.android.calendar/time/');
-    const eventConfig = {
-      currentEvent,
-      startDate: utcDateToString(startDateUTC),
-      endDate: utcDateToString(moment.utc(startDateUTC).add(1, 'hours')),
-      notes: 'event',
-      navigationBarIOS: {
-        tintColor: 'orange',
-        backgroundColor: 'green',
-        titleColor: 'blue',
-      },
-    };
-
+    //addToCalendar();
   } 
 }
+ 
 
 const TIME_NOW_IN_UTC = moment.utc();
 
-  const addToCalendar = () => { // Adds event on the calendar
-    const eventConfig = {
-      currentEvent,
-      eventTitle: currentEvent.eventName,
-      startDate: currentEvent.date,
-      eventLocation: currentEvent.location,
-      notes: 'event',
-      navigationBarIOS: {
-        tintColor: 'orange',
-        backgroundColor: 'green',
-        titleColor: 'blue',
-      },
-    };
 
-    AddCalendarEvent.presentEventCreatingDialog(eventConfig)
+async function getDefaultCalendarSource() {
+  const defaultCalendar = await Calendar.getDefaultCalendarAsync();
+  return defaultCalendar.source;
+}
+
+async function createExpoCalendar() {  //working
+
+  checkCal();
+
+  const defaultCalendarSource =
+    Platform.OS === 'ios'
+      ? await getDefaultCalendarSource()
+      : { isLocalAccount: true, name: 'Expo Calendar' };
+     
+  const newCalendarID = await Calendar.createCalendarAsync({
+    title: 'Expo Calendar',
+    color: 'purple',
+    entityType: Calendar.EntityTypes.EVENT,
+    sourceId: defaultCalendarSource.id,
+    source: defaultCalendarSource,
+    name: 'internalCalendarName',
+    ownerAccount: 'personal',
+    accessLevel: Calendar.CalendarAccessLevel.OWNER,
+  });
+ // console.log(`Your new calendar ID is: ${newCalendarID}`);
+
+  const startDate = moment(currentEvent.date + " " + currentEvent.time, "DD-M-YYYY HH:mm").toDate();
+  const endDate = moment(startDate).add(1, "hours").toDate();
+  const eventConfig = {
+    title: currentEvent.eventName,    
+    startDate: startDate,
+    endDate: endDate, 
+    location: currentEvent.location,   
+    notes: currentEvent.sport,
+  };
+  console.log("eventConfig", newCalendarID, currentEvent.date, currentEvent.time, eventConfig);
+
+  Calendar.createEventAsync(newCalendarID, eventConfig);
+  
+
+}
+
+
+  //In progress
+  //const handleCalender = () => {
+ 
+     const createEvent = () => {
+  
+      console.log(currentEvent);
+      const newDate = new Date(currentEvent.date);
+      newDate.setHours(newDate.getHours() + 2);
+      RNCalendarEvents.saveEvent(currentEvent.eventName, {
+        calendarId: '1',
+        startDate: currentEvent.date,
+        endDate: currentEvent.date,
+        location: currentEvent.location
+      }).then((value) => {
+        console.log('Event ID --> ', value);
+      }).catch((error) => {
+        console.log(' error: ',error);
+      })
+   }
+
+   const utcDateToString = (momentInUTC) => {
+    let s = moment.utc(momentInUTC)
+              .format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
+    return s;
+  };
+
+  // export async function createCalendarEvent(event) {
+  //  const store = RNCalendarEvents.authorizeEventStore();
+  //   console.log(store);
+  //   if (store === "authorize") {
+  //     addToCalendar(event);
+  //   } else {
+  //     RNCalendarEvents.authorizationStatus()
+  //       .then(auth => {
+  //         // handle status
+  //         if (auth === "authorized") {
+  //           addToCalendar(event);
+  //         }
+  //       })
+  //       .catch(() => {
+  //         alert("This app needs calendar access");
+  //       });
+  //   }
+  // }
+
+
+const addToCalendar = (title, startDateUTC) => {
+
+  // const permission = AddCalendarEvent.requestCalendarPermission();
+  // console.log(permission);
+
+  // AddCalendarEvent.requestCalendarPermission();
+   
+  const eventConfig = {
+    title: title,
+    startDate: utcDateToString(startDateUTC),
+    endDate: 
+    utcDateToString(moment.utc(startDateUTC).add(1, 'hours')),
+    
+  };
+  // if (Platform.OS === 'android') {
+  //   eventConfig.description = "text";
+  //  } else if (Platform.OS === 'IOS') {
+  //   eventConfig.notes = "text";
+  //  }
+ 
+  AddCalendarEvent.presentEventCreatingDialog(eventConfig)
     .then((eventInfo) => {
       alert('eventInfo -> ' + JSON.stringify(eventInfo));
     })
@@ -300,68 +396,21 @@ const TIME_NOW_IN_UTC = moment.utc();
       alert('Error -> ' + error);
       console.log(error);
     });
-
   };
 
 
+  const createEvent2 = (title, startDateUTC) => {
 
-  //In progress
-  //const handleCalender = () => {
+    console.log("event2");
+    const EVENT_TITLE = currentEvent.eventName;
+    const TIME_NOW_IN_UTC = moment.utc();
+    startDateUTC = TIME_NOW_IN_UTC;
+    
 
-   //RNCalendarEvents.findCalendars();
-  //  RNCalendarEvents.checkPermissions((readOnly = false));
-    // RNCalendarEvents.requestPermissions((readOnly = false));
+    addToCalendar(title, startDateUTC);
+}
+
  
-
-    // write_calender = PermissionsAndroid.WRITE_CALENDAR
-    // read_calender = PermissionsAndroid.READ_CALENDAR
-    // if (granted === PermissionsAndroid.check(write_calender) && 
-    // granted === PermissionsAndroid.check(read_calender)) {
-    //   console.log('You can use the CALENDAR');
-    // } else {
-    //   console.log('CALENDAR permission denied');
-    // }
-
-   
-    // Error identified: 'react-native link' required to link calendar feature
-    // 'react-native link' feature not working, 'react-native' is not being recognized
-    // Check 'Calendar' document on google drive
-  //     RNCalendarEvents.checkPermissions((readOnly = false)).then((res) => {
-  //       console.log('Permission Response', res)
-  //     }).catch((error) => {
-  //       alert("Permission denied");
-  //       console.log(error);
-  //     })
-
-  //    const createEvent = () => {
-  //     const newDate = new Date(date);
-  //     newDate.setHours(newDate.getHours() + 2);
-  //     RNCalendarEvents.saveEvent(eventTitle, {
-  //       calendarId: '1',
-  //       startDate: date.toISOString(),
-  //       endDate: newDate.toISOString(),
-  //       location: eventLocation
-  //     }).then((value) => {
-  //       console.log('Event ID --> ', value);
-  //     }).catch((error) => {
-  //       console.log(' error: ',error);
-  //     })
-  //  }
-
-  //  const fetchEvent = (currentEventID) => {
-  //    RNCalendarEvents.findEventById(currentEventID).then((data) => {
-  //      console.log("Event Data --> ", data);
-  //    })
-  //  }
-
-  //  const deleteEvent = (currentEventID) => {
-  //   RNCalendarEvents.removeEvent(currentEventID).then((val)=>{
-  //     console.log(val);
-  //   })
-  //  }
-   
-  //}
-
   return (
     <SafeAreaView
       style={[
@@ -573,8 +622,12 @@ const TIME_NOW_IN_UTC = moment.utc();
               <Pressable
                 style={[styles.button, styles.buttonCalender]}
                 onPress={() => {
-                  checkCal();
-                  addToCalendar();
+                   //checkCal();
+                   //addToCalendar();
+                  //createEvent2(currentEvent.eventName, currentEvent.time);
+                  // createEventRN();
+                  //createCalendarEvent();
+                  createExpoCalendar();
                 }}
               >
                 <Text style={styles.modalButtonText}>Add to Calender</Text>
