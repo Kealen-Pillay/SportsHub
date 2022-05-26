@@ -1,10 +1,4 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  TouchableOpacity,
-  Image,
-} from "react-native";
+import { StyleSheet, Text, View, TouchableOpacity, Image } from "react-native";
 import React from "react";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import { Card, Switch } from "react-native-paper";
@@ -18,8 +12,8 @@ import Toast from "react-native-toast-message";
 
 const ProfileScreen = ({ setDarkModeEnabled }) => {
   const [isEnabled, setIsEnabled] = useState(true);
-  const [defaultRating, setdefaultRating] = useState();
-  const [maxRating, setmaxRating] = useState([1, 2, 3, 4, 5]);
+  const [defaultRating, setDefaultRating] = useState();
+  const [maxRating, setMaxRating] = useState([1, 2, 3, 4, 5]);
   const [username, setUsername] = useState("");
   const starImgFilled = require("../../../images/star_filled.png");
   const starImgCorner = require("../../../images/star_corner.png");
@@ -27,16 +21,9 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
   const [image, setImage] = useState(null);
 
   useEffect(() => {
-    firestore
-      .collection("users")
-      .doc(auth.currentUser?.email)
-      .get()
-      .then((documentSnapshot) => {
-        let data = documentSnapshot.data();
-        setImage(data.profileimg);
-      })
-      .catch((error) => console.log(error));
-  }, []);
+    setDarkModeEnabled(isEnabled);
+    getUserInfo();
+  }, [isEnabled]);
 
   const RatingBox = () => {
     return (
@@ -55,43 +42,19 @@ const ProfileScreen = ({ setDarkModeEnabled }) => {
     );
   };
 
-  const getRating = () => {
+  const getUserInfo = () => {
     firestore
       .collection("users")
-      .where("email", "==", auth.currentUser?.email)
+      .doc(auth.currentUser?.email)
       .get()
-      .then((querySnapShot) => {
-        querySnapShot.forEach((snapshot) => {
-          let data = snapshot.data();
-          {
-            let rating = data.rating;
-            setdefaultRating(rating);
-          }
-        });
-      });
+      .then((documentSnapshot) => {
+        let data = documentSnapshot.data();
+        setImage(data.profileimg);
+        setDefaultRating(data.rating);
+        setUsername(data.username);
+      })
+      .catch((error) => console.log(error));
   };
-
-  const getUsername = () => {
-    firestore
-      .collection("users")
-      .where("email", "==", auth.currentUser?.email)
-      .get()
-      .then((querySnapShot) => {
-        querySnapShot.forEach((snapshot) => {
-          let data = snapshot.data();
-          {
-            let name = data.username;
-            setUsername(name);
-          }
-        });
-      });
-  };
-
-  useEffect(() => {
-    setDarkModeEnabled(isEnabled);
-    getRating();
-    getUsername();
-  }, [isEnabled]);
 
   const handleSignOut = () => {
     auth

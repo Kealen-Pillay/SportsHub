@@ -7,7 +7,9 @@ import {
   Modal,
   TouchableOpacity,
   Pressable,
+  Linking,
   Image,
+  Platform,
 } from "react-native";
 import React from "react";
 import { useState, useEffect } from "react";
@@ -19,12 +21,14 @@ import { auth } from "../../../firebase/firebase";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import { darkTheme, lightTheme } from "../../../theme/themes";
 import Bookmark from "../feedscreen/Bookmark";
+import * as Clipboard from "expo-clipboard";
 import EditButton from "../eventscreen/EditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
-import * as Clipboard from "expo-clipboard";
-
+import * as Calendar from "expo-calendar";
+import moment from "moment";
+import _ from "lodash";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
@@ -44,13 +48,20 @@ const MyEventScreen = ({
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentEventID, setCurrentEventID] = useState("");
   const [numAttendees, setNumAttendees] = useState(0);
-
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
 
   useEffect(() => {
     setEvents([]);
     getEvents();
+    (async () => {
+      const { status } = await Calendar.requestCalendarPermissionsAsync();
+      if (status === "granted") {
+        const calendars = await Calendar.getCalendarsAsync(
+          Calendar.EntityTypes.EVENT
+        );
+      }
+    })();
   }, [isFocused]);
 
   const getEvents = () => {
@@ -235,6 +246,55 @@ const MyEventScreen = ({
     });
   };
 
+  const checkCal = () => {
+    if (Platform.OS == "ios") {
+      Linking.openURL("calshow:");
+    } else if (Platform.OS == "android") {
+      Linking.openURL("content://com.android.calendar/time/");
+    }
+  };
+
+  const getDefaultCalendarSource = async () => {
+    const defaultCalendar = await Calendar.getDefaultCalendarAsync();
+    return defaultCalendar.source;
+  };
+
+  const createExpoCalendar = async () => {
+    checkCal();
+    const defaultCalendarSource =
+      Platform.OS === "ios"
+        ? await getDefaultCalendarSource()
+        : { isLocalAccount: true, name: "SportsHub" };
+
+    const newCalendarID = await Calendar.createCalendarAsync({
+      title: "Expo Calendar",
+      color: "purple",
+      entityType: Calendar.EntityTypes.EVENT,
+      sourceId: defaultCalendarSource.id,
+      source: defaultCalendarSource,
+      name: "internalCalendarName",
+      ownerAccount: "personal",
+      accessLevel: Calendar.CalendarAccessLevel.OWNER,
+    });
+
+    const startDate = moment(
+      currentEvent.date + " " + currentEvent.time,
+      "DD-M-YYYY HH:mm"
+    ).toDate();
+
+    const endDate = moment(startDate).add(1, "hours").toDate();
+
+    const eventConfig = {
+      title: currentEvent.eventName,
+      startDate: startDate,
+      endDate: endDate,
+      location: currentEvent.location,
+      notes: currentEvent.sport,
+    };
+
+    Calendar.createEventAsync(newCalendarID, eventConfig);
+  };
+
   return (
     <SafeAreaView
       style={[
@@ -414,16 +474,27 @@ const MyEventScreen = ({
                 >
                   Time: {currentEvent.time}
                 </Text>
-                <Text
-                  style={[
-                    styles.modalBody,
-                    {
-                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
-                    },
-                  ]}
-                >
-                  Date: {currentEvent.date}
-                </Text>
+                <View style={styles.dateContainer}>
+                  <Text
+                    style={[
+                      styles.modalBody,
+                      {
+                        color: darkModeEnabled
+                          ? darkTheme.text
+                          : lightTheme.text,
+                      },
+                    ]}
+                  >
+                    Date: {currentEvent.date}
+                  </Text>
+                  <TouchableOpacity onPress={createExpoCalendar}>
+                    <Ionicons
+                      name={"calendar-outline"}
+                      size={20}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                    />
+                  </TouchableOpacity>
+                </View>
                 <Text
                   style={[
                     styles.modalBody,
@@ -639,7 +710,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     width: "95%",
-    height: "60%",
+    height: "65%",
     marginTop: 40,
     borderRadius: 20,
     borderColor: darkTheme.pink,
@@ -702,11 +773,17 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: "70%",
   },
+  buttonCalendar: {
+    backgroundColor: darkTheme.purple,
+    marginBottom: "2%",
+    marginTop: "2%",
+  },
   buttonMap: {
     backgroundColor: darkTheme.purple,
     width: "70%",
     marginTop: "10%",
-    marginBottom: "5%",
+    marginBottom: "10%",
+    justifyContent: "flex-end",
   },
   modalButtonText: {
     color: "white",
@@ -715,6 +792,9 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "0%",
+  },
+  dateContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });

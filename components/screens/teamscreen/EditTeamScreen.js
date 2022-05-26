@@ -221,7 +221,6 @@ const EditTeamScreen = ({
       />
 
       <RatingBox />
-
       <TextInput
         style={[styles.text, styles.infoText]}
         value={info}
@@ -231,7 +230,6 @@ const EditTeamScreen = ({
         placeholder="Information"
         placeholderTextColor={"gray"}
       />
-
       <TouchableOpacity
         style={styles.button}
         onPress={() => handleEditTeam(editTeamID)}
@@ -278,7 +276,6 @@ const styles = StyleSheet.create({
     height: 50,
   },
   button: {
-    marginTop: 20,
     backgroundColor: darkTheme.purple,
     width: "90%",
     borderRadius: 10,
@@ -352,6 +349,7 @@ const styles = StyleSheet.create({
   },
   deleteEventButton: {
     backgroundColor: "#e85454",
+    marginTop: "5%"
   },
   abilityText: {
     color: "black",
@@ -362,9 +360,8 @@ const styles = StyleSheet.create({
   customRatingBar: {
     flexDirection: "row",
     backgroundColor: "white",
-    width: "80%",
-    marginTop: 20,
-    marginBottom: 10,
+    width: "90%",
+    marginBottom: "10%",
     borderRadius: 5,
     height: 50,
     justifyContent: "space-between",
@@ -379,5 +376,6 @@ const styles = StyleSheet.create({
     height: "20%",
     textAlignVertical: "top",
     paddingVertical: 10,
+    marginBottom: "5%"
   },
 });

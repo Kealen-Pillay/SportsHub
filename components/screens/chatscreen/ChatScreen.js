@@ -9,7 +9,7 @@ import { darkTheme, lightTheme } from "../../../theme/themes";
 import React from "react";
 import NavGradient from "../../NavGradient";
 import { useState, useCallback, useEffect } from "react";
-import { GiftedChat, InputToolbar } from "react-native-gifted-chat";
+import { GiftedChat, InputToolbar, Bubble } from "react-native-gifted-chat";
 import { auth } from "../../../firebase/firebase";
 import { firestore } from "../../../firebase/firestore";
 import { v4 as uuid } from "uuid";
@@ -83,6 +83,30 @@ const ChatScreen = ({ darkModeEnabled }) => {
       />
     );
   };
+
+  const customBubble = (props) => {
+    return (
+      <Bubble
+        {...props}
+        wrapperStyle={{
+          right: {
+            backgroundColor: darkTheme.pink,
+            borderRadius: 10,
+          },
+          left: {
+            backgroundColor: darkTheme.purple,
+            borderRadius: 10,
+          },
+        }}
+        textStyle={{
+          left: {
+            color: "#ffffff",
+          },
+        }}
+      />
+    );
+  };
+
   return (
     <SafeAreaView
       style={[
@@ -112,6 +136,7 @@ const ChatScreen = ({ darkModeEnabled }) => {
           showAvatarForEveryMessage={true}
           onSend={(messages) => onSend(messages)}
           renderInputToolbar={(props) => customtInputToolbar(props)}
+          renderBubble={(props) => customBubble(props)}
           user={{
             _id: auth?.currentUser?.email,
             user: senderName,
