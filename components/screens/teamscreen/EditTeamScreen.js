@@ -5,22 +5,18 @@ import {
   TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
-  Modal,
   View,
-  Pressable,
   Image,
 } from "react-native";
 import { firestore } from "../../../firebase/firestore";
 import "react-native-get-random-values";
-import RNDateTimePicker from "@react-native-community/datetimepicker";
 import { Dropdown } from "react-native-element-dropdown";
 import { showMessage } from "react-native-flash-message";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EditTeamScreen = ({
   setEditTeamShow,
@@ -50,7 +46,27 @@ const EditTeamScreen = ({
   ];
 
   const navigation = useNavigation();
+  useEffect(() => {
+    getTeamInfo();
+  }, []);
 
+  const getTeamInfo = () => {
+    firestore
+      .collection("teams")
+      .doc(editTeamID)
+      .get()
+      .then((documentSnapshot) => {
+        let data = documentSnapshot.data();
+        setTeamName(data.teamName);
+        setSport(data.sport);
+        setdefaultRating(data.rating);
+        setInfo(data.info);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+  
   const handleEditTeam = (teamID) => {
     if (teamName.length == 0 || sport.length == 0) {
       showMessage({
@@ -205,15 +221,15 @@ const EditTeamScreen = ({
       />
 
       <RatingBox />
-
       <TextInput
-        style={styles.text}
+        style={[styles.text, styles.infoText]}
         value={info}
+        multiline={true}
+        blurOnSubmit={true}
         onChangeText={(text) => setInfo(text)}
         placeholder="Information"
         placeholderTextColor={"gray"}
       />
-
       <TouchableOpacity
         style={styles.button}
         onPress={() => handleEditTeam(editTeamID)}
@@ -260,7 +276,6 @@ const styles = StyleSheet.create({
     height: 50,
   },
   button: {
-    marginTop: 20,
     backgroundColor: darkTheme.purple,
     width: "90%",
     borderRadius: 10,
@@ -334,6 +349,7 @@ const styles = StyleSheet.create({
   },
   deleteEventButton: {
     backgroundColor: "#e85454",
+    marginTop: "5%"
   },
   abilityText: {
     color: "black",
@@ -355,5 +371,11 @@ const styles = StyleSheet.create({
     width: 35,
     height: 35,
     resizeMode: "cover",
+  },
+  infoText: {
+    height: "20%",
+    textAlignVertical: "top",
+    paddingVertical: 10,
+    marginBottom: "5%"
   },
 });

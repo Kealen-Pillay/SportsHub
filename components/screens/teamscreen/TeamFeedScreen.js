@@ -32,12 +32,12 @@ LogBox.ignoreLogs([
 ]);
 
 var counter = 0;
+var memberCounter = 0;
 
 const TeamFeedScreen = ({
   darkModeEnabled,
   newTeamShow,
   editTeamShow,
-  setEditTeamShow,
   setTeamFeedShow,
 }) => {
   const [search, setSearch] = useState("");
@@ -48,7 +48,7 @@ const TeamFeedScreen = ({
   const [selectedSport, setSelectedSport] = useState([]);
   const [currentTeamID, setCurrentTeamID] = useState("");
   const [numMembers, setNumMembers] = useState(0);
-  const [membersList, setMembersList] = useState([]);
+  const [memberList, setMemberList] = useState([]);
 
   useEffect(() => {
     setTeams([]);
@@ -72,13 +72,12 @@ const TeamFeedScreen = ({
       .then((querySnapShot) => {
         querySnapShot.forEach((snapshot) => {
           let data = snapshot.data();
-          {
-            let name = data.teamName;
-            name = name.toLowerCase();
-            let id = data.teamID;
-            if (id.includes(search) || name.includes(search.toLowerCase())) {
-              setTeams((prev) => [...prev, data]);
-            }
+
+          let name = data.teamName;
+          name = name.toLowerCase();
+          let id = data.teamID;
+          if (id.includes(search) || name.includes(search.toLowerCase())) {
+            setTeams((prev) => [...prev, data]);
           }
         });
       })
@@ -106,7 +105,7 @@ const TeamFeedScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
-          setMembersList(members);
+          setMemberList(members);
         } else {
           members = [...members, auth.currentUser?.email];
           firestore.collection("teams").doc(teamID).update({
@@ -114,7 +113,7 @@ const TeamFeedScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
-          setMembersList(members);
+          setMemberList(members);
         }
       })
       .catch((error) => {
@@ -214,7 +213,7 @@ const TeamFeedScreen = ({
       .doc(teamID)
       .get()
       .then((documentSnapshot) => {
-        setMembersList(documentSnapshot.data().members);
+        setMemberList(documentSnapshot.data().members);
       })
       .catch((error) => {
         console.log(error);
@@ -246,7 +245,7 @@ const TeamFeedScreen = ({
         <SearchBar
           placeholder="Search Team Name or ID"
           height={60}
-          inputStyle={{paddingLeft: 50}}
+          inputStyle={{ paddingLeft: 50 }}
           onChangeText={debouncedResults}
           style={styles.searchBar}
           placeholderTextColor={
@@ -257,7 +256,7 @@ const TeamFeedScreen = ({
         />
         <TouchableOpacity
           style={[
-            styles.myTeamsButton, 
+            styles.myTeamsButton,
             {
               backgroundColor: darkModeEnabled
                 ? darkTheme.cardBackground
@@ -352,7 +351,7 @@ const TeamFeedScreen = ({
                 >
                   {currentTeam.teamName}
                 </Text>
-                <View style={styles.titleIcons}>
+                <View style={styles.bookmarkAndAttendees}>
                   <TeamBookmark
                     handleAttend={handleAttend}
                     teamID={currentTeam.teamID}
@@ -419,7 +418,6 @@ const TeamFeedScreen = ({
                     />
                   </TouchableOpacity>
                 </View>
-
                 <Text
                   style={[
                     styles.modalBody,
@@ -441,7 +439,6 @@ const TeamFeedScreen = ({
                 >
                   Sport: {currentTeam.sport}
                 </Text>
-
                 <Text
                   style={[
                     styles.modalBody,
@@ -450,9 +447,20 @@ const TeamFeedScreen = ({
                     },
                   ]}
                 >
-                  Members: {membersList}
+                  Members:
                 </Text>
-
+                <View>
+                  <ScrollView>
+                    {memberList.map((member) => {
+                      memberCounter++;
+                      return (
+                        <View key={memberCounter}>
+                          <Text style={styles.memberName}>{member}</Text>
+                        </View>
+                      );
+                    })}
+                  </ScrollView>
+                </View>
                 <Text
                   style={[
                     styles.modalBody,
@@ -461,15 +469,28 @@ const TeamFeedScreen = ({
                     },
                   ]}
                 >
-                  Information: {currentTeam.info}
+                  Information:
                 </Text>
+                <View style={styles.infoScrollView}>
+                  <ScrollView>
+                    <Text
+                      style={[
+                        styles.infoText,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {currentTeam.info}
+                    </Text>
+                  </ScrollView>
+                </View>
               </View>
-
               <Pressable
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => {
-                  setModalVisible(!modalVisible);
-                }}
+                onPress={() => setModalVisible(!modalVisible)}
               >
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
@@ -517,7 +538,10 @@ const TeamFeedScreen = ({
                       {team.teamName}
                     </Text>
                   </View>
-                  <TeamBookmark handleAttend={handleAttend} teamID={team.teamID} />
+                  <TeamBookmark
+                    handleAttend={handleAttend}
+                    teamID={team.teamID}
+                  />
                 </View>
               </View>
             </TouchableOpacity>
@@ -541,12 +565,12 @@ const styles = StyleSheet.create({
     fontSize: 50,
   },
   searchBar: {
-    width: "82%",     
+    width: "82%",
   },
   scrollView: {
     width: "100%",
     marginBottom: 55,
-    height: "100%"
+    height: "100%",
   },
   teamContainer: {
     borderWidth: 2,
@@ -622,6 +646,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: darkTheme.background,
     borderRadius: 15,
+    height: "70%"
   },
   clipboardContainer: {
     flexDirection: "row",
@@ -657,7 +682,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "20%",
+    marginTop: "7%",
   },
   ball: {
     height: 50,
@@ -669,7 +694,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     width: "90%",
     justifyContent: "space-between",
-    alignItems: "center"
+    alignItems: "center",
   },
   myTeamsButton: {
     height: 50,
@@ -681,10 +706,38 @@ const styles = StyleSheet.create({
     borderWidth: 2,
   },
   icon: {
-    marginLeft: "5%"
+    marginLeft: "5%",
   },
   filterBar: {
     height: "13%",
     width: "90%",
+  },
+  avatarDisplay: {
+    height: 30,
+    width: 30,
+    marginLeft: "5%",
+    marginBottom: "3%",
+  },
+  membersContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  memberName: {
+    fontWeight: "bold",
+    fontSize: 12,
+    marginLeft: "5%",
+    color: darkTheme.pink,
+  },
+  membersScrollView: {
+    height: "15%",
+  },
+  infoText: {
+    fontWeight: "bold",
+    fontSize: 12,
+    marginLeft: "5%",
+    marginRight: "5%",
+  },
+  infoScrollView: {
+    height: "15%",
   },
 });

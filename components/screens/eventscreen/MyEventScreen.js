@@ -27,7 +27,6 @@ import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
 import * as Calendar from "expo-calendar";
-
 import moment from "moment";
 import _ from "lodash";
 

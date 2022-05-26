@@ -19,7 +19,7 @@ import { useNavigation } from "../../../node_modules/@react-navigation/core";
 import Ionicons from "react-native-vector-icons/Ionicons";
 import NavGradient from "../../NavGradient";
 import { darkTheme, lightTheme } from "../../../theme/themes";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const EditEventScreen = ({
   setEditEventShow,
@@ -55,6 +55,28 @@ const EditEventScreen = ({
   const navigation = useNavigation();
   const GOOGLE_PLACES_API_KEY = "AIzaSyCM5iQ4ICJBVnHqP53EEgOo8qo6xRoLq14";
 
+  useEffect(() => {
+    getEventInfo();
+  }, []);
+
+  const getEventInfo = () => {
+    firestore
+      .collection("events")
+      .doc(editEventID)
+      .get()
+      .then((documentSnapshot) => {
+        let data = documentSnapshot.data();
+        setEventName(data.eventName);
+        setSport(data.sport);
+        setLocation(data.location);
+        setDateText(data.date);
+        setTimeText(data.time);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleEditEvent = (eventID) => {
     if (
       eventName.length == 0 ||
@@ -83,35 +105,66 @@ const EditEventScreen = ({
     setEditEventShow(false);
   };
   const updateEvent = (eventID) => {
-    firestore
-      .collection("events")
-      .doc(eventID)
-      .update({
-        eventName: eventName,
-        date: dateText,
-        time: timeText,
-        sport: sport,
-        location: location,
-        long: long,
-        lat: lat,
-      })
-      .then(function (docRef) {
-        showMessage({
-          message: "Event Updated!",
-          type: "success",
-          hideStatusBar: true,
+    if (lat === "" && long === "") {
+      firestore
+        .collection("events")
+        .doc(eventID)
+        .update({
+          eventName: eventName,
+          date: dateText,
+          time: timeText,
+          sport: sport,
+          long: long,
+          lat: lat,
+        })
+        .then(function (docRef) {
+          showMessage({
+            message: "Event Updated!",
+            type: "success",
+            hideStatusBar: true,
+          });
+        })
+        .then(() => {
+          navigation.navigate("Dashboard");
+        })
+        .catch(function (error) {
+          showMessage({
+            message: "ERROR updating event",
+            type: "danger",
+            hideStatusBar: true,
+          });
         });
-      })
-      .then(() => {
-        navigation.navigate("Dashboard");
-      })
-      .catch(function (error) {
-        showMessage({
-          message: "ERROR updating event",
-          type: "danger",
-          hideStatusBar: true,
+    } else {
+      firestore
+        .collection("events")
+        .doc(eventID)
+        .update({
+          eventName: eventName,
+          date: dateText,
+          time: timeText,
+          sport: sport,
+          location: location,
+          long: long,
+          lat: lat,
+        })
+        .then(function (docRef) {
+          showMessage({
+            message: "Event Updated!",
+            type: "success",
+            hideStatusBar: true,
+          });
+        })
+        .then(() => {
+          navigation.navigate("Dashboard");
+        })
+        .catch(function (error) {
+          showMessage({
+            message: "ERROR updating event",
+            type: "danger",
+            hideStatusBar: true,
+          });
         });
-      });
+    }
   };
 
   const handleDeleteEvent = (eventID) => {
@@ -257,8 +310,8 @@ const EditEventScreen = ({
       <GooglePlacesAutocomplete
         GooglePlacesDetailsQuery={{ fields: "geometry" }}
         fetchDetails={true}
-        placeholder="Location"
-        textInputProps={{ placeholderTextColor: "gray" }}
+        placeholder={location}
+        textInputProps={{ placeholderTextColor: "black" }}
         minLength={2}
         query={{
           key: GOOGLE_PLACES_API_KEY,

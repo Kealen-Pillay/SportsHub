@@ -22,10 +22,12 @@ import TeamEditButton from "./TeamEditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
+import * as Clipboard from "expo-clipboard";
 
 LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
+var memberCounter = 0;
 
 const MyTeamScreen = ({
   darkModeEnabled,
@@ -40,6 +42,7 @@ const MyTeamScreen = ({
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentTeamID, setCurrentTeamID] = useState("");
   const [numMembers, setNumMembers] = useState(0);
+  const [memberList, setMemberList] = useState([]);
 
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
@@ -84,6 +87,19 @@ const MyTeamScreen = ({
       });
   };
 
+  const getMemberList = (teamID) => {
+    firestore
+      .collection("teams")
+      .doc(teamID)
+      .get()
+      .then((documentSnapshot) => {
+        setMemberList(documentSnapshot.data().members);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   const handleAttend = (teamID) => {
     firestore
       .collection("teams")
@@ -103,6 +119,7 @@ const MyTeamScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
+          setMemberList(members);
         } else {
           members = [...members, auth.currentUser?.email];
           firestore.collection("teams").doc(teamID).update({
@@ -110,6 +127,7 @@ const MyTeamScreen = ({
             numMembers: members.length,
           });
           setNumMembers(members.length);
+          setMemberList(members);
         }
       })
       .catch((error) => {
@@ -412,7 +430,6 @@ const MyTeamScreen = ({
                 >
                   Sport: {currentTeam.sport}
                 </Text>
-
                 <Text
                   style={[
                     styles.modalBody,
@@ -421,9 +438,20 @@ const MyTeamScreen = ({
                     },
                   ]}
                 >
-                  Members: {currentTeam.members}
+                  Members:
                 </Text>
-
+                <View>
+                  <ScrollView>
+                    {memberList.map((member) => {
+                      memberCounter++;
+                      return (
+                        <View key={memberCounter}>
+                          <Text style={styles.memberName}>{member}</Text>
+                        </View>
+                      );
+                    })}
+                  </ScrollView>
+                </View>
                 <Text
                   style={[
                     styles.modalBody,
@@ -432,10 +460,25 @@ const MyTeamScreen = ({
                     },
                   ]}
                 >
-                  Information: {currentTeam.info}
+                  Information:
                 </Text>
+                <View style={styles.infoScrollView}>
+                  <ScrollView>
+                    <Text
+                      style={[
+                        styles.infoText,
+                        {
+                          color: darkModeEnabled
+                            ? darkTheme.text
+                            : lightTheme.text,
+                        },
+                      ]}
+                    >
+                      {currentTeam.info}
+                    </Text>
+                  </ScrollView>
+                </View>
               </View>
-
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -457,6 +500,7 @@ const MyTeamScreen = ({
                 setCurrentTeam(team);
                 setCurrentTeamID(team.teamID.slice(0, 8));
                 getNumMembers(team.teamID);
+                getMemberList(team.teamID);
               }}
             >
               <View
@@ -657,6 +701,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: darkTheme.background,
     borderRadius: 15,
+    height: "70%",
   },
   clipboardContainer: {
     flexDirection: "row",
@@ -692,7 +737,7 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "20%",
+    marginTop: "7%",
   },
   feedButton: {
     height: 50,
@@ -708,5 +753,19 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
+  },
+  memberName: {
+    fontWeight: "bold",
+    fontSize: 12,
+    marginLeft: "5%",
+    color: darkTheme.pink,
+  },
+  infoText: {
+    fontWeight: "bold",
+    fontSize: 12,
+    marginLeft: "5%",
+  },
+  infoScrollView: {
+    height: "15%",
   },
 });

@@ -58,7 +58,8 @@
     "react-native-screens": "~3.10.1",
     "react-native-toast-message": "^2.1.5",
     "react-native-web": "0.17.1",
-    "expo-calendar": "~10.1.0"
+    "expo-calendar": "~10.1.0",
+    "expo-updates": "~0.11.7"
   },
   "devDependencies": {
     "@babel/core": "^7.12.9",
