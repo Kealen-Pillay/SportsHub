@@ -30,13 +30,8 @@ import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
 import * as Calendar from 'expo-calendar';
-//Import library for AddCalendarEvent
-import
-  * as AddCalendarEvent
-from 'react-native-add-calendar-event';
+ 
 import moment from 'moment';
-import { PlatformColor } from "react-native";
-import RNCalendarEvents from 'react-native-calendar-events';
 import _ from 'lodash';
  
 LogBox.ignoreLogs(["Setting a timer"]);
@@ -58,12 +53,6 @@ const MyEventScreen = ({
   const [currentEventID, setCurrentEventID] = useState("");
   const [numAttendees, setNumAttendees] = useState(0);
   const [status, requestPermission] = Calendar.useCalendarPermissions();
-
-  // const [eventTitle, setEventTitle] = useState('');
-  // const [eventLocation, setEventLocation] = useState('');
-  // const [date, setDate] = useState(new Date());
-  // const [open, setOpen] = useState(false);
-  // const [dateValue, setdateValue] = useState('');
 
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
@@ -267,30 +256,24 @@ const MyEventScreen = ({
 const checkCal = () => {        //Opens the calendar on device
   if (Platform.OS == 'ios') {
     Linking.openURL("calshow:");
-   // addToCalendar();
+  
   } else if(Platform.OS == 'android') {
     Linking.openURL('content://com.android.calendar/time/');
-    //addToCalendar();
+ 
   } 
 }
- 
-
-const TIME_NOW_IN_UTC = moment.utc();
-
 
 async function getDefaultCalendarSource() {
   const defaultCalendar = await Calendar.getDefaultCalendarAsync();
   return defaultCalendar.source;
 }
 
-async function createExpoCalendar() {  //working
-
+async function createExpoCalendar() {  //creates event in phone calendar
   checkCal();
-
   const defaultCalendarSource =
     Platform.OS === 'ios'
       ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: 'Expo Calendar' };
+      : { isLocalAccount: true, name: 'SportsHub' };
      
   const newCalendarID = await Calendar.createCalendarAsync({
     title: 'Expo Calendar',
@@ -313,101 +296,8 @@ async function createExpoCalendar() {  //working
     location: currentEvent.location,   
     notes: currentEvent.sport,
   };
-  console.log("eventConfig", newCalendarID, currentEvent.date, currentEvent.time, eventConfig);
-
+  //console.log("eventConfig", newCalendarID, currentEvent.date, currentEvent.time, eventConfig);
   Calendar.createEventAsync(newCalendarID, eventConfig);
-  
-
-}
-
-
-  //In progress
-  //const handleCalender = () => {
- 
-     const createEvent = () => {
-  
-      console.log(currentEvent);
-      const newDate = new Date(currentEvent.date);
-      newDate.setHours(newDate.getHours() + 2);
-      RNCalendarEvents.saveEvent(currentEvent.eventName, {
-        calendarId: '1',
-        startDate: currentEvent.date,
-        endDate: currentEvent.date,
-        location: currentEvent.location
-      }).then((value) => {
-        console.log('Event ID --> ', value);
-      }).catch((error) => {
-        console.log(' error: ',error);
-      })
-   }
-
-   const utcDateToString = (momentInUTC) => {
-    let s = moment.utc(momentInUTC)
-              .format('YYYY-MM-DDTHH:mm:ss.SSS[Z]');
-    return s;
-  };
-
-  // export async function createCalendarEvent(event) {
-  //  const store = RNCalendarEvents.authorizeEventStore();
-  //   console.log(store);
-  //   if (store === "authorize") {
-  //     addToCalendar(event);
-  //   } else {
-  //     RNCalendarEvents.authorizationStatus()
-  //       .then(auth => {
-  //         // handle status
-  //         if (auth === "authorized") {
-  //           addToCalendar(event);
-  //         }
-  //       })
-  //       .catch(() => {
-  //         alert("This app needs calendar access");
-  //       });
-  //   }
-  // }
-
-
-const addToCalendar = (title, startDateUTC) => {
-
-  // const permission = AddCalendarEvent.requestCalendarPermission();
-  // console.log(permission);
-
-  // AddCalendarEvent.requestCalendarPermission();
-   
-  const eventConfig = {
-    title: title,
-    startDate: utcDateToString(startDateUTC),
-    endDate: 
-    utcDateToString(moment.utc(startDateUTC).add(1, 'hours')),
-    
-  };
-  // if (Platform.OS === 'android') {
-  //   eventConfig.description = "text";
-  //  } else if (Platform.OS === 'IOS') {
-  //   eventConfig.notes = "text";
-  //  }
- 
-  AddCalendarEvent.presentEventCreatingDialog(eventConfig)
-    .then((eventInfo) => {
-      alert('eventInfo -> ' + JSON.stringify(eventInfo));
-    })
-    .catch((error) => {
-      // handle error such as when user rejected permissions
-      alert('Error -> ' + error);
-      console.log(error);
-    });
-  };
-
-
-  const createEvent2 = (title, startDateUTC) => {
-
-    console.log("event2");
-    const EVENT_TITLE = currentEvent.eventName;
-    const TIME_NOW_IN_UTC = moment.utc();
-    startDateUTC = TIME_NOW_IN_UTC;
-    
-
-    addToCalendar(title, startDateUTC);
 }
 
  
@@ -622,11 +512,6 @@ const addToCalendar = (title, startDateUTC) => {
               <Pressable
                 style={[styles.button, styles.buttonCalender]}
                 onPress={() => {
-                   //checkCal();
-                   //addToCalendar();
-                  //createEvent2(currentEvent.eventName, currentEvent.time);
-                  // createEventRN();
-                  //createCalendarEvent();
                   createExpoCalendar();
                 }}
               >
