@@ -647,7 +647,7 @@ const styles = StyleSheet.create({
   buttonMap: {
     backgroundColor: darkTheme.purple,
     width: "70%",
-    marginTop: "10%",
+    marginTop: "7%",
     marginBottom: "5%",
   },
   modalButtonText: {

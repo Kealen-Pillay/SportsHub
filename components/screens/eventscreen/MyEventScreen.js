@@ -782,8 +782,8 @@ const styles = StyleSheet.create({
   buttonMap: {
     backgroundColor: darkTheme.purple,
     width: "70%",
-    marginTop: "2%",
-    marginBottom: "2%",
+    marginTop: "10%",
+    marginBottom: "10%",
     justifyContent: "flex-end",
   },
   modalButtonText: {
