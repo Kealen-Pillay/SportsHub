@@ -49,7 +49,6 @@ const MyEventScreen = ({
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentEventID, setCurrentEventID] = useState("");
   const [numAttendees, setNumAttendees] = useState(0);
-
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
 
@@ -62,8 +61,6 @@ const MyEventScreen = ({
         const calendars = await Calendar.getCalendarsAsync(
           Calendar.EntityTypes.EVENT
         );
-        console.log("Here are all your calendars:");
-        console.log({ calendars });
       }
     })();
   }, [isFocused]);
@@ -258,12 +255,12 @@ const MyEventScreen = ({
     }
   };
 
-  async function getDefaultCalendarSource() {
+  const getDefaultCalendarSource = async () => {
     const defaultCalendar = await Calendar.getDefaultCalendarAsync();
     return defaultCalendar.source;
-  }
+  };
 
-  async function createExpoCalendar() {
+  const createExpoCalendar = async () => {
     checkCal();
     const defaultCalendarSource =
       Platform.OS === "ios"
@@ -285,7 +282,9 @@ const MyEventScreen = ({
       currentEvent.date + " " + currentEvent.time,
       "DD-M-YYYY HH:mm"
     ).toDate();
+
     const endDate = moment(startDate).add(1, "hours").toDate();
+
     const eventConfig = {
       title: currentEvent.eventName,
       startDate: startDate,
@@ -295,7 +294,7 @@ const MyEventScreen = ({
     };
 
     Calendar.createEventAsync(newCalendarID, eventConfig);
-  }
+  };
 
   return (
     <SafeAreaView
@@ -476,16 +475,27 @@ const MyEventScreen = ({
                 >
                   Time: {currentEvent.time}
                 </Text>
-                <Text
-                  style={[
-                    styles.modalBody,
-                    {
-                      color: darkModeEnabled ? darkTheme.text : lightTheme.text,
-                    },
-                  ]}
-                >
-                  Date: {currentEvent.date}
-                </Text>
+                <View style={styles.dateContainer}>
+                  <Text
+                    style={[
+                      styles.modalBody,
+                      {
+                        color: darkModeEnabled
+                          ? darkTheme.text
+                          : lightTheme.text,
+                      },
+                    ]}
+                  >
+                    Date: {currentEvent.date}
+                  </Text>
+                  <TouchableOpacity onPress={createExpoCalendar}>
+                    <Ionicons
+                      name={"calendar-outline"}
+                      size={20}
+                      color={darkModeEnabled ? darkTheme.text : lightTheme.text}
+                    />
+                  </TouchableOpacity>
+                </View>
                 <Text
                   style={[
                     styles.modalBody,
@@ -497,23 +507,12 @@ const MyEventScreen = ({
                   Location: {currentEvent.location}
                 </Text>
               </View>
-
               <Pressable
                 style={[styles.button, styles.buttonMap]}
                 onPress={handleDirections}
               >
                 <Text style={styles.modalButtonText}>Open Maps</Text>
               </Pressable>
-
-              <Pressable
-                style={[styles.button, styles.buttonCalender]}
-                onPress={() => {
-                  createExpoCalendar();
-                }}
-              >
-                <Text style={styles.modalButtonText}>Add to Calender</Text>
-              </Pressable>
-
               <Pressable
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => setModalVisible(!modalVisible)}
@@ -775,7 +774,7 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: "70%",
   },
-  buttonCalender: {
+  buttonCalendar: {
     backgroundColor: darkTheme.purple,
     marginBottom: "2%",
     marginTop: "2%",
@@ -786,7 +785,6 @@ const styles = StyleSheet.create({
     marginTop: "2%",
     marginBottom: "2%",
     justifyContent: "flex-end",
-    left: 0,
   },
   modalButtonText: {
     color: "white",
@@ -795,6 +793,9 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "0%",
+  },
+  dateContainer: {
+    flexDirection: "row",
+    alignItems: "center",
   },
 });
