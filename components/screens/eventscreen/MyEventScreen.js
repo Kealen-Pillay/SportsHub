@@ -7,12 +7,9 @@ import {
   Modal,
   TouchableOpacity,
   Pressable,
-  TextInput,
   Linking,
   Image,
-  PermissionsAndroid,
   Platform,
-  Alert,
 } from "react-native";
 import React from "react";
 import { useState, useEffect } from "react";
@@ -29,11 +26,11 @@ import EditButton from "../eventscreen/EditButton";
 import { BlurView } from "expo-blur";
 import Toast from "react-native-toast-message";
 import { LogBox } from "react-native";
-import * as Calendar from 'expo-calendar';
- 
-import moment from 'moment';
-import _ from 'lodash';
- 
+import * as Calendar from "expo-calendar";
+
+import moment from "moment";
+import _ from "lodash";
+
 LogBox.ignoreLogs(["Setting a timer"]);
 
 var counter = 0;
@@ -43,7 +40,7 @@ const MyEventScreen = ({
   setNewEventShow,
   setEditEventShow,
   setEditEventID,
-  }) => {
+}) => {
   const [events, setEvents] = useState([]);
   const [modalVisible, setModalVisible] = useState(false);
   const [currentEvent, setCurrentEvent] = useState({});
@@ -52,7 +49,6 @@ const MyEventScreen = ({
   const [isEmpty, setIsEmpty] = useState(false);
   const [currentEventID, setCurrentEventID] = useState("");
   const [numAttendees, setNumAttendees] = useState(0);
-  const [status, requestPermission] = Calendar.useCalendarPermissions();
 
   const isFocused = useIsFocused();
   const currentUser = auth.currentUser?.email;
@@ -62,9 +58,11 @@ const MyEventScreen = ({
     getEvents();
     (async () => {
       const { status } = await Calendar.requestCalendarPermissionsAsync();
-      if (status === 'granted') {
-        const calendars = await Calendar.getCalendarsAsync(Calendar.EntityTypes.EVENT);
-        console.log('Here are all your calendars:');
+      if (status === "granted") {
+        const calendars = await Calendar.getCalendarsAsync(
+          Calendar.EntityTypes.EVENT
+        );
+        console.log("Here are all your calendars:");
         console.log({ calendars });
       }
     })();
@@ -251,56 +249,54 @@ const MyEventScreen = ({
       position: "top",
     });
   };
- 
 
-const checkCal = () => {        //Opens the calendar on device
-  if (Platform.OS == 'ios') {
-    Linking.openURL("calshow:");
-  
-  } else if(Platform.OS == 'android') {
-    Linking.openURL('content://com.android.calendar/time/');
- 
-  } 
-}
-
-async function getDefaultCalendarSource() {
-  const defaultCalendar = await Calendar.getDefaultCalendarAsync();
-  return defaultCalendar.source;
-}
-
-async function createExpoCalendar() {  //creates event in phone calendar
-  checkCal();
-  const defaultCalendarSource =
-    Platform.OS === 'ios'
-      ? await getDefaultCalendarSource()
-      : { isLocalAccount: true, name: 'SportsHub' };
-     
-  const newCalendarID = await Calendar.createCalendarAsync({
-    title: 'Expo Calendar',
-    color: 'purple',
-    entityType: Calendar.EntityTypes.EVENT,
-    sourceId: defaultCalendarSource.id,
-    source: defaultCalendarSource,
-    name: 'internalCalendarName',
-    ownerAccount: 'personal',
-    accessLevel: Calendar.CalendarAccessLevel.OWNER,
-  });
- // console.log(`Your new calendar ID is: ${newCalendarID}`);
-
-  const startDate = moment(currentEvent.date + " " + currentEvent.time, "DD-M-YYYY HH:mm").toDate();
-  const endDate = moment(startDate).add(1, "hours").toDate();
-  const eventConfig = {
-    title: currentEvent.eventName,    
-    startDate: startDate,
-    endDate: endDate, 
-    location: currentEvent.location,   
-    notes: currentEvent.sport,
+  const checkCal = () => {
+    if (Platform.OS == "ios") {
+      Linking.openURL("calshow:");
+    } else if (Platform.OS == "android") {
+      Linking.openURL("content://com.android.calendar/time/");
+    }
   };
-  //console.log("eventConfig", newCalendarID, currentEvent.date, currentEvent.time, eventConfig);
-  Calendar.createEventAsync(newCalendarID, eventConfig);
-}
 
- 
+  async function getDefaultCalendarSource() {
+    const defaultCalendar = await Calendar.getDefaultCalendarAsync();
+    return defaultCalendar.source;
+  }
+
+  async function createExpoCalendar() {
+    checkCal();
+    const defaultCalendarSource =
+      Platform.OS === "ios"
+        ? await getDefaultCalendarSource()
+        : { isLocalAccount: true, name: "SportsHub" };
+
+    const newCalendarID = await Calendar.createCalendarAsync({
+      title: "Expo Calendar",
+      color: "purple",
+      entityType: Calendar.EntityTypes.EVENT,
+      sourceId: defaultCalendarSource.id,
+      source: defaultCalendarSource,
+      name: "internalCalendarName",
+      ownerAccount: "personal",
+      accessLevel: Calendar.CalendarAccessLevel.OWNER,
+    });
+
+    const startDate = moment(
+      currentEvent.date + " " + currentEvent.time,
+      "DD-M-YYYY HH:mm"
+    ).toDate();
+    const endDate = moment(startDate).add(1, "hours").toDate();
+    const eventConfig = {
+      title: currentEvent.eventName,
+      startDate: startDate,
+      endDate: endDate,
+      location: currentEvent.location,
+      notes: currentEvent.sport,
+    };
+
+    Calendar.createEventAsync(newCalendarID, eventConfig);
+  }
+
   return (
     <SafeAreaView
       style={[
@@ -517,7 +513,6 @@ async function createExpoCalendar() {  //creates event in phone calendar
               >
                 <Text style={styles.modalButtonText}>Add to Calender</Text>
               </Pressable>
-           
 
               <Pressable
                 style={[styles.button, styles.buttonClose]}
@@ -525,9 +520,6 @@ async function createExpoCalendar() {  //creates event in phone calendar
               >
                 <Text style={styles.modalButtonText}>Close</Text>
               </Pressable>
-
-             
-
             </View>
           </BlurView>
         </Modal>
@@ -605,7 +597,6 @@ async function createExpoCalendar() {  //creates event in phone calendar
       <NavGradient />
     </SafeAreaView>
   );
-
 };
 
 export default MyEventScreen;
@@ -794,8 +785,8 @@ const styles = StyleSheet.create({
     width: "70%",
     marginTop: "2%",
     marginBottom: "2%",
-    justifyContent: 'flex-end',
-    left:0,
+    justifyContent: "flex-end",
+    left: 0,
   },
   modalButtonText: {
     color: "white",
