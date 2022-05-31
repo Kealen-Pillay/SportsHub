@@ -264,7 +264,7 @@ const FeedScreen = ({ darkModeEnabled, newEventShow, editEventShow }) => {
             "Volleyball",
             "Tennis",
             "Sailing",
-            "Esports",
+            "eSports",
             "Rugby",
             "Cricket",
             "Waterpolo",

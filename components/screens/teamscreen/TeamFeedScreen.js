@@ -285,7 +285,7 @@ const TeamFeedScreen = ({
             "Volleyball",
             "Tennis",
             "Sailing",
-            "Esports",
+            "eSports",
             "Rugby",
             "Cricket",
             "Waterpolo",
