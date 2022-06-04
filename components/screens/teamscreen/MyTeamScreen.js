@@ -284,7 +284,6 @@ const MyTeamScreen = ({
               name={"add-outline"}
               size={35}
               style={[
-                styles.icon,
                 {
                   color: darkModeEnabled ? darkTheme.text : lightTheme.text,
                 },
@@ -441,7 +440,7 @@ const MyTeamScreen = ({
                   Members:
                 </Text>
                 <View>
-                  <ScrollView>
+                  <ScrollView style={styles.membersScrollView}>
                     {memberList.map((member) => {
                       memberCounter++;
                       return (
@@ -557,7 +556,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 50,
     marginLeft: "5%",
-    marginRight: "10%",
+    marginRight: "2%",
   },
   container: {
     flex: 1,
@@ -724,12 +723,6 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: "70%",
   },
-  buttonMap: {
-    backgroundColor: darkTheme.purple,
-    width: "70%",
-    marginTop: "10%",
-    marginBottom: "5%",
-  },
   modalButtonText: {
     color: "white",
     fontWeight: "bold",
@@ -767,5 +760,8 @@ const styles = StyleSheet.create({
   },
   infoScrollView: {
     height: "15%",
+  },
+  membersScrollView: {
+    height: "10%",
   },
 });

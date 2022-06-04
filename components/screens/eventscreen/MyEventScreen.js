@@ -773,17 +773,10 @@ const styles = StyleSheet.create({
     elevation: 2,
     width: "70%",
   },
-  buttonCalendar: {
-    backgroundColor: darkTheme.purple,
-    marginBottom: "2%",
-    marginTop: "2%",
-  },
   buttonMap: {
     backgroundColor: darkTheme.purple,
-    width: "70%",
-    marginTop: "10%",
-    marginBottom: "10%",
-    justifyContent: "flex-end",
+    marginTop: "5%",
+    marginBottom: "7%",
   },
   modalButtonText: {
     color: "white",
@@ -792,6 +785,11 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
+  },
+  buttonCalendar: {
+    backgroundColor: darkTheme.purple,
+    marginBottom: "2%",
+    marginTop: "2%",
   },
   dateContainer: {
     flexDirection: "row",

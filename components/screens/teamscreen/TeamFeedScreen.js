@@ -266,7 +266,7 @@ const TeamFeedScreen = ({
           onPress={handleBack}
         >
           <Ionicons
-            name={"list-circle-outline"}
+            name={"list-outline"}
             size={30}
             style={[
               styles.icon,
@@ -450,7 +450,7 @@ const TeamFeedScreen = ({
                   Members:
                 </Text>
                 <View>
-                  <ScrollView>
+                  <ScrollView style={styles.membersScrollView}>
                     {memberList.map((member) => {
                       memberCounter++;
                       return (
@@ -729,7 +729,7 @@ const styles = StyleSheet.create({
     color: darkTheme.pink,
   },
   membersScrollView: {
-    height: "15%",
+    height: "10%",
   },
   infoText: {
     fontWeight: "bold",

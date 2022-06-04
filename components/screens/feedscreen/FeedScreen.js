@@ -646,9 +646,8 @@ const styles = StyleSheet.create({
   },
   buttonMap: {
     backgroundColor: darkTheme.purple,
-    width: "70%",
-    marginTop: "7%",
-    marginBottom: "5%",
+    marginTop: "2%",
+    marginBottom: "2%",
   },
   modalButtonText: {
     color: "white",
@@ -657,7 +656,6 @@ const styles = StyleSheet.create({
   },
   buttonClose: {
     backgroundColor: darkTheme.pink,
-    marginTop: "0%",
   },
   ball: {
     height: 50,
