@@ -20,7 +20,6 @@ The SportsHub application also provides a built-in dark / light mode toggle for 
 - Ivan Czar
 - Kyle Francis
 - Cameron Graham
-- Aashish Kulkarni
 - Kealen Pillay
 
 ## Dependencies:
